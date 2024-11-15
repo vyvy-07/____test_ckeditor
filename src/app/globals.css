@@ -19,3 +19,6 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+.ck.ck-editor__editable::after {
+  display: none !important;
+}
