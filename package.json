@@ -19,6 +19,7 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@types/ckeditor__ckeditor5-core": "^37.0.4",
     "@types/ckeditor__ckeditor5-widget": "^37.0.3",
     "@types/node": "^20",
     "@types/react": "^18",
