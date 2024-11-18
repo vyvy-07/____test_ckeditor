@@ -55,6 +55,7 @@ import {
   TableToolbar,
   TodoList,
   Underline,
+  Widget,
   WordCount,
 } from 'ckeditor5';
 
@@ -73,6 +74,10 @@ import { globalOpenPopUp, useModel } from '@/components/ModelContext';
 import PopUpModel from '@/components/PopUpModel';
 
 class ScreenPlugin extends Plugin {
+  static get requires() {
+    // ADDED
+    return [Widget];
+  }
   init() {
     const editor = this.editor;
     editor.ui.componentFactory.add('screen', () => {
@@ -92,6 +97,10 @@ class ScreenPlugin extends Plugin {
 }
 
 class UploadMedia extends Plugin {
+  static get requires() {
+    // ADDED
+    return [Widget];
+  }
   init() {
     const editor = this.editor;
     editor.ui.componentFactory.add('uploadMedia', () => {
@@ -111,6 +120,10 @@ class UploadMedia extends Plugin {
   }
 }
 class Grid6x6 extends Plugin {
+  static get requires() {
+    // ADDED
+    return [Widget];
+  }
   init() {
     const editor = this.editor;
 
@@ -230,6 +243,10 @@ class Grid6x6 extends Plugin {
 }
 
 class Grid9x3 extends Plugin {
+  static get requires() {
+    // ADDED
+    return [Widget];
+  }
   init() {
     const editor = this.editor;
 
