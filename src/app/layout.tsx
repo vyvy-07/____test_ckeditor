@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import ModelProvider from '@/components/ModelContext';
 import './globals.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
@@ -27,9 +25,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        cz-shortcut-listen="true"
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ModelProvider>{children}</ModelProvider>
+        {children}
       </body>
     </html>
   );
