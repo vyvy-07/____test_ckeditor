@@ -20,10 +20,20 @@ export const FullScreenIcon = `<?xml version="1.0" encoding="utf-8"?>
 		c2.1914024,0,3.9746017,1.7832999,3.9746017,3.9747V49.3740997z"/>
 </g>
 </svg>`;
-export const GridIcon1x1 = `<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <path fill-rule="evenodd" d="M13,20 L20,20 L20,4 L13,4 L13,20 Z M11,20 L11,4 L4,4 L4,20 L11,20 Z M22,4 L22,20 C22,21.1045695 21.1045695,22 20,22 L4,22 C2.8954305,22 2,21.1045695 2,20 L2,4 C2,2.8954305 2.8954305,2 4,2 L20,2 C21.1045695,2 22,2.8954305 22,4 Z"/>
-</svg>`;
+
+export const GridIcon6x6 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+<!-- Nền trắng -->
+<rect x="0" y="0" width="20" height="20" fill="white" />
+
+<!-- Hình vuông đầu tiên -->
+<rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
+<text x="5" y="13" font-size="10" text-anchor="middle" fill="black">6</text>
+
+<!-- Hình vuông thứ hai -->
+<rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
+<text x="15" y="13" font-size="10" text-anchor="middle" fill="black">6</text>
+</svg>
+`;
 export const GridIcon = `<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
 <svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
   <path d="M9,14 L20,14 L20,9 L9,9 L9,14 Z M9,15 L9,20 L18.5,20 C19.3284271,20 20,19.3284271 20,18.5 L20,15 L9,15 Z M8,20 L8,9 L4,9 L4,18.5 C4,19.3284271 4.67157288,20 5.5,20 L8,20 Z M20,8 L20,5.5 C20,4.67157288 19.3284271,4 18.5,4 L5.5,4 C4.67157288,4 4,4.67157288 4,5.5 L4,8 L20,8 Z M3,5.5 C3,4.11928813 4.11928813,3 5.5,3 L18.5,3 C19.8807119,3 21,4.11928813 21,5.5 L21,18.5 C21,19.8807119 19.8807119,21 18.5,21 L5.5,21 C4.11928813,21 3,19.8807119 3,18.5 L3,5.5 Z"/>
@@ -33,3 +43,176 @@ export const IconUploadMedia = `<svg class="w-6 h-6 text-gray-800 dark:text-whit
   <path fill-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12c0 .556-.227 1.06-.593 1.422A.999.999 0 0 1 20.5 20H4a2.002 2.002 0 0 1-2-2V6Zm6.892 12 3.833-5.356-3.99-4.322a1 1 0 0 0-1.549.097L4 12.879V6h16v9.95l-3.257-3.619a1 1 0 0 0-1.557.088L11.2 18H8.892Z" clip-rule="evenodd"/>
 </svg>
 `;
+export const GridIcon9x3 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng -->
+  <rect x="0" y="0" width="20" height="20" fill="white" />
+  
+  <!-- Hình vuông đầu tiên -->
+  <rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
+  <text x="5" y="13" font-size="10" text-anchor="middle" fill="black">9</text>
+  
+  <!-- Hình vuông thứ hai -->
+  <rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
+  <text x="15" y="13" font-size="10" text-anchor="middle" fill="black">3</text>
+</svg>
+`;
+
+export const GridIcon4x4x4 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng toàn bộ -->
+  <rect x="0" y="0" width="20" height="20" fill="white" />
+  
+  <g >
+    <!-- Hình vuông đầu tiên -->
+    <rect x="0" y="0" width="6.67" height="20" fill="white" stroke="black"/>
+    <text x="3.34" y="13" font-size="8" text-anchor="middle" fill="black">4</text>
+    
+    <!-- Hình vuông thứ hai -->
+    <rect x="6.67" y="0" width="6.67" height="20" fill="white" stroke="black"/>
+    <text x="10" y="13" font-size="8" text-anchor="middle" fill="black">4</text>
+    
+    <!-- Hình vuông thứ ba -->
+    <rect x="13.34" y="0" width="6.67" height="20" fill="white" stroke="black"/>
+    <text x="16.67" y="13" font-size="8" text-anchor="middle" fill="black">4</text>
+  </g>
+</svg>`;
+export const GridIcon3x6x3 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng toàn bộ -->
+  <rect x="0" y="0" width="20" height="20" fill="white" />
+  
+  <g >
+    <!-- Hình vuông đầu tiên -->
+    <rect x="0" y="0" width="6.67" height="20" fill="white" stroke="black"/>
+    <text x="3.34" y="13" font-size="8" text-anchor="middle" fill="black">3</text>
+    
+    <!-- Hình vuông thứ hai -->
+    <rect x="6.67" y="0" width="6.67" height="20" fill="white" stroke="black"/>
+    <text x="10" y="13" font-size="8" text-anchor="middle" fill="black">6</text>
+    
+    <!-- Hình vuông thứ ba -->
+    <rect x="13.34" y="0" width="6.67" height="20" fill="white" stroke="black"/>
+    <text x="16.67" y="13" font-size="8" text-anchor="middle" fill="black">3</text>
+  </g>
+</svg>`;
+export const GridIcon3x9 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng -->
+  <rect x="0" y="0" width="20" height="20" fill="white" />
+  
+  <!-- Hình vuông đầu tiên -->
+  <rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
+  <text x="5" y="13" font-size="10" text-anchor="middle" fill="black">3</text>
+  
+  <!-- Hình vuông thứ hai -->
+  <rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
+  <text x="15" y="13" font-size="10" text-anchor="middle" fill="black">9</text>
+</svg>
+`;
+export const GridIcon2x8x2 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng toàn bộ -->
+  <rect x="0" y="0" width="20" height="20" fill="white" />
+  
+  <g >
+    <!-- Hình vuông đầu tiên -->
+    <rect x="0" y="0" width="6.67" height="20" fill="white" stroke="black"/>
+    <text x="3.34" y="13" font-size="8" text-anchor="middle" fill="black">2</text>
+    
+    <!-- Hình vuông thứ hai -->
+    <rect x="6.67" y="0" width="6.67" height="20" fill="white" stroke="black"/>
+    <text x="10" y="13" font-size="8" text-anchor="middle" fill="black">8</text>
+    
+    <!-- Hình vuông thứ ba -->
+    <rect x="13.34" y="0" width="6.67" height="20" fill="white" stroke="black"/>
+    <text x="16.67" y="13" font-size="8" text-anchor="middle" fill="black">2</text>
+  </g>
+</svg>
+`;
+export const GridIcon8x4 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng -->
+  <rect x="0" y="0" width="20" height="20" fill="white" />
+  
+  <!-- Hình vuông đầu tiên -->
+  <rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
+  <text x="5" y="13" font-size="10" text-anchor="middle" fill="black">8</text>
+  
+  <!-- Hình vuông thứ hai -->
+  <rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
+  <text x="15" y="13" font-size="10" text-anchor="middle" fill="black">4</text>
+</svg>
+`;
+export const GridIcon4x8 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+<!-- Nền trắng -->
+<rect x="0" y="0" width="20" height="20" fill="white" />
+
+<!-- Hình vuông đầu tiên -->
+<rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
+<text x="5" y="13" font-size="10" text-anchor="middle" fill="black">4</text>
+
+<!-- Hình vuông thứ hai -->
+<rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
+<text x="15" y="13" font-size="10" text-anchor="middle" fill="black">8</text>
+</svg>
+`;
+export const Quotes = `<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+	 viewBox="0 0 32 32" xml:space="preserve">
+<g>
+	<g id="right_x5F_quote">
+		<g>
+			<path style="fill:#030104;" d="M0,4v12h8c0,4.41-3.586,8-8,8v4c6.617,0,12-5.383,12-12V4H0z"/>
+			<path style="fill:#030104;" d="M20,4v12h8c0,4.41-3.586,8-8,8v4c6.617,0,12-5.383,12-12V4H20z"/>
+		</g>
+	</g>
+</g>
+</svg>`;
+export const LineParallel = `
+
+
+<svg width="20" height="10" viewBox="0 0 20 10" xmlns="http://www.w3.org/2000/svg">
+  <!-- Đường kẻ trên -->
+  <line x1="0" y1="2" x2="20" y2="2" stroke="black" stroke-width="1" />
+  <!-- Đường kẻ dưới -->
+  <line x1="0" y1="8" x2="20" y2="8" stroke="black" stroke-width="1" />
+</svg>
+`;
+export const LineHorizontal = `<svg width="20" height="2" viewBox="0 0 20 2" xmlns="http://www.w3.org/2000/svg">
+  <!-- Đường kẻ trái -->
+  <line x1="0" y1="1" x2="8" y2="1" stroke="black" stroke-width="1" />
+  <!-- Đường kẻ phải -->
+  <line x1="12" y1="1" x2="20" y2="1" stroke="black" stroke-width="1" />
+</svg>
+`;
+
+export const GroupQuotes = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+  <text x="2" y="15" font-family="Arial" font-size="15" font-weight="bold" fill="black">Ω</text>
+</svg>`;
+
+export const QuotesWithIconSVG = `<svg width="20px" height="20px" xmlns="http://www.w3.org/2000/svg">
+  <text x="2" y="8" font-size="10px" font-family="Arial" font-weight="bold">“</text>
+  <text x="6" y="12" font-size="6px" font-family="Arial" font-weight="bold">ABC</text>
+</svg>
+`;
+export const BoxQuotesGreySVG = `<svg width="40" height="15" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hình vuông -->
+  <rect x="0" y="0" width="40" height="40" fill="#eeeeee" stroke-width="1"/>
+  <!-- Số "1" -->
+  <text x="50%" y="50%" font-size="12" font-family="Arial" fill="#000" dominant-baseline="middle" text-anchor="middle">3</text>
+</svg>
+`;
+export const BoxQuotesBlueSVG = `<svg width="20" height="15" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hình vuông -->
+  <rect x="0" y="0" width="20" height="40" fill="#add8e6"  stroke-width="1"/>
+  <!-- Số "1" -->
+  <text x="50%" y="50%" font-size="10" font-family="Arial" fill="#000" dominant-baseline="middle" text-anchor="middle">2</text>
+</svg>`;
+export const BoxQuotesGreenSVG = `<svg width="20" height="15" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hình vuông -->
+  <rect x="0" y="0" width="20" height="20" fill="#33FF99"  stroke-width="1"/>
+  <!-- Số "1" -->
+  <text x="50%" y="50%" font-size="10" font-family="Arial" fill="#000" dominant-baseline="middle" text-anchor="middle">1</text>
+</svg>`;
+export const BoxQuotesFitContent = `<svg width="20" height="15" xmlns="http://www.w3.org/2000/svg">
+  <!-- Hình vuông -->
+  <rect x="0" y="0" width="20" height="20" fill="#FFFF33"  stroke-width="1"/>
+  <!-- Số "1" -->
+  <text x="50%" y="50%" font-size="10" font-family="Arial" fill="#000" dominant-baseline="middle" text-anchor="middle">Fit</text>
+</svg>`;
