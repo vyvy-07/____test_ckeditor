@@ -1,0 +1,9 @@
+/* a {
+  @apply relative block w-fit;
+}
+.remove-tool {
+  @apply absolute top-[30px] right-[5px] opacity-0;
+}
+a:hover .remove-tool {
+  @apply opacity-100;
+} */

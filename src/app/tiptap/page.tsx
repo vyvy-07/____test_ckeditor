@@ -5,10 +5,7 @@ import TipTapEditorMui from '@/components/TipTapEditorMui';
 
 const TipTapEditor = () => {
   return (
-    <div className="pt-7 grid grid-cols-2 gap-3 ">
-      <>
-        <TipTapComponent />
-      </>
+    <div className="pt-7  ">
       <>
         <TipTapEditorMui />
       </>

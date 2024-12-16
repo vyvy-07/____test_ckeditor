@@ -21,6 +21,62 @@ h4 {
   outline: none;
   border: 1px solid #eee;
 }
+.hljs-comment,
+.hljs-quote {
+  @apply text-gray-500;
+}
+
+/* Variable, attribute, and tag styling */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attribute,
+.hljs-tag,
+.hljs-regexp,
+.hljs-link,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  @apply text-red-400;
+}
+
+/* Number, meta, and type styling */
+.hljs-number,
+.hljs-meta,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params {
+  @apply text-yellow-400;
+}
+
+/* String and symbol styling */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet {
+  @apply text-green-400;
+}
+
+/* Title and section styling */
+.hljs-title,
+.hljs-section {
+  @apply text-yellow-300;
+}
+
+/* Keyword and selector tag styling */
+.hljs-keyword,
+.hljs-selector-tag {
+  @apply text-blue-400;
+}
+
+/* Emphasis and strong styling */
+.hljs-emphasis {
+  @apply italic;
+}
+
+.hljs-strong {
+  @apply font-bold;
+}
 blockquote {
   border-left: 3px solid grey;
   padding-left: 5px;

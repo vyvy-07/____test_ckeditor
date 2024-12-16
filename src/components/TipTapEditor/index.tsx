@@ -4,10 +4,18 @@ import Document from '@tiptap/extension-document';
 import Heading from '@tiptap/extension-heading';
 import Paragraph from '@tiptap/extension-paragraph';
 
+import {
+  BlockBoxBlueSVG,
+  BoxQuotesGreenSVG,
+  BoxQuotesGreySVG,
+  LineHorizontal,
+  LineParallel,
+  Quotes,
+  QuotesWithIconSVG,
+} from '@/constant/icons';
 import Text from '@tiptap/extension-text';
 import { EditorContent, useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import './style.css';
+import ButtonEditor from '../ButtonEditor';
 import {
   BlockquoteBoxBlue,
   BlockquoteBoxGreen,
@@ -16,16 +24,8 @@ import {
   BlockquoteLineY,
   BlockquoteWithIcon,
 } from './QuotesLine';
-import ButtonEditor from '../ButtonEditor';
-import {
-  BoxQuotesBlueSVG,
-  BoxQuotesGreenSVG,
-  BoxQuotesGreySVG,
-  LineHorizontal,
-  LineParallel,
-  Quotes,
-  QuotesWithIconSVG,
-} from '@/constant/iconCkeditor';
+import './style.css';
+import StarterKit from '@tiptap/starter-kit';
 export default () => {
   const editor: any = useEditor({
     extensions: [
@@ -56,6 +56,7 @@ export default () => {
         levels: [1, 2, 3],
       }),
     ],
+
     content: `
       <blockquote>
         Nothing is impossible, the word itself says “I’m possible!”
@@ -63,6 +64,10 @@ export default () => {
       <p>Audrey Hepburn</p>
     `,
     immediatelyRender: false,
+  });
+  StarterKit.configure({
+    heading: { levels: [1, 2, 3] }, // Limit headings to h1, h2, and h3
+    codeBlock: false, // Disable code blocks
   });
 
   if (!editor) {
@@ -75,10 +80,27 @@ export default () => {
       <div className="control-group">
         <div className="button-group flex gap-5 p-3 items-center h-[50px]">
           <ul className=""></ul>
-          <ButtonEditor editor={editor} extension="Heading" icon="H1" />
-          <ButtonEditor editor={editor} extension="Heading" icon="H2" />
-          <ButtonEditor editor={editor} extension="Heading" icon="H3" />
-          <ButtonEditor editor={editor} extension="Heading" icon="H4" />
+          <div
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 1 }).run()
+            }
+            className={` cursor-pointer ${
+              editor.isActive('heading', { level: 1 }) ? 'is-active' : ''
+            }`}
+          >
+            h1
+          </div>
+          <div
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 2 }).run()
+            }
+            className={` cursor-pointer ${
+              editor.isActive('heading', { level: 2 }) ? 'is-active' : ''
+            }`}
+          >
+            h2
+          </div>
+
           <ButtonEditor editor={editor} extension="Blockquote" icon={Quotes} />
           <ButtonEditor
             editor={editor}
@@ -98,7 +120,7 @@ export default () => {
           <ButtonEditor
             editor={editor}
             extension="BlockquoteBoxBlue"
-            icon={BoxQuotesBlueSVG}
+            icon={BlockBoxBlueSVG}
           />
           <ButtonEditor
             editor={editor}
