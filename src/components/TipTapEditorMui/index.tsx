@@ -11,35 +11,77 @@ import {
   BoldIcon,
   BoxQuotesGreenSVG,
   BoxQuotesGreySVG,
+  BreakPage,
   CheckListIcon,
   ClearFormatIcon,
+  DeleteCol,
+  DeleteRow,
+  FileVideoIcon,
+  GridIcon2x8x2,
+  GridIcon3x6x3,
+  GridIcon3x9,
+  GridIcon4x4x4,
+  GridIcon4x8,
+  GridIcon6x6,
+  GridIcon8x4,
+  GridIcon9x3,
+  IMGIcon,
   ItalicIcon,
   LineHorizontal,
   LineParallel,
+  LinkSVG,
   ListDotIcon,
   ListNumberIcon,
   Quotes,
   QuotesWithIconSVG,
   RemoveLink,
+  RemoveTable,
   StrikeIcon,
+  SuperscriptIcon,
+  SupscriptIcon,
+  TableBottom,
+  TableIcon,
+  TableLeftCol,
+  TableMerge,
+  TableRigthCol,
+  TableTop,
   UnderlineIcon,
+  VideoIcon,
 } from '@/constant/icons';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import FormatBoldIcon from '@mui/icons-material/FormatBold';
+import FormatColorFillIcon from '@mui/icons-material/FormatColorFill';
+import FormatItalicIcon from '@mui/icons-material/FormatItalic';
+import FormatUnderlinedIcon from '@mui/icons-material/FormatUnderlined';
 import {
   FormControl,
   MenuItem,
   Select,
   type SelectChangeEvent,
 } from '@mui/material';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import Color from '@tiptap/extension-color';
+import Dropcursor from '@tiptap/extension-dropcursor';
 import FontFamily from '@tiptap/extension-font-family';
 import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
+import Subscript from '@tiptap/extension-subscript';
+import Superscript from '@tiptap/extension-superscript';
+import Table from '@tiptap/extension-table';
+import TableCell from '@tiptap/extension-table-cell';
+import TableHeader from '@tiptap/extension-table-header';
+import TableRow from '@tiptap/extension-table-row';
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
-import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from '@tiptap/extension-text-style';
+import Typography from '@tiptap/extension-typography';
+import 'katex/dist/katex.min.css';
+
 import Underline from '@tiptap/extension-underline';
-import Dropcursor from '@tiptap/extension-dropcursor';
+import Youtube from '@tiptap/extension-youtube';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import css from 'highlight.js/lib/languages/css';
@@ -48,7 +90,14 @@ import ts from 'highlight.js/lib/languages/typescript';
 import html from 'highlight.js/lib/languages/xml';
 import { createLowlight } from 'lowlight';
 import React, { useCallback } from 'react';
+import styled from 'styled-components';
+import ImageResize from 'tiptap-extension-resize-image';
 import ButtonEditor from '../ButtonEditor';
+import { FontSize } from './CustomTipTap/FontSize';
+import { GridLayout } from './CustomTipTap/GridLayout';
+import { ResizableImage } from './CustomTipTap/ResizeImageTool';
+import { CustomVideo } from './CustomTipTap/URLVideoCustom';
+import './editor.css';
 import {
   BlockquoteBoxBlue,
   BlockquoteBoxGreen,
@@ -58,10 +107,10 @@ import {
   BlockquoteWithIcon,
 } from './QuotesLine';
 import './style.css';
-import './editor.css';
-import { ResizableImage } from './CustomTipTap/ResizeImageTool';
-import { FontSize } from './CustomTipTap/FontSize';
-import styled from 'styled-components';
+import { BackgroundColor } from './CustomTipTap/BackgroundColor ';
+import { FxNode } from './CustomTipTap/FxMath';
+import { PageBreak } from './CustomTipTap/BreakPage';
+import { VideoResize } from './CustomTipTap/TooltipVideo';
 const lowlight = createLowlight();
 lowlight.register('html', html);
 lowlight.register('css', css);
@@ -106,11 +155,38 @@ const arrFontFamily = [
   '"Gill Sans", "Gill Sans MT"',
 ];
 const arrFontSize = ['12', '14', '16', '18', '20'];
+const arrLayouts = [
+  { name: 'layout2x8x2', icon: GridIcon2x8x2 },
+  { name: 'layout3x9', icon: GridIcon3x9 },
+  { name: 'layout4x4x4', icon: GridIcon4x4x4 },
+  { name: 'layout6x6', icon: GridIcon6x6 },
+  { name: 'layout3x6x3', icon: GridIcon3x6x3 },
+  { name: 'layout8x4', icon: GridIcon8x4 },
+  { name: 'layout4x8', icon: GridIcon4x8 },
+  { name: 'layout9x3', icon: GridIcon9x3 },
+];
+// const arrTextMark = ['bold', 'underline', 'italic', 'strike'];
+
+const arrTextMark = [
+  { name: 'bold', icon: BoldIcon },
+  { name: 'underline', icon: UnderlineIcon },
+  { name: 'italic', icon: ItalicIcon },
+  { name: 'strike', icon: StrikeIcon },
+  { name: 'BulletList', icon: ListDotIcon },
+  { name: 'orderedList', icon: ListNumberIcon },
+  { name: 'taskList', icon: CheckListIcon },
+  { name: 'link', icon: LinkSVG },
+  { name: 'codeBlock', icon: BlockCodeIcon },
+  { name: 'superscript', icon: SuperscriptIcon },
+  { name: 'subscript', icon: SupscriptIcon },
+];
 export default () => {
   const [heading, setHeading] = React.useState('Heading');
   const [iconQuotes, setIconQuotes] = React.useState(Quotes);
   const [colorCurrent, setColorCurrent] = React.useState('black');
-  const [alignment, setAlignment] = React.useState('left');
+  const [bgColorCurrent, setBgColorCurrent] = React.useState();
+  const [alignment, setAlignment] = React.useState('monica');
+  const [width, setWidth] = React.useState(640);
 
   const handleChange = (event: SelectChangeEvent) => {
     if (typeof event.target.value == 'number') {
@@ -119,11 +195,22 @@ export default () => {
       setIconQuotes(event.target.value);
     }
   };
+  const handleChangeAlignment = (e: SelectChangeEvent) => {
+    if (e.target.value) {
+      setAlignment(e.target.value);
+    }
+  };
 
   const editor: any = useEditor({
     extensions: [
       Underline,
       TextStyle,
+      Color,
+      Typography,
+      ImageResize,
+      BackgroundColor,
+      Subscript,
+      FxNode,
       StarterKit.configure({
         heading: {
           levels: [1, 2, 3, 4],
@@ -231,9 +318,25 @@ export default () => {
       }),
       FontFamily,
       Image,
+      CustomVideo,
       Dropcursor,
       ResizableImage,
       FontSize,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
+      Superscript,
+      Youtube.configure({
+        controls: false,
+        nocookie: true,
+      }),
+      GridLayout.configure({
+        types: ['layout1', 'layout2', 'layout3'], // Các kiểu layout
+      }),
+      PageBreak,
     ],
 
     content: `
@@ -244,6 +347,7 @@ export default () => {
     `,
     immediatelyRender: false,
   });
+
   const setLink = useCallback(() => {
     const previousUrl = editor.getAttributes('link').href;
     const url = window.prompt('URL', previousUrl);
@@ -256,13 +360,31 @@ export default () => {
     // empty
     if (url === '') {
       editor.chain().focus().extendMarkRange('link').unsetLink().run();
-
       return;
     }
 
     // update link
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
   }, [editor]);
+  const addYoutubeVideo = () => {
+    const url = prompt('Enter YouTube URL');
+
+    if (url) {
+      editor.commands.setYoutubeVideo({
+        src: url,
+        width: Math.max(320, parseInt(`${width}`, 10)) || 640,
+        height: Math.max(180, parseInt(`${width}`, 10)) || 480,
+      });
+    }
+  };
+
+  const insertFx = () => {
+    const formula = prompt('');
+    if (formula) {
+      console.log('formula :>> ', formula);
+      editor?.commands.insertFx(formula);
+    }
+  };
   const removeFormat = () => {
     if (!editor) return;
 
@@ -272,9 +394,8 @@ export default () => {
   };
   const addImage = useCallback(() => {
     if (!editor) return;
-
     const url = prompt('Nhập URL ảnh:');
-    const width = prompt('Nhập chiều rộng (px hoặc %):', '300px');
+    const width = prompt('Nhập chiều rộng (px hoặc %):', '100%');
     const height = prompt('Nhập chiều cao (px hoặc %):', 'auto');
 
     if (url) {
@@ -283,67 +404,23 @@ export default () => {
   }, [editor]);
   const changeFontSize = (size: string) => {
     if (!editor) return;
-    console.log('size :>> ', size);
-
     editor.chain().focus().setFontSize(size).run();
   };
 
   if (!editor) {
     return null;
   }
-
+  const handleInsertVideo = () => {
+    const url = prompt('Enter a video URL:');
+    if (url) {
+      // Insert the video based on the provided URL
+      editor?.commands.insertVideoUrl(url);
+    }
+  };
   return (
     <div>
-      <div className="control-group">
-        <div className="button-group flex gap-4 p-3 items-center h-[50px] justify-start ">
-          {/* Undo/Redo */}
-          {/* <button onClick={() => changeFontSize('12px')}>12px</button>
-          <button onClick={() => changeFontSize('16px')}>16px</button>
-          <button onClick={() => changeFontSize('24px')}>24px</button> */}
-          <ButtonCustomCss
-            onClick={setLink}
-            className={editor.isActive('link') ? 'is-active' : ''}
-          >
-            Set link
-          </ButtonCustomCss>
-          <ButtonCustomCss
-            className="remove-tool"
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => editor.chain().focus().unsetLink().run()}
-            disabled={!editor.isActive('link')}
-          >
-            <span dangerouslySetInnerHTML={{ __html: RemoveLink }}></span>
-          </ButtonCustomCss>
-          <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              className="outline-none text-[14px] h-[40px]"
-              value="16"
-              onChange={handleChange}
-            >
-              <MenuItem disabled value="Heading">
-                <span className="text-slate-400">Heading</span>
-              </MenuItem>
-              {arrFontSize?.length > 0 &&
-                arrFontSize?.map((item: string, index) => {
-                  return (
-                    <MenuItem key={item || index} value={item}>
-                      <ButtonCustomCss
-                        className="w-full"
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => {
-                          if (!editor.isFocused) {
-                            editor.chain().focus().run(); // Ensure focus
-                          }
-                          changeFontSize(item);
-                        }}
-                      >
-                        {item}
-                      </ButtonCustomCss>
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl>
+      <div className="control-group h-full">
+        <div className="button-group flex gap-4 p-3 items-center h-full flex-wrap justify-start ">
           <ButtonCustomCss
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
@@ -359,7 +436,7 @@ export default () => {
           >
             <span dangerouslySetInnerHTML={{ __html: ClearFormatIcon }}></span>
           </ButtonCustomCss>
-          |
+          |{/* Undo/Redo */}
           <ButtonCustomCss
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
@@ -410,38 +487,26 @@ export default () => {
                 })}
             </Select>
           </FormControl>
-          |{/* text TextAlign */}
-          <ButtonEditor
-            editor={editor}
-            element="strike"
-            extension="Strike"
-            icon={StrikeIcon}
-          />
-          <ButtonEditor
-            editor={editor}
-            element="underline"
-            extension="Underline"
-            icon={UnderlineIcon}
-          />
-          <ButtonEditor
-            editor={editor}
-            element="bold"
-            extension="Bold"
-            icon={BoldIcon}
-          />
-          <ButtonEditor
-            editor={editor}
-            element="italic"
-            extension="Italic"
-            icon={ItalicIcon}
-          />
+          {/* text TextAlign */}
+          {arrTextMark?.map((item, index) => (
+            <ButtonEditor
+              editor={editor}
+              key={item?.name || index}
+              element={item?.name}
+              extension={item?.name}
+              icon={item?.icon}
+            />
+          ))}
           <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
             <Select
-              className="outline-none form-fontFamily text-[14px] w-[70px] h-[40px]"
+              className="outline-none form-fontFamily text-[14px] w-fit h-[40px]"
               value={alignment}
-              onChange={handleChange}
+              onChange={handleChangeAlignment}
               defaultValue="monica"
             >
+              <MenuItem value="monica" disabled>
+                monica
+              </MenuItem>
               {arrFontFamily?.map((item, index) => (
                 <MenuItem value={item} key={item || index}>
                   <ButtonEditor
@@ -450,6 +515,7 @@ export default () => {
                     element="textStyle"
                     icon={item}
                     type={item}
+                    fontFamily={item}
                     param={{ fontFamily: item }}
                     setFunc={true}
                   />
@@ -457,6 +523,69 @@ export default () => {
               ))}
             </Select>
           </FormControl>
+          <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
+            <Select
+              className="outline-none text-[14px] h-[40px]"
+              value="16"
+              onChange={handleChange}
+            >
+              <MenuItem disabled value="Heading">
+                <span className="text-slate-400">Heading</span>
+              </MenuItem>
+              {arrFontSize?.length > 0 &&
+                arrFontSize?.map((item: string, index) => {
+                  return (
+                    <MenuItem key={item || index} value={item}>
+                      <ButtonCustomCss
+                        className="w-full"
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => {
+                          if (!editor.isFocused) {
+                            editor.chain().focus().run(); // Ensure focus
+                          }
+                          changeFontSize(item);
+                        }}
+                      >
+                        {item}
+                      </ButtonCustomCss>
+                    </MenuItem>
+                  );
+                })}
+            </Select>
+          </FormControl>
+          <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
+            <Select
+              className="outline-none text-[14px] h-[40px]"
+              value="16"
+              onChange={handleChange}
+            >
+              <MenuItem disabled value="Heading">
+                <span className="text-slate-400">Grid Layout</span>
+              </MenuItem>
+              {arrLayouts?.length > 0 &&
+                arrLayouts?.map((item, index) => {
+                  return (
+                    <MenuItem key={item?.name || index} value={item?.name}>
+                      <ButtonCustomCss
+                        className="w-full"
+                        // onMouseDown={(e) => e.preventDefault()}
+                        onClick={() => {
+                          editor.commands.toggleGridLayout(item?.name);
+                        }}
+                      >
+                        <span
+                          dangerouslySetInnerHTML={{ __html: item?.icon }}
+                        ></span>
+                      </ButtonCustomCss>
+                    </MenuItem>
+                  );
+                })}
+            </Select>
+          </FormControl>
+          |
+          <button onClick={insertFx} className="font-serif">
+            Fx
+          </button>
           <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
             <Select
               className="outline-none text-[14px] w-[70px] h-[40px]"
@@ -478,82 +607,174 @@ export default () => {
               ))}
             </Select>
           </FormControl>
+          <button
+            onClick={() =>
+              editor
+                .chain()
+                .focus()
+                .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+                .run()
+            }
+          >
+            <span dangerouslySetInnerHTML={{ __html: TableIcon }}></span>
+          </button>
+          <div className="control-table opacity-0 absolute top-0">
+            <button onClick={() => editor.chain().focus().setPageBreak().run()}>
+              <span dangerouslySetInnerHTML={{ __html: BreakPage }}></span>
+            </button>
+            <button
+              onClick={() => editor.chain().focus().addColumnBefore().run()}
+            >
+              <span dangerouslySetInnerHTML={{ __html: TableLeftCol }}></span>
+            </button>
+            <button
+              onClick={() => editor.chain().focus().addColumnAfter().run()}
+            >
+              <span dangerouslySetInnerHTML={{ __html: TableRigthCol }}></span>
+            </button>
+            <button onClick={() => editor.chain().focus().deleteColumn().run()}>
+              <span dangerouslySetInnerHTML={{ __html: DeleteCol }}></span>
+            </button>
+            <button onClick={() => editor.chain().focus().addRowBefore().run()}>
+              <span dangerouslySetInnerHTML={{ __html: TableTop }}></span>
+            </button>
+            <button onClick={() => editor.chain().focus().addRowAfter().run()}>
+              <span dangerouslySetInnerHTML={{ __html: TableBottom }}></span>
+            </button>
+            <button onClick={() => editor.chain().focus().deleteRow().run()}>
+              <span dangerouslySetInnerHTML={{ __html: DeleteRow }}></span>
+            </button>
+            <button onClick={() => editor.chain().focus().deleteTable().run()}>
+              <span dangerouslySetInnerHTML={{ __html: RemoveTable }}></span>
+            </button>
+            <button onClick={() => editor.chain().focus().mergeCells().run()}>
+              <span dangerouslySetInnerHTML={{ __html: TableMerge }}></span>
+            </button>
+            <button onClick={() => editor.chain().focus().splitCell().run()}>
+              Split cell
+            </button>
+            <button
+              onClick={() => editor.chain().focus().toggleHeaderColumn().run()}
+            >
+              Toggle header column
+            </button>
+            <button
+              onClick={() => editor.chain().focus().toggleHeaderRow().run()}
+            >
+              Toggle header row
+            </button>
+            <button
+              onClick={() => editor.chain().focus().toggleHeaderCell().run()}
+            >
+              Toggle header cell
+            </button>
+            <button onClick={() => editor.chain().focus().mergeOrSplit().run()}>
+              Merge or split
+            </button>
+            <button
+              onClick={() =>
+                editor.chain().focus().setCellAttribute('colspan', 2).run()
+              }
+            >
+              Set cell attribute
+            </button>
+            <button onClick={() => editor.chain().focus().fixTables().run()}>
+              Fix tables
+            </button>
+            <button onClick={() => editor.chain().focus().goToNextCell().run()}>
+              Go to next cell
+            </button>
+            <button
+              onClick={() => editor.chain().focus().goToPreviousCell().run()}
+            >
+              Go to previous cell
+            </button>
+            <button
+              onClick={() =>
+                editor.chain().focus().setCellAttribute('colspan', 2).run()
+              }
+            >
+              Set cell attribute
+            </button>
+          </div>
           |
-          <ButtonEditor
-            editor={editor}
-            element="bulletList"
-            extension="BulletList"
-            icon={ListDotIcon}
-          />
-          <ButtonEditor
-            editor={editor}
-            element="orderedList"
-            extension="OrderedList"
-            icon={ListNumberIcon}
-          />
-          <ButtonEditor
-            editor={editor}
-            element="taskList"
-            extension="TaskList"
-            icon={CheckListIcon}
-          />
-          |
-          <ButtonEditor
-            editor={editor}
-            element="codeBlock"
-            extension="CodeBlock"
-            icon={BlockCodeIcon}
-          />
-          <ButtonEditor
-            editor={editor}
-            element="horizontalRule"
-            extension="HorizontalRule"
-            icon={`___`}
-            setFunc={true}
-          />
-          <div className="flex relative justify-center items-center cursor-pointer">
-            <input
-              type="color"
-              onChange={(event: any) => {
-                if (!editor.isFocused) {
-                  editor.chain().focus().run();
-                }
-
-                editor.chain().focus().setColor(event.target.value).run();
-                setColorCurrent(event.target.value);
-                console.log('event.target.value :>> ', event.target.value);
-              }}
-              value={editor.getAttributes('textStyle').color || '#000000'}
-              data-testid="setColor"
-              className="block  w-[30px] h-[30px] cursor-pointer"
-            />
-            <span className="block absolute r-0 z-1 pointer-events-none">
+          <button onClick={addImage}>
+            <span dangerouslySetInnerHTML={{ __html: IMGIcon }}></span>
+          </button>
+          <button onClick={handleInsertVideo}>
+            <span dangerouslySetInnerHTML={{ __html: VideoIcon }}></span>
+          </button>
+          <ButtonCustomCss
+            onClick={addYoutubeVideo}
+            className={editor.isActive('link') ? 'is-active' : ''}
+          >
+            <span dangerouslySetInnerHTML={{ __html: FileVideoIcon }}></span>
+          </ButtonCustomCss>
+          <div className="relative ">
+            <span className="block  relative z-10 pointer-events-none">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                width="20"
-                height="20"
-                fill="white"
+                width="24"
+                height="24"
+                fill={colorCurrent}
               >
                 <path d="M15.2459 14H8.75407L7.15407 18H5L11 3H13L19 18H16.8459L15.2459 14ZM14.4459 12L12 5.88516L9.55407 12H14.4459ZM3 20H21V22H3V20Z"></path>
               </svg>
             </span>
+            <input
+              type="color"
+              onMouseDown={(e) => e.preventDefault()}
+              onInput={(event: any) => {
+                if (!editor.chain().focus()) {
+                  return null;
+                }
+                if (event.target.value) {
+                  setColorCurrent(event.target.value);
+                  editor.chain().focus().setColor(event.target.value).run();
+                }
+              }}
+              value={editor.getAttributes('textStyle').color || colorCurrent}
+              className="w-6 h-6 pt-6 absolute bottom-0 pointer-events-auto"
+            />
           </div>
-          <ButtonEditor
-            editor={editor}
-            element="s"
-            extension="HorizontalRule"
-            icon={`123`}
-            setFunc={true}
-          />
-          {/* <button
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={addImage}
-            disabled={!editor?.isEditable}
-          >
-            Chèn ảnh
-          </button> */}
-          <button onClick={addImage}>Set image</button>
+          <div className="relative ">
+            <span className="block  relative z-10 pointer-events-none">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+                fill="currentColor"
+              >
+                <path d="M19.2277 18.7323L20.9955 16.9645L22.7632 18.7323C23.7395 19.7086 23.7395 21.2915 22.7632 22.2678C21.7869 23.2441 20.204 23.2441 19.2277 22.2678C18.2514 21.2915 18.2514 19.7086 19.2277 18.7323ZM8.87861 1.07971L20.1923 12.3934C20.5828 12.7839 20.5828 13.4171 20.1923 13.8076L11.707 22.2929C11.3165 22.6834 10.6833 22.6834 10.2928 22.2929L1.80754 13.8076C1.41702 13.4171 1.41702 12.7839 1.80754 12.3934L9.58572 4.61525L7.4644 2.49393L8.87861 1.07971ZM10.9999 6.02946L3.92886 13.1005H18.071L10.9999 6.02946Z"></path>
+              </svg>
+            </span>
+            <input
+              type="color"
+              onMouseDown={(e) => e.preventDefault()}
+              onInput={(event: any) => {
+                if (!editor.chain().focus()) {
+                  return null;
+                }
+                if (event.target.value) {
+                  setBgColorCurrent(event.target.value);
+                  editor
+                    .chain()
+                    .focus()
+                    .setBackgroundColor(event.target.value)
+                    .run();
+                }
+              }}
+              value={
+                editor.getAttributes('textStyle').backgroundColor ||
+                bgColorCurrent ||
+                'white'
+              }
+              className={`w-6 h-6 pt-6 absolute bottom-0 pointer-events-auto 
+              `}
+            />
+          </div>
           {/* blockquote */}
           <FormControl
             className="formControl blockquote"

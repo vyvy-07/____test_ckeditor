@@ -18,12 +18,12 @@ h4 {
 a {
   @apply text-blue-500 underline;
 }
-.tiptap {
-  :first-child {
-    margin-top: 0;
-  }
+.tiptap:first-child {
+  margin-top: 0;
 }
-
+iframe {
+  @apply w-full min-h-[500px];
+}
 .tiptap ul,
 .tiptap ol {
   padding: 0 1rem;
@@ -54,6 +54,38 @@ code {
   font-size: 0.85rem;
   padding: 0.25em 0.3em;
 }
+span[data-fx] {
+  font-family: 'Courier New', monospace;
+  color: #0077cc;
+  padding: 2px 4px;
+  border: 1px solid #0077cc;
+  border-radius: 4px;
+}
+div[data-page-break] {
+  page-break-after: always;
+  margin-bottom: 20px; /* Khoảng trắng dưới ngắt trang */
+  border: none;
+  text-align: center; /* Căn giữa chữ */
+}
+
+.page-break-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 2px dashed #000; /* Dấu nét đứt */
+  /* padding: 10px 0; */
+  margin-top: 20px;
+}
+
+.page-break-text {
+  font-weight: bold;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #333;
+  background-color: white;
+  padding: 0 5px;
+}
+
 .MuiFormControl-root {
   min-width: initial !important;
   width: fit-content;
@@ -259,4 +291,64 @@ blockquote {
   width: fit-content;
   padding: 5px 10px;
   @apply bg-slate-300;
+}
+.tiptap table {
+  border-collapse: collapse;
+  margin: 0;
+  overflow: hidden;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.tiptap table td,
+.tiptap table th {
+  border: 1px solid #b6b1b1;
+  box-sizing: border-box;
+  min-width: 1em;
+  padding: 6px 8px;
+  position: relative;
+  vertical-align: top;
+}
+
+.tiptap table td > *,
+.tiptap table th > * {
+  margin-bottom: 0;
+}
+
+.tiptap table th {
+  background-color: var(--gray-1);
+  font-weight: bold;
+  text-align: left;
+}
+
+.tiptap table .selectedCell:after {
+  background: var(--gray-2);
+  content: '';
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 2;
+}
+
+.tiptap table .column-resize-handle {
+  background-color: var(--purple);
+  bottom: -2px;
+  pointer-events: none;
+  position: absolute;
+  right: -2px;
+  top: 0;
+  width: 4px;
+}
+
+.tiptap .tableWrapper {
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+
+.tiptap.resize-cursor {
+  cursor: ew-resize;
+  cursor: col-resize;
 }

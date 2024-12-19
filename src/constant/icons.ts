@@ -21,19 +21,6 @@ export const FullScreenIcon = `<?xml version="1.0" encoding="utf-8"?>
 </g>
 </svg>`;
 
-export const GridIcon6x6 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-<!-- Nền trắng -->
-<rect x="0" y="0" width="20" height="20" fill="white" />
-
-<!-- Hình vuông đầu tiên -->
-<rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
-<text x="5" y="13" font-size="10" text-anchor="middle" fill="black">6</text>
-
-<!-- Hình vuông thứ hai -->
-<rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
-<text x="15" y="13" font-size="10" text-anchor="middle" fill="black">6</text>
-</svg>
-`;
 export const GridIcon = `<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
 <svg fill="#000000" width="800px" height="800px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
   <path d="M9,14 L20,14 L20,9 L9,9 L9,14 Z M9,15 L9,20 L18.5,20 C19.3284271,20 20,19.3284271 20,18.5 L20,15 L9,15 Z M8,20 L8,9 L4,9 L4,18.5 C4,19.3284271 4.67157288,20 5.5,20 L8,20 Z M20,8 L20,5.5 C20,4.67157288 19.3284271,4 18.5,4 L5.5,4 C4.67157288,4 4,4.67157288 4,5.5 L4,8 L20,8 Z M3,5.5 C3,4.11928813 4.11928813,3 5.5,3 L18.5,3 C19.8807119,3 21,4.11928813 21,5.5 L21,18.5 C21,19.8807119 19.8807119,21 18.5,21 L5.5,21 C4.11928813,21 3,19.8807119 3,18.5 L3,5.5 Z"/>
@@ -43,114 +30,126 @@ export const IconUploadMedia = `<svg class="w-6 h-6 text-gray-800 dark:text-whit
   <path fill-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12c0 .556-.227 1.06-.593 1.422A.999.999 0 0 1 20.5 20H4a2.002 2.002 0 0 1-2-2V6Zm6.892 12 3.833-5.356-3.99-4.322a1 1 0 0 0-1.549.097L4 12.879V6h16v9.95l-3.257-3.619a1 1 0 0 0-1.557.088L11.2 18H8.892Z" clip-rule="evenodd"/>
 </svg>
 `;
-export const GridIcon9x3 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+export const GridIcon6x6 = `<svg width="30" height="20" xmlns="http://www.w3.org/2000/svg">
   <!-- Nền trắng -->
-  <rect x="0" y="0" width="20" height="20" fill="white" />
-  
-  <!-- Hình vuông đầu tiên -->
-  <rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
-  <text x="5" y="13" font-size="10" text-anchor="middle" fill="black">9</text>
-  
-  <!-- Hình vuông thứ hai -->
-  <rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
-  <text x="15" y="13" font-size="10" text-anchor="middle" fill="black">3</text>
-</svg>
-`;
+  <rect x="0" y="0" width="30" height="20" fill="white" />
 
-export const GridIcon4x4x4 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-  <!-- Nền trắng toàn bộ -->
-  <rect x="0" y="0" width="20" height="20" fill="white" />
-  
-  <g >
-    <!-- Hình vuông đầu tiên -->
-    <rect x="0" y="0" width="6.67" height="20" fill="white" stroke="black"/>
-    <text x="3.34" y="13" font-size="8" text-anchor="middle" fill="black">4</text>
-    
-    <!-- Hình vuông thứ hai -->
-    <rect x="6.67" y="0" width="6.67" height="20" fill="white" stroke="black"/>
-    <text x="10" y="13" font-size="8" text-anchor="middle" fill="black">4</text>
-    
-    <!-- Hình vuông thứ ba -->
-    <rect x="13.34" y="0" width="6.67" height="20" fill="white" stroke="black"/>
-    <text x="16.67" y="13" font-size="8" text-anchor="middle" fill="black">4</text>
+  <!-- Hình vuông đầu tiên (15x20) -->
+  <rect x="0" y="0" width="15" height="20" fill="white" stroke="black"/>
+  <text x="7.5" y="13" font-size="10" text-anchor="middle" fill="black">6</text>
+
+  <!-- Hình vuông thứ hai (15x20) -->
+  <rect x="15" y="0" width="15" height="20" fill="white" stroke="black"/>
+  <text x="22.5" y="13" font-size="10" text-anchor="middle" fill="black">6</text>
+</svg>`;
+
+export const GridIcon9x3 = `<svg width="30" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng -->
+  <rect x="0" y="0" width="30" height="20" fill="white" />
+
+  <!-- Hình vuông đầu tiên (15x20) -->
+  <rect x="0" y="0" width="15" height="20" fill="white" stroke="black"/>
+  <text x="7.5" y="13" font-size="10" text-anchor="middle" fill="black">9</text>
+
+  <!-- Hình vuông thứ hai (15x20) -->
+  <rect x="15" y="0" width="15" height="20" fill="white" stroke="black"/>
+  <text x="22.5" y="13" font-size="10" text-anchor="middle" fill="black">3</text>
+</svg>`;
+
+export const GridIcon4x4x4 = `<svg width="30" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng -->
+  <rect x="0" y="0" width="30" height="20" fill="white" />
+
+  <g>
+    <!-- Hình vuông đầu tiên (10x20) -->
+    <rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="5" y="13" font-size="8" text-anchor="middle" fill="black">4</text>
+
+    <!-- Hình vuông thứ hai (10x20) -->
+    <rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="15" y="13" font-size="8" text-anchor="middle" fill="black">4</text>
+
+    <!-- Hình vuông thứ ba (10x20) -->
+    <rect x="20" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="25" y="13" font-size="8" text-anchor="middle" fill="black">4</text>
   </g>
 </svg>`;
-export const GridIcon3x6x3 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-  <!-- Nền trắng toàn bộ -->
-  <rect x="0" y="0" width="20" height="20" fill="white" />
-  
-  <g >
-    <!-- Hình vuông đầu tiên -->
-    <rect x="0" y="0" width="6.67" height="20" fill="white" stroke="black"/>
-    <text x="3.34" y="13" font-size="8" text-anchor="middle" fill="black">3</text>
-    
-    <!-- Hình vuông thứ hai -->
-    <rect x="6.67" y="0" width="6.67" height="20" fill="white" stroke="black"/>
-    <text x="10" y="13" font-size="8" text-anchor="middle" fill="black">6</text>
-    
-    <!-- Hình vuông thứ ba -->
-    <rect x="13.34" y="0" width="6.67" height="20" fill="white" stroke="black"/>
-    <text x="16.67" y="13" font-size="8" text-anchor="middle" fill="black">3</text>
+
+export const GridIcon3x6x3 = `<svg width="30" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng -->
+  <rect x="0" y="0" width="30" height="20" fill="white" />
+
+  <g>
+    <!-- Hình vuông đầu tiên (10x20) -->
+    <rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="5" y="13" font-size="8" text-anchor="middle" fill="black">3</text>
+
+    <!-- Hình vuông thứ hai (10x20) -->
+    <rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="15" y="13" font-size="8" text-anchor="middle" fill="black">6</text>
+
+    <!-- Hình vuông thứ ba (10x20) -->
+    <rect x="20" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="25" y="13" font-size="8" text-anchor="middle" fill="black">3</text>
   </g>
 </svg>`;
-export const GridIcon3x9 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+
+export const GridIcon3x9 = `<svg width="30" height="20" xmlns="http://www.w3.org/2000/svg">
   <!-- Nền trắng -->
-  <rect x="0" y="0" width="20" height="20" fill="white" />
-  
-  <!-- Hình vuông đầu tiên -->
-  <rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
-  <text x="5" y="13" font-size="10" text-anchor="middle" fill="black">3</text>
-  
-  <!-- Hình vuông thứ hai -->
-  <rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
-  <text x="15" y="13" font-size="10" text-anchor="middle" fill="black">9</text>
-</svg>
-`;
-export const GridIcon2x8x2 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-  <!-- Nền trắng toàn bộ -->
-  <rect x="0" y="0" width="20" height="20" fill="white" />
-  
-  <g >
-    <!-- Hình vuông đầu tiên -->
-    <rect x="0" y="0" width="6.67" height="20" fill="white" stroke="black"/>
-    <text x="3.34" y="13" font-size="8" text-anchor="middle" fill="black">2</text>
-    
-    <!-- Hình vuông thứ hai -->
-    <rect x="6.67" y="0" width="6.67" height="20" fill="white" stroke="black"/>
-    <text x="10" y="13" font-size="8" text-anchor="middle" fill="black">8</text>
-    
-    <!-- Hình vuông thứ ba -->
-    <rect x="13.34" y="0" width="6.67" height="20" fill="white" stroke="black"/>
-    <text x="16.67" y="13" font-size="8" text-anchor="middle" fill="black">2</text>
+  <rect x="0" y="0" width="30" height="20" fill="white" />
+
+  <!-- Hình vuông đầu tiên (15x20) -->
+  <rect x="0" y="0" width="15" height="20" fill="white" stroke="black"/>
+  <text x="7.5" y="13" font-size="10" text-anchor="middle" fill="black">3</text>
+
+  <!-- Hình vuông thứ hai (15x20) -->
+  <rect x="15" y="0" width="15" height="20" fill="white" stroke="black"/>
+  <text x="22.5" y="13" font-size="10" text-anchor="middle" fill="black">9</text>
+</svg>`;
+export const GridIcon2x8x2 = `<svg width="30" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng -->
+  <rect x="0" y="0" width="30" height="20" fill="white" />
+
+  <g>
+    <!-- Hình vuông đầu tiên (10x20) -->
+    <rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="5" y="13" font-size="8" text-anchor="middle" fill="black">2</text>
+
+    <!-- Hình vuông thứ hai (10x20) -->
+    <rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="15" y="13" font-size="8" text-anchor="middle" fill="black">8</text>
+
+    <!-- Hình vuông thứ ba (10x20) -->
+    <rect x="20" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="25" y="13" font-size="8" text-anchor="middle" fill="black">2</text>
   </g>
-</svg>
-`;
-export const GridIcon8x4 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+</svg>`;
+
+export const GridIcon8x4 = `<svg width="30" height="20" xmlns="http://www.w3.org/2000/svg">
   <!-- Nền trắng -->
-  <rect x="0" y="0" width="20" height="20" fill="white" />
-  
-  <!-- Hình vuông đầu tiên -->
-  <rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
-  <text x="5" y="13" font-size="10" text-anchor="middle" fill="black">8</text>
-  
-  <!-- Hình vuông thứ hai -->
-  <rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
-  <text x="15" y="13" font-size="10" text-anchor="middle" fill="black">4</text>
-</svg>
-`;
-export const GridIcon4x8 = `<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-<!-- Nền trắng -->
-<rect x="0" y="0" width="20" height="20" fill="white" />
+  <rect x="0" y="0" width="30" height="20" fill="white" />
 
-<!-- Hình vuông đầu tiên -->
-<rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
-<text x="5" y="13" font-size="10" text-anchor="middle" fill="black">4</text>
+  <!-- Hình vuông đầu tiên (15x20) -->
+  <rect x="0" y="0" width="15" height="20" fill="white" stroke="black"/>
+  <text x="7.5" y="13" font-size="10" text-anchor="middle" fill="black">8</text>
 
-<!-- Hình vuông thứ hai -->
-<rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
-<text x="15" y="13" font-size="10" text-anchor="middle" fill="black">8</text>
-</svg>
-`;
+  <!-- Hình vuông thứ hai (15x20) -->
+  <rect x="15" y="0" width="15" height="20" fill="white" stroke="black"/>
+  <text x="22.5" y="13" font-size="10" text-anchor="middle" fill="black">4</text>
+</svg>`;
+
+export const GridIcon4x8 = `<svg width="30" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng -->
+  <rect x="0" y="0" width="30" height="20" fill="white" />
+
+  <!-- Hình vuông đầu tiên (15x20) -->
+  <rect x="0" y="0" width="15" height="20" fill="white" stroke="black"/>
+  <text x="7.5" y="13" font-size="10" text-anchor="middle" fill="black">4</text>
+
+  <!-- Hình vuông thứ hai (15x20) -->
+  <rect x="15" y="0" width="15" height="20" fill="white" stroke="black"/>
+  <text x="22.5" y="13" font-size="10" text-anchor="middle" fill="black">8</text>
+</svg>`;
 export const Quotes = `<?xml version="1.0"  style="margin-top: 4px;" encoding="iso-8859-1"?>
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
 <svg height="20px" width="20px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
@@ -249,3 +248,48 @@ export const RemoveLink = `<?xml version="1.0" encoding="UTF-8"?>
         </g>
     </g>
 </svg>`;
+export const LinkSVG = `<?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+<svg fill="#000000" width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M23,12a5.006,5.006,0,0,1-5,5H16a1,1,0,0,1,0-2h2a3,3,0,0,0,0-6H16a1,1,0,0,1,0-2h2A5.006,5.006,0,0,1,23,12ZM6,17H8a1,1,0,0,0,0-2H6A3,3,0,0,1,6,9H8A1,1,0,0,0,8,7H6A5,5,0,0,0,6,17Zm1-5a1,1,0,0,0,1,1h8a1,1,0,0,0,0-2H8A1,1,0,0,0,7,12Z"/></svg>`;
+export const YoutubeFill = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12.2439 4C12.778 4.00294 14.1143 4.01586 15.5341 4.07273L16.0375 4.09468C17.467 4.16236 18.8953 4.27798 19.6037 4.4755C20.5486 4.74095 21.2913 5.5155 21.5423 6.49732C21.942 8.05641 21.992 11.0994 21.9982 11.8358L21.9991 11.9884L21.9991 11.9991C21.9991 11.9991 21.9991 12.0028 21.9991 12.0099L21.9982 12.1625C21.992 12.8989 21.942 15.9419 21.5423 17.501C21.2878 18.4864 20.5451 19.261 19.6037 19.5228C18.8953 19.7203 17.467 19.8359 16.0375 19.9036L15.5341 19.9255C14.1143 19.9824 12.778 19.9953 12.2439 19.9983L12.0095 19.9991L11.9991 19.9991C11.9991 19.9991 11.9956 19.9991 11.9887 19.9991L11.7545 19.9983C10.6241 19.9921 5.89772 19.941 4.39451 19.5228C3.4496 19.2573 2.70692 18.4828 2.45587 17.501C2.0562 15.9419 2.00624 12.8989 2 12.1625V11.8358C2.00624 11.0994 2.0562 8.05641 2.45587 6.49732C2.7104 5.51186 3.45308 4.73732 4.39451 4.4755C5.89772 4.05723 10.6241 4.00622 11.7545 4H12.2439ZM9.99911 8.49914V15.4991L15.9991 11.9991L9.99911 8.49914Z"></path></svg>`;
+export const TableIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M14 10H10V14H14V10ZM16 10V14H19V10H16ZM14 19V16H10V19H14ZM16 19H19V16H16V19ZM14 5H10V8H14V5ZM16 5V8H19V5H16ZM8 10H5V14H8V10ZM8 19V16H5V19H8ZM8 5H5V8H8V5ZM4 3H20C20.5523 3 21 3.44772 21 4V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V4C3 3.44772 3.44772 3 4 3Z"></path></svg>`;
+export const TableRigthCol = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21 3C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H17V3H21ZM15 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H15V21Z"></path></svg>`;
+export const TableLeftCol = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21 3C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H9V3H21ZM7 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H7V21Z"></path></svg>`;
+export const TableTop = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M22 10V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V10H22ZM21 3C21.5523 3 22 3.44772 22 4V8H2V4C2 3.44772 2.44772 3 3 3H21Z"></path></svg>`;
+export const TableBottom = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M22 16V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V16H22ZM21 3C21.5523 3 22 3.44772 22 4V14H2V4C2 3.44772 2.44772 3 3 3H21Z"></path></svg>`;
+export const TableMerge = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M21 3C21.5523 3 22 3.44772 22 4V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V4C2 3.44772 2.44772 3 3 3H21ZM20 16H4V19H20V16ZM8 5H4V14H8V5ZM14 5H10V14H14V5ZM20 5H16V14H20V5Z"></path></svg>`;
+export const DeleteCol = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M12 3C12.5523 3 13 3.44772 13 4L12.9998 11.9998C13.8355 11.372 14.8743 11 16 11C18.7614 11 21 13.2386 21 16C21 18.7614 18.7614 21 16 21C14.9681 21 14.0092 20.6874 13.2129 20.1518L13 20C13 20.5523 12.5523 21 12 21H6C5.44772 21 5 20.5523 5 20V4C5 3.44772 5.44772 3 6 3H12ZM11 5H7V19H11V5ZM19 15H13V17H19V15Z"></path></svg>`;
+export const DeleteRow = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M20 5C20.5523 5 21 5.44772 21 6V12C21 12.5523 20.5523 13 20 13C20.628 13.8355 21 14.8743 21 16C21 18.7614 18.7614 21 16 21C13.2386 21 11 18.7614 11 16C11 14.8743 11.372 13.8355 11.9998 12.9998L4 13C3.44772 13 3 12.5523 3 12V6C3 5.44772 3.44772 5 4 5H20ZM13 15V17H19V15H13ZM19 7H5V11H19V7Z"></path></svg>`;
+export const RemoveTable = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+    <title>ic_fluent_table_delete_24_filled</title>
+    <desc>Created with Sketch.</desc>
+    <g id="🔍-System-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic_fluent_table_delete_24_filled" fill="#212121" fill-rule="nonzero">
+            <path d="M17.5,12 C20.5376,12 23,14.4624 23,17.5 C23,20.5376 20.5376,23 17.5,23 C14.4624,23 12,20.5376 12,17.5 C12,14.4624 14.4624,12 17.5,12 Z M11.1739,16 C11.0602,16.4815 11,16.9837 11,17.5 C11,18.6894769 11.3195266,19.8043976 11.8774103,20.7635139 L12.0218,21 L9.5,21 L9.5,16 L11.1739,16 Z M8,16 L8,21 L6.25,21 C4.51696414,21 3.10075377,19.6435215 3.00514477,17.9344215 L3,17.75 L3,16 L8,16 Z M15.1464,15.1464 C14.9512,15.3417 14.9512,15.6583 15.1464,15.8536 L16.7929,17.5 L15.1464,19.1464 C14.9512,19.3417 14.9512,19.6583 15.1464,19.8536 C15.3417,20.0488 15.6583,20.0488 15.8536,19.8536 L17.5,18.2071 L19.1464,19.8536 C19.3417,20.0488 19.6583,20.0488 19.8536,19.8536 C20.0488,19.6583 20.0488,19.3417 19.8536,19.1464 L18.2071,17.5 L19.8536,15.8536 C20.0488,15.6583 20.0488,15.3417 19.8536,15.1464 C19.6583,14.9512 19.3417,14.9512 19.1464,15.1464 L17.5,16.7929 L15.8536,15.1464 C15.6583,14.9512 15.3417,14.9512 15.1464,15.1464 Z M14.5,9.5 L14.5,11.7322 C13.3176,12.3485 12.3485,13.3176 11.7322,14.5 L9.5,14.5 L9.5,9.5 L14.5,9.5 Z M8,9.5 L8,14.5 L3,14.5 L3,9.5 L8,9.5 Z M21,9.5 L21,12.0218 C19.9897,11.375 18.7886,11 17.5,11 C16.9837,11 16.4815,11.0602 16,11.1739 L16,9.5 L21,9.5 Z M17.75,3 C19.4830069,3 20.8992442,4.35645051 20.9948551,6.06557565 L21,6.25 L21,8 L16,8 L16,3 L17.75,3 Z M14.5,3 L14.5,8 L9.5,8 L9.5,3 L14.5,3 Z M8,3 L8,8 L3,8 L3,6.25 C3,4.51696414 4.35645051,3.10075377 6.06557565,3.00514477 L6.25,3 L8,3 Z" id="🎨-Color">
+
+</path>
+        </g>
+    </g>
+</svg>`;
+export const SupscriptIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M5.59567 4L10.5 9.92831L15.4043 4H18L11.7978 11.4971L18 18.9943V19H15.4091L10.5 13.0659L5.59092 19H3V18.9943L9.20216 11.4971L3 4H5.59567ZM21.8 16C21.8 15.5582 21.4418 15.2 21 15.2C20.5582 15.2 20.2 15.5582 20.2 16C20.2 16.0762 20.2107 16.15 20.2306 16.2198L19.0765 16.5496C19.0267 16.375 19 16.1906 19 16C19 14.8954 19.8954 14 21 14C22.1046 14 23 14.8954 23 16C23 16.5727 22.7593 17.0892 22.3735 17.4538L20.7441 19H23V20H19V19L21.5507 16.5803C21.7042 16.4345 21.8 16.2284 21.8 16Z"></path></svg>`;
+export const SuperscriptIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M5.59567 5L10.5 10.9283L15.4043 5H18L11.7978 12.4971L18 19.9943V20H15.4091L10.5 14.0659L5.59092 20H3V19.9943L9.20216 12.4971L3 5H5.59567ZM21.5507 6.5803C21.7042 6.43453 21.8 6.22845 21.8 6C21.8 5.55817 21.4418 5.2 21 5.2C20.5582 5.2 20.2 5.55817 20.2 6C20.2 6.07624 20.2107 6.14999 20.2306 6.21983L19.0765 6.54958C19.0267 6.37497 19 6.1906 19 6C19 4.89543 19.8954 4 21 4C22.1046 4 23 4.89543 23 6C23 6.57273 22.7593 7.08923 22.3735 7.45384L20.7441 9H23V10H19V9L21.5507 6.5803V6.5803Z"></path></svg>`;
+export const VideoIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M3 3.9934C3 3.44476 3.44495 3 3.9934 3H20.0066C20.5552 3 21 3.44495 21 3.9934V20.0066C21 20.5552 20.5551 21 20.0066 21H3.9934C3.44476 21 3 20.5551 3 20.0066V3.9934ZM5 5V19H19V5H5ZM10.6219 8.41459L15.5008 11.6672C15.6846 11.7897 15.7343 12.0381 15.6117 12.2219C15.5824 12.2658 15.5447 12.3035 15.5008 12.3328L10.6219 15.5854C10.4381 15.708 10.1897 15.6583 10.0672 15.4745C10.0234 15.4088 10 15.3316 10 15.2526V8.74741C10 8.52649 10.1791 8.34741 10.4 8.34741C10.479 8.34741 10.5562 8.37078 10.6219 8.41459Z"></path></svg>`;
+export const BreakPage = `<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: none;
+      }
+    </style>
+  </defs>
+  <rect x="2" y="18" width="4" height="2"/>
+  <rect x="26" y="18" width="4" height="2"/>
+  <path d="M24,22v6H8V22H6v6a2.0058,2.0058,0,0,0,2,2H24a2.0058,2.0058,0,0,0,2-2V22Z" transform="translate(0 0)"/>
+  <path d="M8,16V4h8v6a2.0058,2.0058,0,0,0,2,2h6v4h2V10a.9092.9092,0,0,0-.3-.7l-7-7A.9087.9087,0,0,0,18,2H8A2.0058,2.0058,0,0,0,6,4V16ZM18,4.4,23.6,10H18Z" transform="translate(0 0)"/>
+  <rect x="10" y="18" width="4" height="2"/>
+  <rect x="18" y="18" width="4" height="2"/>
+  <rect id="_Transparent_Rectangle_" data-name="&lt;Transparent Rectangle&gt;" class="cls-1" width="32" height="32"/>
+</svg>
+`;
+export const FileVideoIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M15 4V8H19V20H5V4H15ZM3.9985 2C3.44749 2 3 2.44405 3 2.9918V21.0082C3 21.5447 3.44476 22 3.9934 22H20.0066C20.5551 22 21 21.5489 21 20.9925L20.9997 7L16 2H3.9985ZM15.0008 11.667L10.1219 8.41435C10.0562 8.37054 9.979 8.34717 9.9 8.34717C9.6791 8.34717 9.5 8.52625 9.5 8.74717V15.2524C9.5 15.3314 9.5234 15.4086 9.5672 15.4743C9.6897 15.6581 9.9381 15.7078 10.1219 15.5852L15.0008 12.3326C15.0447 12.3033 15.0824 12.2656 15.1117 12.2217C15.2343 12.0379 15.1846 11.7895 15.0008 11.667Z"></path></svg>`;

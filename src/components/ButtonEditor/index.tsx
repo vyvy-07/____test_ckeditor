@@ -6,11 +6,11 @@ const ButtonEditor = ({
   editor,
   extension,
   icon,
-
   type,
   param,
   element,
   className,
+  fontFamily,
   setFunc = false,
 }: {
   className?: string;
@@ -21,6 +21,7 @@ const ButtonEditor = ({
   param?: any;
   element?: string;
   setFunc?: boolean;
+  fontFamily?: string;
 }) => {
   return (
     <>
@@ -30,16 +31,19 @@ const ButtonEditor = ({
           if (!editor.isFocused) {
             editor.chain().focus().run(); // Ensure focus
           }
+          const tool = extension.charAt(0).toUpperCase() + extension.slice(1);
+          console.log('object :>> ', tool);
+          console.log('element', `toggle${tool.trim()}`);
 
           if (!setFunc) {
             if (!param) {
               editor
                 .chain()
                 .focus()
-                [`toggle${extension}`]({ level: param })
+                [`toggle${tool.trim()}`]({ level: param })
                 .run();
             } else {
-              editor.chain().focus()[`toggle${extension}`](param).run();
+              editor.chain().focus()[`toggle${tool.trim()}`](param).run();
               console.log('param :>> ', param);
             }
           } else {
@@ -48,7 +52,7 @@ const ButtonEditor = ({
             editor
               .chain()
               .focus()
-              [`set${extension}`](type || param || '')
+              [`set${tool.trim()}`](type || param || '')
               .run();
           }
         }}
@@ -63,7 +67,7 @@ const ButtonEditor = ({
       >
         <span className="button_toolbar_hover">{extension}</span>
         <span
-          className="w-5 h-5"
+          className={`${fontFamily && `${fontFamily}`}`}
           dangerouslySetInnerHTML={{ __html: icon }}
         ></span>
       </button>

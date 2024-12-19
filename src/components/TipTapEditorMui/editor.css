@@ -7,3 +7,11 @@
 a:hover .remove-tool {
   @apply opacity-100;
 } */
+.grid-layout {
+  border: 2px dashed #9fc9fc;
+  padding: 5px;
+  gap: 5px;
+}
+.grid-layout > *:not(:first-child) {
+  border-left: 1px dashed #9fc9fc; /* Adjust the border style as needed */
+}

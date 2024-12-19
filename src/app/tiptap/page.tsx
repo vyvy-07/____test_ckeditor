@@ -1,6 +1,5 @@
 'use client';
 
-import TipTapComponent from '@/components/TipTapEditor';
 import TipTapEditorMui from '@/components/TipTapEditorMui';
 
 const TipTapEditor = () => {
