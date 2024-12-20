@@ -78,8 +78,7 @@ export default () => {
   return (
     <div>
       <div className="control-group">
-        <div className="button-group flex gap-5 p-3 items-center h-[50px]">
-          <ul className=""></ul>
+        <div className="button-group flex gap-5  items-center min-h-[50px]">
           <div
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
@@ -135,7 +134,7 @@ export default () => {
         </div>
       </div>
 
-      <EditorContent className="p-5" editor={editor} />
+      <EditorContent className="min-h-[500px]" editor={editor} />
     </div>
   );
 };

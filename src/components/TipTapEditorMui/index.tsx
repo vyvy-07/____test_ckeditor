@@ -17,6 +17,7 @@ import {
   DeleteCol,
   DeleteRow,
   FileVideoIcon,
+  FullScreenIcon,
   GridIcon,
   GridIcon2x8x2,
   GridIcon3x6x3,
@@ -283,29 +284,6 @@ export default () => {
 
   const [openToolTable, setOpenToolTable] = React.useState(false);
 
-  const handleChange = (event: SelectChangeEvent) => {
-    if (typeof event.target.value == 'number') {
-      setHeading(event.target.value);
-    } else {
-      setIconQuotes(event.target.value);
-    }
-  };
-  const handleChangeFontFamily = (e: SelectChangeEvent) => {
-    if (e.target.value) {
-      setFontFamily(e.target.value);
-    }
-  };
-  const handleChangeAlignment = (e: SelectChangeEvent) => {
-    if (e.target.value) {
-      setAlignment(e.target.value);
-    }
-  };
-  const handleChangeGridLayout = (e: SelectChangeEvent) => {
-    if (e.target.value) {
-      console.log('e.target.value :>> ', e.target.value);
-      setGridLayout(e.target.value);
-    }
-  };
   const editor: any = useEditor({
     extensions: [
       Underline,
@@ -453,7 +431,19 @@ export default () => {
     `,
     immediatelyRender: false,
   });
+  const addImage = useCallback(() => {
+    if (!editor) return;
+    const url = prompt('Nhập URL ảnh:');
+    const width = prompt('Nhập chiều rộng (px hoặc %):', '100%');
+    const height = prompt('Nhập chiều cao (px hoặc %):', 'auto');
 
+    if (url) {
+      editor.chain().focus().setImage({ src: url, width, height }).run();
+    }
+  }, [editor]);
+  if (!editor) {
+    return null;
+  }
   const addYoutubeVideo = () => {
     const url = prompt('Enter YouTube URL');
 
@@ -480,38 +470,56 @@ export default () => {
 
     editor.chain().focus().clearNodes().run();
   };
-  const addImage = useCallback(() => {
-    if (!editor) return;
-    const url = prompt('Nhập URL ảnh:');
-    const width = prompt('Nhập chiều rộng (px hoặc %):', '100%');
-    const height = prompt('Nhập chiều cao (px hoặc %):', 'auto');
 
-    if (url) {
-      editor.chain().focus().setImage({ src: url, width, height }).run();
+  const handleChange = (event: SelectChangeEvent) => {
+    if (typeof event.target.value == 'number') {
+      setHeading(event.target.value);
+    } else {
+      setIconQuotes(event.target.value);
     }
-  }, [editor]);
+  };
+  const handleChangeFontFamily = (e: SelectChangeEvent) => {
+    if (e.target.value) {
+      setFontFamily(e.target.value);
+    }
+  };
+  const handleChangeAlignment = (e: SelectChangeEvent) => {
+    if (e.target.value) {
+      setAlignment(e.target.value);
+    }
+  };
+  const handleChangeGridLayout = (e: SelectChangeEvent) => {
+    if (e.target.value) {
+      console.log('e.target.value :>> ', e.target.value);
+      setGridLayout(e.target.value);
+    }
+  };
   const changeFontSize = (size: string) => {
     if (!editor) return;
     editor.chain().focus().setFontSize(size).run();
   };
 
-  if (!editor) {
-    return null;
-  }
   const handleInsertVideo = () => {
     const url = prompt('Enter a video URL:');
     if (url) {
-      // Insert the video based on the provided URL
       editor?.commands.insertVideoUrl(url);
     }
   };
   const handleInsertCharacter = (character: any) => {
     editor.chain().focus().insertContent(`${character}`).run();
   };
+  const toggleFullscreen = () => {
+    console.log(
+      'toggleFullscreen :>> ',
+      112323333333333333333333333333333333333333333
+    );
 
+    const editorElement: any = document.querySelector('.tiptap__editor');
+    editorElement.classList.toggle('active');
+  };
   return (
-    <div>
-      <div className="control-group h-full relative">
+    <div className="tiptap__editor">
+      <div className=" control-group h-full relative">
         <div className="button-group flex gap-4 p-3 items-center h-full flex-wrap justify-start ">
           <ButtonCustomCss
             onMouseDown={(e) => e.preventDefault()}
@@ -541,6 +549,7 @@ export default () => {
           >
             <span dangerouslySetInnerHTML={{ __html: BackLeftIcon }}></span>
           </ButtonCustomCss>
+          {/* undo / redo */}
           <ButtonCustomCss
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
@@ -785,11 +794,6 @@ export default () => {
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 setOpenToolTable(!openToolTable);
-                // editor
-                //   .chain()
-                //   .focus()
-                //   .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
-                //   .run();
               }}
             >
               <span dangerouslySetInnerHTML={{ __html: TableIcon }}></span>
@@ -817,6 +821,9 @@ export default () => {
             )}
           </div>
           |
+          <button onClick={toggleFullscreen}>
+            <span dangerouslySetInnerHTML={{ __html: FullScreenIcon }}></span>
+          </button>
           <div className="relative">
             <button onClick={() => setOpenSpecialChar(!openSpecialChar)}>
               ∑
@@ -891,7 +898,7 @@ export default () => {
         </div>
       </div>
 
-      <EditorContent className="p-5" editor={editor} />
+      <EditorContent className="min-h-[500px]" editor={editor} />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 export const FullScreenIcon = `<?xml version="1.0" encoding="utf-8"?>
 <!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-<svg fill="#000000" height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+<svg fill="#000000" height="24px" width="24px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
 	 viewBox="0 0 64 64" enable-background="new 0 0 64 64" xml:space="preserve">
 <g id="Responsive-scales">
 	<path d="M44.8451996,18.5058994h-8c-0.5527,0-1,0.4473-1,1s0.4473,1,1,1h5.5859985L32.4310989,30.5069008l1.4141006,1.4139996

@@ -356,3 +356,13 @@ table .column-resize-handle {
   cursor: ew-resize;
   cursor: col-resize;
 }
+.tiptap__editor {
+  width: 700px;
+  transition: width 0.3s ease;
+  border: 1px solid #ccc;
+}
+
+/* Khi có class active, chiều rộng là 100% */
+.tiptap__editor.active {
+  width: 100%;
+}
