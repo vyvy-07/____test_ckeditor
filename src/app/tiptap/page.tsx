@@ -1,14 +1,21 @@
 'use client';
 
 import TipTapEditorMui from '@/components/TipTapEditorMui';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+});
 
 const TipTapEditor = () => {
   return (
-    <div className="  ">
-      <>
-        <TipTapEditorMui />
-      </>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <TipTapEditorMui />
+    </ThemeProvider>
   );
 };
 

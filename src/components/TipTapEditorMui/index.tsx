@@ -434,11 +434,9 @@ export default () => {
   const addImage = useCallback(() => {
     if (!editor) return;
     const url = prompt('Nhập URL ảnh:');
-    const width = prompt('Nhập chiều rộng (px hoặc %):', '100%');
-    const height = prompt('Nhập chiều cao (px hoặc %):', 'auto');
 
     if (url) {
-      editor.chain().focus().setImage({ src: url, width, height }).run();
+      editor.chain().focus().setImage({ src: url }).run();
     }
   }, [editor]);
   if (!editor) {
