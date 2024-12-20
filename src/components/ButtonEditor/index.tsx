@@ -67,7 +67,8 @@ const ButtonEditor = ({
       >
         <span className="button_toolbar_hover">{extension}</span>
         <span
-          className={`${fontFamily && `${fontFamily}`}`}
+          className="text-[14px]"
+          style={{ fontFamily: `${fontFamily || 'roboto'}` }}
           dangerouslySetInnerHTML={{ __html: icon }}
         ></span>
       </button>

@@ -24,6 +24,9 @@ a {
 iframe {
   @apply w-full min-h-[500px];
 }
+.formControl::-webkit-scrollbar {
+  display: none;
+}
 .tiptap ul,
 .tiptap ol {
   padding: 0 1rem;
@@ -292,7 +295,8 @@ blockquote {
   padding: 5px 10px;
   @apply bg-slate-300;
 }
-.tiptap table {
+
+table {
   border-collapse: collapse;
   margin: 0;
   overflow: hidden;
@@ -300,8 +304,8 @@ blockquote {
   width: 100%;
 }
 
-.tiptap table td,
-.tiptap table th {
+table td,
+table tr {
   border: 1px solid #b6b1b1;
   box-sizing: border-box;
   min-width: 1em;
@@ -310,18 +314,18 @@ blockquote {
   vertical-align: top;
 }
 
-.tiptap table td > *,
-.tiptap table th > * {
+table td > *,
+table th > * {
   margin-bottom: 0;
 }
 
-.tiptap table th {
+table th {
   background-color: var(--gray-1);
   font-weight: bold;
   text-align: left;
 }
 
-.tiptap table .selectedCell:after {
+table .selectedCell:after {
   background: var(--gray-2);
   content: '';
   left: 0;
@@ -333,7 +337,7 @@ blockquote {
   z-index: 2;
 }
 
-.tiptap table .column-resize-handle {
+table .column-resize-handle {
   background-color: var(--purple);
   bottom: -2px;
   pointer-events: none;
@@ -343,12 +347,12 @@ blockquote {
   width: 4px;
 }
 
-.tiptap .tableWrapper {
+.tableWrapper {
   margin: 1.5rem 0;
   overflow-x: auto;
 }
 
-.tiptap.resize-cursor {
+.resize-cursor {
   cursor: ew-resize;
   cursor: col-resize;
 }
