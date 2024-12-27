@@ -8,6 +8,14 @@ import {
   BlockBoxBlueSVG,
   BoxQuotesGreenSVG,
   BoxQuotesGreySVG,
+  GridIcon2x8x2,
+  GridIcon3x6x3,
+  GridIcon3x9,
+  GridIcon4x4x4,
+  GridIcon4x8,
+  GridIcon6x6,
+  GridIcon8x4,
+  GridIcon9x3,
   LineHorizontal,
   LineParallel,
   Quotes,
@@ -26,13 +34,34 @@ import {
 } from './QuotesLine';
 import './style.css';
 import StarterKit from '@tiptap/starter-kit';
-export default () => {
+// import { CustomTable } from './CustomTable';
+// import { CustomCell } from './CustomTable/CustomCell';
+// import { CustomRow } from './CustomTable/CustomRow';
+import Image from '@tiptap/extension-image';
+import { CustomTable } from './CustomGridLayout';
+import { CustomRow } from './CustomGridLayout/CustomRow';
+import { CustomCell } from './CustomGridLayout/CustomCell';
+const arrLayouts = [
+  { name: 'layout2x8x2', icon: GridIcon2x8x2, collum: 3 },
+  { name: 'layout3x9', icon: GridIcon3x9, collum: 2 },
+  { name: 'layout4x4x4', icon: GridIcon4x4x4, collum: 3 },
+  { name: 'layout6x6', icon: GridIcon6x6, collum: 2 },
+  { name: 'layout3x6x3', icon: GridIcon3x6x3, collum: 3 },
+  { name: 'layout8x4', icon: GridIcon8x4, collum: 2 },
+  { name: 'layout4x8', icon: GridIcon4x8, collum: 2 },
+  { name: 'layout9x3', icon: GridIcon9x3, collum: 2 },
+];
+export const TiptapDefault = () => {
   const editor: any = useEditor({
     extensions: [
       Document,
       Paragraph,
       Text,
       Blockquote,
+      CustomTable,
+      CustomRow,
+      Image,
+      CustomCell,
       BlockquoteLineY.configure({
         HTMLAttributes: { class: 'quote-lines' },
       }),
@@ -69,11 +98,17 @@ export default () => {
     heading: { levels: [1, 2, 3] }, // Limit headings to h1, h2, and h3
     codeBlock: false, // Disable code blocks
   });
+  const addImage = () => {
+    const url = window.prompt('URL');
+
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
+    }
+  };
 
   if (!editor) {
     return null;
   }
-  console.log('editor :>> ', editor?.callbacks?.extensionStorage);
 
   return (
     <div>
@@ -99,7 +134,29 @@ export default () => {
           >
             h2
           </div>
-
+          <div className="">
+            {arrLayouts?.length > 0 &&
+              arrLayouts?.map((item, index) => {
+                return (
+                  <button
+                    key={item?.name || index}
+                    className="px-2"
+                    onClick={() =>
+                      editor.commands.insertCustomTable(
+                        item?.name,
+                        item?.collum
+                      )
+                    }
+                  >
+                    <span
+                      dangerouslySetInnerHTML={{ __html: item?.icon }}
+                    ></span>
+                  </button>
+                );
+              })}
+            sa||||||||||||||||||
+            <button onClick={addImage}>ImageaddImage</button>
+          </div>
           <ButtonEditor editor={editor} extension="Blockquote" icon={Quotes} />
           <ButtonEditor
             editor={editor}

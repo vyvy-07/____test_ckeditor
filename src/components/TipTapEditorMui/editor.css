@@ -1,17 +1,37 @@
-/* a {
-  @apply relative block w-fit;
+.custom-row {
+  @apply grid w-full gap-1 border border-dashed border-[#9fc9fc] py-2 px-2;
 }
-.remove-tool {
-  @apply absolute top-[30px] right-[5px] opacity-0;
-}
-a:hover .remove-tool {
-  @apply opacity-100;
-} */
-.grid-layout {
-  border: 2px dashed #9fc9fc;
-  padding: 5px;
-  gap: 5px;
-}
-.grid-layout > *:not(:first-child) {
+.custom-row > *:not(:first-child) {
   border-left: 1px dashed #9fc9fc; /* Adjust the border style as needed */
+}
+.layout2x8x2 {
+  grid-template-columns: 2fr 8fr 2fr;
+}
+
+.layout3x9 {
+  grid-template-columns: 3fr 9fr;
+}
+
+.layout4x4x4 {
+  grid-template-columns: 4fr 4fr 4fr;
+}
+
+.layout6x6 {
+  grid-template-columns: 6fr 6fr;
+}
+
+.layout3x6x3 {
+  grid-template-columns: 3fr 6fr 3fr;
+}
+
+.layout8x4 {
+  grid-template-columns: 8fr 4fr;
+}
+
+.layout4x8 {
+  grid-template-columns: 4fr 8fr;
+}
+
+.layout9x3 {
+  grid-template-columns: 9fr 3fr;
 }

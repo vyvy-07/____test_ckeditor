@@ -108,6 +108,9 @@ import {
 import './style.css';
 import SpecialCharacter from './CustomTipTap/SpecialCharacter';
 import { SpecialCharacters } from '@/constant/specialCharacter';
+import { CustomCell } from './CustomGridLayout/CustomCell';
+import { CustomTable } from './CustomGridLayout';
+import { CustomRow } from './CustomGridLayout/CustomRow';
 const lowlight = createLowlight();
 lowlight.register('html', html);
 lowlight.register('css', css);
@@ -155,16 +158,15 @@ const arrFontFamily = [
 ];
 const arrFontSize = ['12', '14', '16', '18', '20'];
 const arrLayouts = [
-  { name: 'layout2x8x2', icon: GridIcon2x8x2 },
-  { name: 'layout3x9', icon: GridIcon3x9 },
-  { name: 'layout4x4x4', icon: GridIcon4x4x4 },
-  { name: 'layout6x6', icon: GridIcon6x6 },
-  { name: 'layout3x6x3', icon: GridIcon3x6x3 },
-  { name: 'layout8x4', icon: GridIcon8x4 },
-  { name: 'layout4x8', icon: GridIcon4x8 },
-  { name: 'layout9x3', icon: GridIcon9x3 },
+  { name: 'layout2x8x2', icon: GridIcon2x8x2, collum: 3 },
+  { name: 'layout3x9', icon: GridIcon3x9, collum: 2 },
+  { name: 'layout4x4x4', icon: GridIcon4x4x4, collum: 3 },
+  { name: 'layout6x6', icon: GridIcon6x6, collum: 2 },
+  { name: 'layout3x6x3', icon: GridIcon3x6x3, collum: 3 },
+  { name: 'layout8x4', icon: GridIcon8x4, collum: 2 },
+  { name: 'layout4x8', icon: GridIcon4x8, collum: 2 },
+  { name: 'layout9x3', icon: GridIcon9x3, collum: 2 },
 ];
-
 const arrTextMark = [
   { name: 'bold', icon: BoldIcon },
   { name: 'underline', icon: UnderlineIcon },
@@ -288,6 +290,9 @@ export default () => {
     extensions: [
       Underline,
       SpecialCharacter,
+      CustomTable,
+      CustomRow,
+      CustomCell,
       TextStyle,
       Color,
       Typography,
@@ -300,77 +305,8 @@ export default () => {
         //   levels: [1, 2, 3, 4],
         // },
       }),
-      Link.configure({
-        openOnClick: false,
-        autolink: true,
-        defaultProtocol: 'https',
-        protocols: ['http', 'https'],
-        isAllowedUri: (url, ctx) => {
-          try {
-            // construct URL
-            const parsedUrl = url.includes(':')
-              ? new URL(url)
-              : new URL(`${ctx.defaultProtocol}://${url}`);
+      Link,
 
-            // use default validation
-            if (!ctx.defaultValidate(parsedUrl.href)) {
-              return false;
-            }
-
-            // disallowed protocols
-            const disallowedProtocols = ['ftp', 'file', 'mailto'];
-            const protocol = parsedUrl.protocol.replace(':', '');
-
-            if (disallowedProtocols.includes(protocol)) {
-              return false;
-            }
-
-            // only allow protocols specified in ctx.protocols
-            const allowedProtocols = ctx.protocols.map((p) =>
-              typeof p === 'string' ? p : p.scheme
-            );
-
-            if (!allowedProtocols.includes(protocol)) {
-              return false;
-            }
-
-            // disallowed domains
-            const disallowedDomains = [
-              'example-phishing.com',
-              'malicious-site.net',
-            ];
-            const domain = parsedUrl.hostname;
-
-            if (disallowedDomains.includes(domain)) {
-              return false;
-            }
-
-            // all checks have passed
-            return true;
-          } catch (error) {
-            return false;
-          }
-        },
-        shouldAutoLink: (url) => {
-          try {
-            // construct URL
-            const parsedUrl = url.includes(':')
-              ? new URL(url)
-              : new URL(`https://${url}`);
-
-            // only auto-link if the domain is not in the disallowed list
-            const disallowedDomains = [
-              'example-no-autolink.com',
-              'another-no-autolink.com',
-            ];
-            const domain = parsedUrl.hostname;
-
-            return !disallowedDomains.includes(domain);
-          } catch (error) {
-            return false;
-          }
-        },
-      }),
       CodeBlockLowlight.configure({
         lowlight,
       }),
@@ -417,9 +353,9 @@ export default () => {
         controls: false,
         nocookie: true,
       }),
-      GridLayout.configure({
-        types: ['layout1', 'layout2', 'layout3'], // Các kiểu layout
-      }),
+      // GridLayout.configure({
+      //   types: ['layout1', 'layout2', 'layout3'], // Các kiểu layout
+      // }),
       PageBreak,
     ],
 
@@ -856,9 +792,13 @@ export default () => {
                     <MenuItem key={item?.name || index} value={item?.icon}>
                       <ButtonCustomCss
                         className="w-full"
-                        onClick={() => {
-                          editor.commands.toggleGridLayout(item?.name);
-                        }}
+                        onMouseDown={(e) => e.preventDefault()}
+                        onClick={() =>
+                          editor.commands.insertCustomTable(
+                            item?.name,
+                            item?.collum
+                          )
+                        }
                       >
                         <span
                           dangerouslySetInnerHTML={{ __html: item?.icon }}
@@ -869,6 +809,20 @@ export default () => {
                 })}
             </Select>
           </FormControl>
+          {/* {arrLayouts?.length > 0 &&
+            arrLayouts?.map((item, index) => {
+              return (
+                <button
+                  key={item?.name || index}
+                  className="px-2"
+                  onClick={() =>
+                    editor.commands.insertCustomTable(item?.name, item?.collum)
+                  }
+                >
+                  <span dangerouslySetInnerHTML={{ __html: item?.icon }}></span>
+                </button>
+              );
+            })} */}
           {/* blockquote */}
           <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
             <Select
