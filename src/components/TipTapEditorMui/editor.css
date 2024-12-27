@@ -1,8 +1,8 @@
-.custom-row {
+/* .custom-row {
   @apply grid w-full gap-1 border border-dashed border-[#9fc9fc] py-2 px-2;
 }
 .custom-row > *:not(:first-child) {
-  border-left: 1px dashed #9fc9fc; /* Adjust the border style as needed */
+  border-left: 1px dashed #9fc9fc; 
 }
 .layout2x8x2 {
   grid-template-columns: 2fr 8fr 2fr;
@@ -34,4 +34,4 @@
 
 .layout9x3 {
   grid-template-columns: 9fr 3fr;
-}
+} */

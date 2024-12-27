@@ -75,6 +75,7 @@ import TextStyle from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
 import 'katex/dist/katex.min.css';
 
+import { SpecialCharacters } from '@/constant/specialCharacter';
 import Underline from '@tiptap/extension-underline';
 import Youtube from '@tiptap/extension-youtube';
 import { EditorContent, useEditor } from '@tiptap/react';
@@ -84,17 +85,20 @@ import js from 'highlight.js/lib/languages/javascript';
 import ts from 'highlight.js/lib/languages/typescript';
 import html from 'highlight.js/lib/languages/xml';
 import { createLowlight } from 'lowlight';
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback } from 'react';
 import Latex from 'react-latex-next';
 import styled from 'styled-components';
 import ImageResize from 'tiptap-extension-resize-image';
 import ButtonEditor from '../ButtonEditor';
+import { CustomTable } from './CustomGridLayout';
+import { CustomCell } from './CustomGridLayout/CustomCell';
+import { CustomRow } from './CustomGridLayout/CustomRow';
 import { BackgroundColor } from './CustomTipTap/BackgroundColor ';
 import { PageBreak } from './CustomTipTap/BreakPage';
 import { FontSize } from './CustomTipTap/FontSize';
 import { FxNode } from './CustomTipTap/FxMath';
-import { GridLayout } from './CustomTipTap/GridLayout';
 import { ResizableImage } from './CustomTipTap/ResizeImageTool';
+import SpecialCharacter from './CustomTipTap/SpecialCharacter';
 import { CustomVideo } from './CustomTipTap/URLVideoCustom';
 import './editor.css';
 import {
@@ -106,11 +110,6 @@ import {
   BlockquoteWithIcon,
 } from './QuotesLine';
 import './style.css';
-import SpecialCharacter from './CustomTipTap/SpecialCharacter';
-import { SpecialCharacters } from '@/constant/specialCharacter';
-import { CustomCell } from './CustomGridLayout/CustomCell';
-import { CustomTable } from './CustomGridLayout';
-import { CustomRow } from './CustomGridLayout/CustomRow';
 const lowlight = createLowlight();
 lowlight.register('html', html);
 lowlight.register('css', css);
