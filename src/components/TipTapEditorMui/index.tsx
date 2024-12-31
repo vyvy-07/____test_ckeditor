@@ -114,6 +114,7 @@ import './style.css';
 import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import axios from 'axios';
 import { headers } from 'next/headers';
+import PopupMedia from './Popup';
 const lowlight = createLowlight();
 lowlight.register('html', html);
 lowlight.register('css', css);
@@ -289,6 +290,8 @@ export default () => {
   const [dataWidget, setDataWidget] = React.useState([]);
   const [openSpecialChar, setOpenSpecialChar] = React.useState(false);
   const [sourceHTML, setSourceHTML] = React.useState('');
+  const [token, setToken] = React.useState('');
+  const [isOpenPopUp, setIsOpenPopUp] = React.useState(false);
 
   const [openToolTable, setOpenToolTable] = React.useState(false);
 
@@ -442,37 +445,34 @@ export default () => {
     `,
     immediatelyRender: false,
   });
+  // const token = `${process.env.NEXT_TOKEN}`;
+
   useEffect(() => {
     const handleGetWidget = async () => {
       try {
-        const token = `${process.env.TOKEN}`;
-        const res = await axios.get(
-          'https://cms-api.ngn.vn/private/widget/list?websiteId=5fbe1d9ee6434b04bd32386a&limit=-1&skip=0&keyword=',
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        console.log('res :>> ', res);
+        // console.log('token :>> ', token);
+        if (token) {
+          const res = await axios.get(
+            'https://cms-api.ngn.vn/private/widget/list?websiteId=5fbe1d9ee6434b04bd32386a&limit=-1&skip=0&keyword=',
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          console.log('res :>> ', res);
 
-        if (res?.data?.result) {
-          setDataWidget(res?.data?.result);
+          if (res?.data?.result) {
+            setDataWidget(res?.data?.result);
+          }
         }
       } catch (error) {
         console.log('error :>> ', error);
       }
     };
     handleGetWidget();
-  }, []);
-  const addImage = useCallback(() => {
-    if (!editor) return;
-    const url = prompt('Nhập URL ảnh:');
+  }, [token]);
 
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
-    }
-  }, [editor]);
   if (!editor) {
     return null;
   }
@@ -556,494 +556,524 @@ export default () => {
     const editorElement: any = document.querySelector('.tiptap__editor');
     editorElement.classList.toggle('active');
   };
+
+  //handle get src image
   const getSource = () => {
     setSourceHTML(editor.getHTML());
-    console.log('object :>> ', editor.getHTML());
   };
-
+  const handleGetImage = (src: string) => {
+    setIsOpenPopUp(false);
+    addImage(src);
+  };
+  const addImage = (url: string) => {
+    if (url) {
+      editor.chain().focus().setImage({ src: url }).run();
+    }
+  };
   return (
-    <div className="tiptap__editor">
-      <div className=" control-group h-full relative">
-        <div className="button-group flex gap-4 p-3 items-center h-full flex-wrap justify-start ">
-          <ButtonCustomCss
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => {
-              if (!editor.isFocused) {
-                editor.chain().focus().run(); // Ensure focus
-              }
-              removeFormat();
+    <>
+      {isOpenPopUp && <PopupMedia image={handleGetImage} />}
+      <div className="tiptap__editor">
+        <div>
+          <label className="block">Token for widget</label>
+          <input
+            onChange={(e) => {
+              setToken(e.target.value);
+              console.log('token :>> ', e.target.value);
             }}
-            disabled={!editor?.isEditable}
-            className={`${
-              !editor?.isEditable && 'disabled:opacity-50'
-            } cursor-pointer`}
-          >
-            <span dangerouslySetInnerHTML={{ __html: ClearFormatIcon }}></span>
-          </ButtonCustomCss>
-          |{/* Undo/Redo */}
-          <ButtonCustomCss
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => {
-              if (!editor.isFocused) {
-                editor.chain().focus().run(); // Ensure focus
-              }
-              editor.chain().focus().undo().run();
-            }}
-            disabled={!editor.can().undo()}
-          >
-            <span dangerouslySetInnerHTML={{ __html: BackLeftIcon }}></span>
-          </ButtonCustomCss>
-          {/* undo / redo */}
-          <ButtonCustomCss
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => {
-              if (!editor.isFocused) {
-                editor.chain().focus().run(); // Ensure focus
-              }
-              editor.chain().focus().redo().run();
-            }}
-            disabled={!editor.can().redo()}
-          >
-            <span dangerouslySetInnerHTML={{ __html: BackRigthIcon }}></span>
-          </ButtonCustomCss>
-          |{/* Heading */}
-          <FormControl className="formControl" sx={{ m: 1, minWidth: 150 }}>
-            <Select
-              className="outline-none text-[14px] min-w-[150px] h-[40px]"
-              value={heading || 'Heading'}
-              onChange={handleChange}
-            >
-              <MenuItem disabled value="Heading">
-                <span className="text-slate-400">Heading</span>
-              </MenuItem>
-              {arrHeading?.length > 0 &&
-                arrHeading?.map((item, index) => {
-                  return (
-                    <MenuItem key={item || index} value={item}>
-                      <ButtonEditor
-                        editor={editor}
-                        element="heading"
-                        extension="Heading"
-                        icon={`Heading ${item}`}
-                        param={{ level: item }}
-                      />
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl>
-          |{/*text alignment */}
-          <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              className="outline-none text-[14px] w-[70px] h-[40px]"
-              value={alignment}
-              onChange={handleChangeAlignment}
-              defaultValue="left"
-              style={{ fontFamily: `${alignment}` }}
-            >
-              {arrTextAlign?.map((align, index) => (
-                <MenuItem value={align?.name} key={align?.name || index}>
-                  <ButtonEditor
-                    editor={editor}
-                    element="textAlign"
-                    extension="TextAlign"
-                    icon={align?.icon}
-                    param={align?.name}
-                    setFunc={true}
-                  />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {/* FontSize */}
-          <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              className="outline-none text-[14px] h-[40px]"
-              value="16"
-              onChange={handleChange}
-            >
-              <MenuItem disabled value="Heading">
-                <span className="text-slate-400">FontSize</span>
-              </MenuItem>
-              {arrFontSize?.length > 0 &&
-                arrFontSize?.map((item: string, index) => {
-                  return (
-                    <MenuItem key={item || index} value={item}>
-                      <ButtonCustomCss
-                        className="w-full"
-                        onMouseDown={(e) => e.preventDefault()}
-                        onClick={() => {
-                          if (!editor.isFocused) {
-                            editor.chain().focus().run(); // Ensure focus
-                          }
-                          changeFontSize(item);
-                        }}
-                      >
-                        {item}
-                      </ButtonCustomCss>
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl>
-          |
-          {arrTextMark?.slice(0, 4).map((item, index) => (
-            <ButtonEditor
-              editor={editor}
-              key={item?.name || index}
-              element={item?.name}
-              extension={item?.name}
-              icon={item?.icon}
-            />
-          ))}
-          <ButtonCustomCss
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => {
-              if (!editor.isFocused) {
-                editor.chain().focus().run(); // Ensure focus
-              }
-              editor.chain().focus().redo().run();
-            }}
-          >
-            <span dangerouslySetInnerHTML={{ __html: LinkSVG }}></span>
-          </ButtonCustomCss>
-          |{/*  FontFamily */}
-          <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              className="outline-none form-fontFamily text-[14px] w-fit h-[40px]"
-              value={fontFamily}
-              onChange={handleChangeFontFamily}
-              defaultValue="monica"
-            >
-              <MenuItem value="monica" disabled>
-                monica
-              </MenuItem>
-              {arrFontFamily?.map((item, index) => (
-                <MenuItem value={item} key={item || index}>
-                  <ButtonEditor
-                    editor={editor}
-                    extension="FontFamily"
-                    element="textStyle"
-                    icon={item}
-                    type={item}
-                    fontFamily={item}
-                    param={{ fontFamily: item }}
-                    setFunc={true}
-                  />
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {/* text color */}
-          <div className="relative ">
-            <span className="block  relative z-10 pointer-events-none">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-                fill={colorCurrent}
-              >
-                <path d="M15.2459 14H8.75407L7.15407 18H5L11 3H13L19 18H16.8459L15.2459 14ZM14.4459 12L12 5.88516L9.55407 12H14.4459ZM3 20H21V22H3V20Z"></path>
-              </svg>
-            </span>
-            <input
-              type="color"
-              onMouseDown={(e) => e.preventDefault()}
-              onInput={(event: any) => {
-                if (!editor.chain().focus()) {
-                  return null;
-                }
-                if (event.target.value) {
-                  setColorCurrent(event.target.value);
-                  editor.chain().focus().setColor(event.target.value).run();
-                }
-              }}
-              value={editor.getAttributes('textStyle').color || colorCurrent}
-              className="w-6 h-6 pt-6 absolute bottom-0 pointer-events-auto"
-            />
-          </div>
-          {/* background color */}
-          <div className="relative ">
-            <span className="block  relative z-10 pointer-events-none">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-                fill="currentColor"
-              >
-                <path d="M19.2277 18.7323L20.9955 16.9645L22.7632 18.7323C23.7395 19.7086 23.7395 21.2915 22.7632 22.2678C21.7869 23.2441 20.204 23.2441 19.2277 22.2678C18.2514 21.2915 18.2514 19.7086 19.2277 18.7323ZM8.87861 1.07971L20.1923 12.3934C20.5828 12.7839 20.5828 13.4171 20.1923 13.8076L11.707 22.2929C11.3165 22.6834 10.6833 22.6834 10.2928 22.2929L1.80754 13.8076C1.41702 13.4171 1.41702 12.7839 1.80754 12.3934L9.58572 4.61525L7.4644 2.49393L8.87861 1.07971ZM10.9999 6.02946L3.92886 13.1005H18.071L10.9999 6.02946Z"></path>
-              </svg>
-            </span>
-            <input
-              type="color"
-              onMouseDown={(e) => e.preventDefault()}
-              onInput={(event: any) => {
-                if (!editor.chain().focus()) {
-                  return null;
-                }
-                if (event.target.value) {
-                  setBgColorCurrent(event.target.value);
-                  editor
-                    .chain()
-                    .focus()
-                    .setBackgroundColor(event.target.value)
-                    .run();
-                }
-              }}
-              value={
-                editor.getAttributes('textStyle').backgroundColor ||
-                bgColorCurrent ||
-                'white'
-              }
-              className={`w-6 h-6 pt-6 absolute bottom-0 pointer-events-auto 
-              `}
-            />
-          </div>
-          |
-          <button onClick={addImage} onMouseDown={(e) => e.preventDefault()}>
-            <span dangerouslySetInnerHTML={{ __html: IMGIcon }}></span>
-          </button>
-          <button
-            onClick={handleInsertVideo}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <span dangerouslySetInnerHTML={{ __html: VideoIcon }}></span>
-          </button>
-          {/* add Link Youtube Video */}
-          <ButtonCustomCss
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={addYoutubeVideo}
-            className={editor.isActive('link') ? 'is-active' : ''}
-          >
-            <span dangerouslySetInnerHTML={{ __html: FileVideoIcon }}></span>
-          </ButtonCustomCss>{' '}
-          |
-          {arrTextMark?.slice(4, 8).map((item, index) => (
-            <ButtonEditor
-              editor={editor}
-              key={item?.name || index}
-              element={item?.name}
-              extension={item?.name}
-              icon={item?.icon}
-            />
-          ))}
-          |
-          {arrTextMark?.slice(8, arrTextMark.length).map((item, index) => (
-            <ButtonEditor
-              editor={editor}
-              key={item?.name || index}
-              element={item?.name}
-              extension={item?.name}
-              icon={item?.icon}
-            />
-          ))}
-          <button
-            onClick={insertFx}
-            className=""
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <Latex>$f x$</Latex>
-          </button>
-          <button
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => editor.chain().focus().setPageBreak().run()}
-          >
-            <span dangerouslySetInnerHTML={{ __html: BreakPage }}></span>
-          </button>
-          <div className="tiptap__table relative">
-            <button
+            className="outline-none border h-[40px] max-w-[400px] p-1"
+            type="text"
+          />
+        </div>
+        <div className=" control-group h-full relative">
+          <div className="button-group flex gap-4 p-3 items-center h-full flex-wrap justify-start ">
+            <ButtonCustomCss
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
-                setOpenToolTable(!openToolTable);
+                if (!editor.isFocused) {
+                  editor.chain().focus().run(); // Ensure focus
+                }
+                removeFormat();
+              }}
+              disabled={!editor?.isEditable}
+              className={`${
+                !editor?.isEditable && 'disabled:opacity-50'
+              } cursor-pointer`}
+            >
+              <span
+                dangerouslySetInnerHTML={{ __html: ClearFormatIcon }}
+              ></span>
+            </ButtonCustomCss>
+            |{/* Undo/Redo */}
+            <ButtonCustomCss
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                if (!editor.isFocused) {
+                  editor.chain().focus().run(); // Ensure focus
+                }
+                editor.chain().focus().undo().run();
+              }}
+              disabled={!editor.can().undo()}
+            >
+              <span dangerouslySetInnerHTML={{ __html: BackLeftIcon }}></span>
+            </ButtonCustomCss>
+            {/* undo / redo */}
+            <ButtonCustomCss
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                if (!editor.isFocused) {
+                  editor.chain().focus().run(); // Ensure focus
+                }
+                editor.chain().focus().redo().run();
+              }}
+              disabled={!editor.can().redo()}
+            >
+              <span dangerouslySetInnerHTML={{ __html: BackRigthIcon }}></span>
+            </ButtonCustomCss>
+            |{/* Heading */}
+            <FormControl className="formControl" sx={{ m: 1, minWidth: 150 }}>
+              <Select
+                className="outline-none text-[14px] min-w-[150px] h-[40px]"
+                value={heading || 'Heading'}
+                onChange={handleChange}
+              >
+                <MenuItem disabled value="Heading">
+                  <span className="text-slate-400">Heading</span>
+                </MenuItem>
+                {arrHeading?.length > 0 &&
+                  arrHeading?.map((item, index) => {
+                    return (
+                      <MenuItem key={item || index} value={item}>
+                        <ButtonEditor
+                          editor={editor}
+                          element="heading"
+                          extension="Heading"
+                          icon={`Heading ${item}`}
+                          param={{ level: item }}
+                        />
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
+            </FormControl>
+            |{/*text alignment */}
+            <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                className="outline-none text-[14px] w-[70px] h-[40px]"
+                value={alignment}
+                onChange={handleChangeAlignment}
+                defaultValue="left"
+                style={{ fontFamily: `${alignment}` }}
+              >
+                {arrTextAlign?.map((align, index) => (
+                  <MenuItem value={align?.name} key={align?.name || index}>
+                    <ButtonEditor
+                      editor={editor}
+                      element="textAlign"
+                      extension="TextAlign"
+                      icon={align?.icon}
+                      param={align?.name}
+                      setFunc={true}
+                    />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {/* FontSize */}
+            <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                className="outline-none text-[14px] h-[40px]"
+                value="16"
+                onChange={handleChange}
+              >
+                <MenuItem disabled value="Heading">
+                  <span className="text-slate-400">FontSize</span>
+                </MenuItem>
+                {arrFontSize?.length > 0 &&
+                  arrFontSize?.map((item: string, index) => {
+                    return (
+                      <MenuItem key={item || index} value={item}>
+                        <ButtonCustomCss
+                          className="w-full"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() => {
+                            if (!editor.isFocused) {
+                              editor.chain().focus().run(); // Ensure focus
+                            }
+                            changeFontSize(item);
+                          }}
+                        >
+                          {item}
+                        </ButtonCustomCss>
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
+            </FormControl>
+            |
+            {arrTextMark?.slice(0, 4).map((item, index) => (
+              <ButtonEditor
+                editor={editor}
+                key={item?.name || index}
+                element={item?.name}
+                extension={item?.name}
+                icon={item?.icon}
+              />
+            ))}
+            <ButtonCustomCss
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                if (!editor.isFocused) {
+                  editor.chain().focus().run(); // Ensure focus
+                }
+                editor.chain().focus().redo().run();
               }}
             >
-              <span dangerouslySetInnerHTML={{ __html: TableIcon }}></span>
+              <span dangerouslySetInnerHTML={{ __html: LinkSVG }}></span>
+            </ButtonCustomCss>
+            |{/*  FontFamily */}
+            <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                className="outline-none form-fontFamily text-[14px] w-fit h-[40px]"
+                value={fontFamily}
+                onChange={handleChangeFontFamily}
+                defaultValue="monica"
+              >
+                <MenuItem value="monica" disabled>
+                  monica
+                </MenuItem>
+                {arrFontFamily?.map((item, index) => (
+                  <MenuItem value={item} key={item || index}>
+                    <ButtonEditor
+                      editor={editor}
+                      extension="FontFamily"
+                      element="textStyle"
+                      icon={item}
+                      type={item}
+                      fontFamily={item}
+                      param={{ fontFamily: item }}
+                      setFunc={true}
+                    />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {/* text color */}
+            <div className="relative ">
+              <span className="block  relative z-10 pointer-events-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  fill={colorCurrent}
+                >
+                  <path d="M15.2459 14H8.75407L7.15407 18H5L11 3H13L19 18H16.8459L15.2459 14ZM14.4459 12L12 5.88516L9.55407 12H14.4459ZM3 20H21V22H3V20Z"></path>
+                </svg>
+              </span>
+              <input
+                type="color"
+                onMouseDown={(e) => e.preventDefault()}
+                onInput={(event: any) => {
+                  if (!editor.chain().focus()) {
+                    return null;
+                  }
+                  if (event.target.value) {
+                    setColorCurrent(event.target.value);
+                    editor.chain().focus().setColor(event.target.value).run();
+                  }
+                }}
+                value={editor.getAttributes('textStyle').color || colorCurrent}
+                className="w-6 h-6 pt-6 absolute bottom-0 pointer-events-auto"
+              />
+            </div>
+            {/* background color */}
+            <div className="relative ">
+              <span className="block  relative z-10 pointer-events-none">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                  fill="currentColor"
+                >
+                  <path d="M19.2277 18.7323L20.9955 16.9645L22.7632 18.7323C23.7395 19.7086 23.7395 21.2915 22.7632 22.2678C21.7869 23.2441 20.204 23.2441 19.2277 22.2678C18.2514 21.2915 18.2514 19.7086 19.2277 18.7323ZM8.87861 1.07971L20.1923 12.3934C20.5828 12.7839 20.5828 13.4171 20.1923 13.8076L11.707 22.2929C11.3165 22.6834 10.6833 22.6834 10.2928 22.2929L1.80754 13.8076C1.41702 13.4171 1.41702 12.7839 1.80754 12.3934L9.58572 4.61525L7.4644 2.49393L8.87861 1.07971ZM10.9999 6.02946L3.92886 13.1005H18.071L10.9999 6.02946Z"></path>
+                </svg>
+              </span>
+              <input
+                type="color"
+                onMouseDown={(e) => e.preventDefault()}
+                onInput={(event: any) => {
+                  if (!editor.chain().focus()) {
+                    return null;
+                  }
+                  if (event.target.value) {
+                    setBgColorCurrent(event.target.value);
+                    editor
+                      .chain()
+                      .focus()
+                      .setBackgroundColor(event.target.value)
+                      .run();
+                  }
+                }}
+                value={
+                  editor.getAttributes('textStyle').backgroundColor ||
+                  bgColorCurrent ||
+                  'white'
+                }
+                className={`w-6 h-6 pt-6 absolute bottom-0 pointer-events-auto 
+              `}
+              />
+            </div>
+            |
+            <button
+              onClick={() => setIsOpenPopUp(true)}
+              onMouseDown={(e) => e.preventDefault()}
+            >
+              <span dangerouslySetInnerHTML={{ __html: IMGIcon }}></span>
             </button>
-            {openToolTable && (
-              <div className="tiptap__table absolute grid grid-cols-2 text-start w-[300px] gap-3 bg-white z-50">
-                {tableActions?.map((act, index) => {
-                  return (
-                    <button
-                      className=""
-                      onMouseDown={(e) => e.preventDefault()}
-                      key={act?.action || index}
-                      onClick={() => {
-                        if (!editor.chain().focus()) {
-                          return null;
-                        }
-                        editor.chain().focus()[act?.action]().run();
-                      }}
-                    >
-                      {act?.label}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-          |
-          <button
-            onClick={toggleFullscreen}
-            onMouseDown={(e) => e.preventDefault()}
-          >
-            <span dangerouslySetInnerHTML={{ __html: FullScreenIcon }}></span>
-          </button>
-          <div className="relative">
+            <button
+              onClick={handleInsertVideo}
+              onMouseDown={(e) => e.preventDefault()}
+            >
+              <span dangerouslySetInnerHTML={{ __html: VideoIcon }}></span>
+            </button>
+            {/* add Link Youtube Video */}
+            <ButtonCustomCss
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={addYoutubeVideo}
+              className={editor.isActive('link') ? 'is-active' : ''}
+            >
+              <span dangerouslySetInnerHTML={{ __html: FileVideoIcon }}></span>
+            </ButtonCustomCss>{' '}
+            |
+            {arrTextMark?.slice(4, 8).map((item, index) => (
+              <ButtonEditor
+                editor={editor}
+                key={item?.name || index}
+                element={item?.name}
+                extension={item?.name}
+                icon={item?.icon}
+              />
+            ))}
+            |
+            {arrTextMark?.slice(8, arrTextMark.length).map((item, index) => (
+              <ButtonEditor
+                editor={editor}
+                key={item?.name || index}
+                element={item?.name}
+                extension={item?.name}
+                icon={item?.icon}
+              />
+            ))}
+            <button
+              onClick={insertFx}
+              className=""
+              onMouseDown={(e) => e.preventDefault()}
+            >
+              <Latex>$f x$</Latex>
+            </button>
             <button
               onMouseDown={(e) => e.preventDefault()}
-              onClick={() => setOpenSpecialChar(!openSpecialChar)}
+              onClick={() => editor.chain().focus().setPageBreak().run()}
             >
-              ∑
+              <span dangerouslySetInnerHTML={{ __html: BreakPage }}></span>
             </button>
-            {openSpecialChar && (
-              <div className="special-character-picker bg-white z-50 w-[150px] border p-2 text-[14px] max-h-[250px] overflow-auto absolute flex items-center flex-wrap gap-2 ">
-                {SpecialCharacters.map((char) => (
-                  <button
-                    key={char}
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => handleInsertCharacter(char)}
-                    className="special-character-button block"
-                  >
-                    {char}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          {/* Grid Layout */}
-          <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              className="outline-none text-[14px] w-fit h-[40px]"
-              value={gridlayout}
-              onChange={handleChangeGridLayout}
-            >
-              <MenuItem disabled value={'Grid Layout'}>
-                <span dangerouslySetInnerHTML={{ __html: GridIcon }}></span>
-              </MenuItem>
-              {arrLayouts?.length > 0 &&
-                arrLayouts?.map((item, index) => {
-                  return (
-                    <MenuItem key={item?.name || index} value={item?.icon}>
-                      <ButtonCustomCss
-                        className="w-full"
+            <div className="tiptap__table relative">
+              <button
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => {
+                  setOpenToolTable(!openToolTable);
+                }}
+              >
+                <span dangerouslySetInnerHTML={{ __html: TableIcon }}></span>
+              </button>
+              {openToolTable && (
+                <div className="tiptap__table absolute grid grid-cols-2 text-start w-[300px] gap-3 bg-white z-50">
+                  {tableActions?.map((act, index) => {
+                    return (
+                      <button
+                        className=""
                         onMouseDown={(e) => e.preventDefault()}
-                        onClick={() =>
-                          editor.commands.insertCustomTable(
-                            item?.name,
-                            item?.collum
-                          )
-                        }
+                        key={act?.action || index}
+                        onClick={() => {
+                          if (!editor.chain().focus()) {
+                            return null;
+                          }
+                          editor.chain().focus()[act?.action]().run();
+                        }}
                       >
-                        <span
-                          dangerouslySetInnerHTML={{ __html: item?.icon }}
-                        ></span>
-                      </ButtonCustomCss>
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl>
-          |{/*text alignment */}
-          <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              className="outline-none text-[14px] w-[70px] h-[40px]"
-              value={alignment}
-              onChange={handleChangeAlignment}
-              defaultValue="left"
-              style={{ fontFamily: `${alignment}` }}
+                        {act?.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+            |
+            <button
+              onClick={toggleFullscreen}
+              onMouseDown={(e) => e.preventDefault()}
             >
-              {arrTextAlign?.map((align, index) => (
-                <MenuItem value={align?.name} key={align?.name || index}>
-                  <ButtonEditor
-                    editor={editor}
-                    element="textAlign"
-                    extension="TextAlign"
-                    icon={align?.icon}
-                    param={align?.name}
-                    setFunc={true}
-                  />
+              <span dangerouslySetInnerHTML={{ __html: FullScreenIcon }}></span>
+            </button>
+            <div className="relative">
+              <button
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => setOpenSpecialChar(!openSpecialChar)}
+              >
+                ∑
+              </button>
+              {openSpecialChar && (
+                <div className="special-character-picker bg-white z-50 w-[150px] border p-2 text-[14px] max-h-[250px] overflow-auto absolute flex items-center flex-wrap gap-2 ">
+                  {SpecialCharacters.map((char) => (
+                    <button
+                      key={char}
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => handleInsertCharacter(char)}
+                      className="special-character-button block"
+                    >
+                      {char}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            {/* Grid Layout */}
+            <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                className="outline-none text-[14px] w-fit h-[40px]"
+                value={gridlayout}
+                onChange={handleChangeGridLayout}
+              >
+                <MenuItem disabled value={'Grid Layout'}>
+                  <span dangerouslySetInnerHTML={{ __html: GridIcon }}></span>
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {/* blockquote */}
-          <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              className=" outline-none text-[14px] w-fit h-[40px]"
-              value={iconQuotes}
-              onChange={handleChange}
-            >
-              <MenuItem disabled value={'quotes'}>
-                <span dangerouslySetInnerHTML={{ __html: GroupQuotes }}></span>
-              </MenuItem>
-              {arrBlockquotes?.length > 0 &&
-                arrBlockquotes?.map((item, index) => {
-                  return (
-                    <MenuItem key={item?.name || index} value={item?.icon}>
-                      <ButtonEditor
-                        editor={editor}
-                        extension={item?.name}
-                        icon={item?.icon}
-                      />
-                    </MenuItem>
-                  );
-                })}
-            </Select>
-          </FormControl>
-          {/* Widget */}
-          <button onClick={getSource} onMouseDown={(e) => e.preventDefault()}>
-            <span dangerouslySetInnerHTML={{ __html: SourceHtml }}></span>
-          </button>
-          <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
-            <Select
-              className="outline-none form-fontFamily text-[14px] w-fit h-[40px]"
-              onChange={handleWidget}
-              defaultValue="Widget"
-            >
-              <MenuItem value="Widget" disabled>
-                Widget
-              </MenuItem>
-              {dataWidget?.map((item: any, index) => (
-                <MenuItem value={item?.name} key={item?.name || index}>
-                  <ButtonCustomCss onMouseDown={(e) => e.preventDefault()}>
-                    <span>{item?.name}</span>
-                  </ButtonCustomCss>
+                {arrLayouts?.length > 0 &&
+                  arrLayouts?.map((item, index) => {
+                    return (
+                      <MenuItem key={item?.name || index} value={item?.icon}>
+                        <ButtonCustomCss
+                          className="w-full"
+                          onMouseDown={(e) => e.preventDefault()}
+                          onClick={() =>
+                            editor.commands.insertCustomTable(
+                              item?.name,
+                              item?.collum
+                            )
+                          }
+                        >
+                          <span
+                            dangerouslySetInnerHTML={{ __html: item?.icon }}
+                          ></span>
+                        </ButtonCustomCss>
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
+            </FormControl>
+            |{/*text alignment */}
+            <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                className="outline-none text-[14px] w-[70px] h-[40px]"
+                value={alignment}
+                onChange={handleChangeAlignment}
+                defaultValue="left"
+                style={{ fontFamily: `${alignment}` }}
+              >
+                {arrTextAlign?.map((align, index) => (
+                  <MenuItem value={align?.name} key={align?.name || index}>
+                    <ButtonEditor
+                      editor={editor}
+                      element="textAlign"
+                      extension="TextAlign"
+                      icon={align?.icon}
+                      param={align?.name}
+                      setFunc={true}
+                    />
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            {/* blockquote */}
+            <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                className=" outline-none text-[14px] w-fit h-[40px]"
+                value={iconQuotes}
+                onChange={handleChange}
+              >
+                <MenuItem disabled value={'quotes'}>
+                  <span
+                    dangerouslySetInnerHTML={{ __html: GroupQuotes }}
+                  ></span>
                 </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <ButtonCustomCss
-            onMouseDown={(e) => e.preventDefault()}
-            onClick={() => {
-              if (!editor.isFocused) {
-                editor.chain().focus().run();
-              }
-              editor.chain().focus().setHorizontalRule().run();
-            }}
-          >
-            <span>___</span>
-          </ButtonCustomCss>
+                {arrBlockquotes?.length > 0 &&
+                  arrBlockquotes?.map((item, index) => {
+                    return (
+                      <MenuItem key={item?.name || index} value={item?.icon}>
+                        <ButtonEditor
+                          editor={editor}
+                          extension={item?.name}
+                          icon={item?.icon}
+                        />
+                      </MenuItem>
+                    );
+                  })}
+              </Select>
+            </FormControl>
+            {/* Widget */}
+            <button onClick={getSource} onMouseDown={(e) => e.preventDefault()}>
+              <span dangerouslySetInnerHTML={{ __html: SourceHtml }}></span>
+            </button>
+            <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                className="outline-none form-fontFamily text-[14px] w-fit h-[40px]"
+                onChange={handleWidget}
+                defaultValue="Widget"
+              >
+                <MenuItem value="Widget" disabled>
+                  Widget
+                </MenuItem>
+                {dataWidget?.map((item: any, index) => (
+                  <MenuItem value={item?.name} key={item?.name || index}>
+                    <ButtonCustomCss onMouseDown={(e) => e.preventDefault()}>
+                      <span>{item?.name}</span>
+                    </ButtonCustomCss>
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <ButtonCustomCss
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => {
+                if (!editor.isFocused) {
+                  editor.chain().focus().run();
+                }
+                editor.chain().focus().setHorizontalRule().run();
+              }}
+            >
+              <span>___</span>
+            </ButtonCustomCss>
+          </div>
         </div>
-      </div>
 
-      <EditorContent
-        id="source-output"
-        className="content__editor-tiptap min-h-[300px]"
-        editor={editor}
-      />
-      <pre
-        style={{
-          backgroundColor: '#f4f4f4',
-          padding: '10px',
-          border: '1px solid #ddd',
-          marginTop: '20px',
-          whiteSpace: 'pre-wrap',
-        }}
-      >
-        {sourceHTML}
-      </pre>
-    </div>
+        <EditorContent
+          id="source-output"
+          className="content__editor-tiptap min-h-[300px]"
+          editor={editor}
+        />
+        <pre
+          style={{
+            backgroundColor: '#f4f4f4',
+            padding: '10px',
+            border: '1px solid #ddd',
+            marginTop: '20px',
+            whiteSpace: 'pre-wrap',
+          }}
+        >
+          {sourceHTML}
+        </pre>
+      </div>
+    </>
   );
 };

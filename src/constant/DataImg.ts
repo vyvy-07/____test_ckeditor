@@ -1,17 +1,18 @@
-export const DATA = [
+export const DATA_IMAGE = [
   {
     alt: 'dfsdf',
-    src: 'https://i.pinimg.com/736x/99/65/99/9965990d3dcd12e3a5c7f2986c3191e3.jpg',
+    src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR222XR571Avf514CctwmuUlTclBJ5kqWIUWQ&s',
     fileName: 'cá',
   },
   {
-    alt: 'dfsdf',
-    src: 'https://marketplacecdn.yoyogames.com/images/assets/1372/screenshots/3722_original.jpg',
-    fileName: 'heo',
+    alt: 'dfsQWdf',
+    src: `https://media.cnn.com/api/v1/images/stellar/prod/180813120103-animals-cats-cute-45170cat-stock-photo.jpg?q=x_16,y_0,h_1334,w_2370,c_crop/h_833,w_1480`,
+    fileName: 'cá21321',
   },
+
   {
     alt: 'dfsdf',
-    src: 'https://i.etsystatic.com/43797977/r/il/75836c/5018018503/il_570xN.5018018503_dqd9.jpg',
+    src: `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmBUAkdLLe1YLTi7RtmPhwsDRmim1StW-CQg&s`,
     fileName: 'hồng',
   },
   {
@@ -21,12 +22,12 @@ export const DATA = [
   },
   {
     alt: 'dfsdf',
-    src: 'https://i.pinimg.com/736x/39/e7/ca/39e7ca07f5f433544b5e141cf7b0b19b.jpg',
+    src: `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAQSUGcKXtDohjvnLLLV-yrggz_PoaMAk4VQ&s`,
     fileName: 'đỏ',
   },
   {
     alt: 'dfsdf',
-    src: 'https://png.pngtree.com/thumb_back/fh260/background/20240801/pngtree-pink-and-purple-clouds-in-a-blue-sky-background-image_16122877.jpg',
+    src: `https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEHwM_ay2PwK1Tzr0g47IpYz3xtBK5wu1xwA&s`,
     fileName: 'cá',
   },
 ];
