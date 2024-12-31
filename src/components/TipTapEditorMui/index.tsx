@@ -38,6 +38,7 @@ import {
   Quotes,
   QuotesWithIconSVG,
   RemoveTable,
+  SourceHtml,
   StrikeIcon,
   SuperscriptIcon,
   SupscriptIcon,
@@ -476,6 +477,8 @@ export default () => {
     return null;
   }
   const addYoutubeVideo = () => {
+    if (!editor) return;
+
     const url = prompt('Enter YouTube URL');
 
     if (url) {
@@ -562,7 +565,6 @@ export default () => {
     <div className="tiptap__editor">
       <div className=" control-group h-full relative">
         <div className="button-group flex gap-4 p-3 items-center h-full flex-wrap justify-start ">
-          <button onClick={getSource}>getHTML</button>
           <ButtonCustomCss
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
@@ -811,6 +813,7 @@ export default () => {
           </button>
           {/* add Link Youtube Video */}
           <ButtonCustomCss
+            onMouseDown={(e) => e.preventDefault()}
             onClick={addYoutubeVideo}
             className={editor.isActive('link') ? 'is-active' : ''}
           >
@@ -836,10 +839,17 @@ export default () => {
               icon={item?.icon}
             />
           ))}
-          <button onClick={insertFx} className="">
+          <button
+            onClick={insertFx}
+            className=""
+            onMouseDown={(e) => e.preventDefault()}
+          >
             <Latex>$f x$</Latex>
           </button>
-          <button onClick={() => editor.chain().focus().setPageBreak().run()}>
+          <button
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => editor.chain().focus().setPageBreak().run()}
+          >
             <span dangerouslySetInnerHTML={{ __html: BreakPage }}></span>
           </button>
           <div className="tiptap__table relative">
@@ -874,11 +884,17 @@ export default () => {
             )}
           </div>
           |
-          <button onClick={toggleFullscreen}>
+          <button
+            onClick={toggleFullscreen}
+            onMouseDown={(e) => e.preventDefault()}
+          >
             <span dangerouslySetInnerHTML={{ __html: FullScreenIcon }}></span>
           </button>
           <div className="relative">
-            <button onClick={() => setOpenSpecialChar(!openSpecialChar)}>
+            <button
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => setOpenSpecialChar(!openSpecialChar)}
+            >
               ∑
             </button>
             {openSpecialChar && (
@@ -886,6 +902,7 @@ export default () => {
                 {SpecialCharacters.map((char) => (
                   <button
                     key={char}
+                    onMouseDown={(e) => e.preventDefault()}
                     onClick={() => handleInsertCharacter(char)}
                     className="special-character-button block"
                   >
@@ -976,6 +993,9 @@ export default () => {
             </Select>
           </FormControl>
           {/* Widget */}
+          <button onClick={getSource} onMouseDown={(e) => e.preventDefault()}>
+            <span dangerouslySetInnerHTML={{ __html: SourceHtml }}></span>
+          </button>
           <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
             <Select
               className="outline-none form-fontFamily text-[14px] w-fit h-[40px]"
@@ -987,7 +1007,7 @@ export default () => {
               </MenuItem>
               {dataWidget?.map((item: any, index) => (
                 <MenuItem value={item?.name} key={item?.name || index}>
-                  <ButtonCustomCss>
+                  <ButtonCustomCss onMouseDown={(e) => e.preventDefault()}>
                     <span>{item?.name}</span>
                   </ButtonCustomCss>
                 </MenuItem>
