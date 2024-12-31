@@ -85,7 +85,7 @@ import js from 'highlight.js/lib/languages/javascript';
 import ts from 'highlight.js/lib/languages/typescript';
 import html from 'highlight.js/lib/languages/xml';
 import { createLowlight } from 'lowlight';
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Latex from 'react-latex-next';
 import styled from 'styled-components';
 import ImageResize from 'tiptap-extension-resize-image';
@@ -110,6 +110,9 @@ import {
   BlockquoteWithIcon,
 } from './QuotesLine';
 import './style.css';
+import HorizontalRule from '@tiptap/extension-horizontal-rule';
+import axios from 'axios';
+import { headers } from 'next/headers';
 const lowlight = createLowlight();
 lowlight.register('html', html);
 lowlight.register('css', css);
@@ -174,7 +177,7 @@ const arrTextMark = [
   { name: 'BulletList', icon: ListDotIcon },
   { name: 'orderedList', icon: ListNumberIcon },
   { name: 'taskList', icon: CheckListIcon },
-  { name: 'link', icon: LinkSVG },
+  // { name: 'link', icon: LinkSVG },
   { name: 'codeBlock', icon: BlockCodeIcon },
   { name: 'superscript', icon: SuperscriptIcon },
   { name: 'subscript', icon: SupscriptIcon },
@@ -281,7 +284,10 @@ export default () => {
   const [fontFamily, setFontFamily] = React.useState('monica');
   const [gridlayout, setGridLayout] = React.useState('Grid Layout');
   const [width, setWidth] = React.useState();
+  const [widget, setWidget] = React.useState('Widget');
+  const [dataWidget, setDataWidget] = React.useState([]);
   const [openSpecialChar, setOpenSpecialChar] = React.useState(false);
+  const [sourceHTML, setSourceHTML] = React.useState('');
 
   const [openToolTable, setOpenToolTable] = React.useState(false);
 
@@ -304,7 +310,77 @@ export default () => {
         //   levels: [1, 2, 3, 4],
         // },
       }),
-      Link,
+      Link.configure({
+        openOnClick: false,
+        autolink: true,
+        defaultProtocol: 'https',
+        protocols: ['http', 'https'],
+        isAllowedUri: (url, ctx) => {
+          try {
+            // construct URL
+            const parsedUrl = url.includes(':')
+              ? new URL(url)
+              : new URL(`${ctx.defaultProtocol}://${url}`);
+
+            // use default validation
+            if (!ctx.defaultValidate(parsedUrl.href)) {
+              return false;
+            }
+
+            // disallowed protocols
+            const disallowedProtocols = ['ftp', 'file', 'mailto'];
+            const protocol = parsedUrl.protocol.replace(':', '');
+
+            if (disallowedProtocols.includes(protocol)) {
+              return false;
+            }
+
+            // only allow protocols specified in ctx.protocols
+            const allowedProtocols = ctx.protocols.map((p) =>
+              typeof p === 'string' ? p : p.scheme
+            );
+
+            if (!allowedProtocols.includes(protocol)) {
+              return false;
+            }
+
+            // disallowed domains
+            const disallowedDomains = [
+              'example-phishing.com',
+              'malicious-site.net',
+            ];
+            const domain = parsedUrl.hostname;
+
+            if (disallowedDomains.includes(domain)) {
+              return false;
+            }
+
+            // all checks have passed
+            return true;
+          } catch (error) {
+            return false;
+          }
+        },
+        shouldAutoLink: (url) => {
+          try {
+            // construct URL
+            const parsedUrl = url.includes(':')
+              ? new URL(url)
+              : new URL(`https://${url}`);
+
+            // only auto-link if the domain is not in the disallowed list
+            const disallowedDomains = [
+              'example-no-autolink.com',
+              'another-no-autolink.com',
+            ];
+            const domain = parsedUrl.hostname;
+
+            return !disallowedDomains.includes(domain);
+          } catch (error) {
+            return false;
+          }
+        },
+      }),
 
       CodeBlockLowlight.configure({
         lowlight,
@@ -352,10 +428,9 @@ export default () => {
         controls: false,
         nocookie: true,
       }),
-      // GridLayout.configure({
-      //   types: ['layout1', 'layout2', 'layout3'], // Các kiểu layout
-      // }),
+
       PageBreak,
+      HorizontalRule,
     ],
 
     content: `
@@ -366,6 +441,29 @@ export default () => {
     `,
     immediatelyRender: false,
   });
+  useEffect(() => {
+    const handleGetWidget = async () => {
+      try {
+        const token = `${process.env.TOKEN}`;
+        const res = await axios.get(
+          'https://cms-api.ngn.vn/private/widget/list?websiteId=5fbe1d9ee6434b04bd32386a&limit=-1&skip=0&keyword=',
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        console.log('res :>> ', res);
+
+        if (res?.data?.result) {
+          setDataWidget(res?.data?.result);
+        }
+      } catch (error) {
+        console.log('error :>> ', error);
+      }
+    };
+    handleGetWidget();
+  }, []);
   const addImage = useCallback(() => {
     if (!editor) return;
     const url = prompt('Nhập URL ảnh:');
@@ -392,7 +490,6 @@ export default () => {
   const insertFx = () => {
     const formula = prompt('');
     if (formula) {
-      console.log('formula :>> ', formula);
       editor?.commands.insertFx(formula);
     }
   };
@@ -414,6 +511,17 @@ export default () => {
   const handleChangeFontFamily = (e: SelectChangeEvent) => {
     if (e.target.value) {
       setFontFamily(e.target.value);
+    }
+  };
+  const handleWidget = (e: SelectChangeEvent) => {
+    if (e.target.value) {
+      setWidget(e.target.value);
+
+      const findFunc: any = dataWidget.find(
+        (item: any) => item?.name === e.target.value
+      );
+      console.log('findFunc :>> ', findFunc);
+      editor.chain().focus().insertContent(findFunc?.content).run();
     }
   };
   const handleChangeAlignment = (e: SelectChangeEvent) => {
@@ -442,18 +550,19 @@ export default () => {
     editor.chain().focus().insertContent(`${character}`).run();
   };
   const toggleFullscreen = () => {
-    console.log(
-      'toggleFullscreen :>> ',
-      112323333333333333333333333333333333333333333
-    );
-
     const editorElement: any = document.querySelector('.tiptap__editor');
     editorElement.classList.toggle('active');
   };
+  const getSource = () => {
+    setSourceHTML(editor.getHTML());
+    console.log('object :>> ', editor.getHTML());
+  };
+
   return (
     <div className="tiptap__editor">
       <div className=" control-group h-full relative">
         <div className="button-group flex gap-4 p-3 items-center h-full flex-wrap justify-start ">
+          <button onClick={getSource}>getHTML</button>
           <ButtonCustomCss
             onMouseDown={(e) => e.preventDefault()}
             onClick={() => {
@@ -585,6 +694,17 @@ export default () => {
               icon={item?.icon}
             />
           ))}
+          <ButtonCustomCss
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              if (!editor.isFocused) {
+                editor.chain().focus().run(); // Ensure focus
+              }
+              editor.chain().focus().redo().run();
+            }}
+          >
+            <span dangerouslySetInnerHTML={{ __html: LinkSVG }}></span>
+          </ButtonCustomCss>
           |{/*  FontFamily */}
           <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
             <Select
@@ -746,7 +866,7 @@ export default () => {
                         editor.chain().focus()[act?.action]().run();
                       }}
                     >
-                      {act?.icon || act?.label}
+                      {act?.label}
                     </button>
                   );
                 })}
@@ -808,20 +928,29 @@ export default () => {
                 })}
             </Select>
           </FormControl>
-          {/* {arrLayouts?.length > 0 &&
-            arrLayouts?.map((item, index) => {
-              return (
-                <button
-                  key={item?.name || index}
-                  className="px-2"
-                  onClick={() =>
-                    editor.commands.insertCustomTable(item?.name, item?.collum)
-                  }
-                >
-                  <span dangerouslySetInnerHTML={{ __html: item?.icon }}></span>
-                </button>
-              );
-            })} */}
+          |{/*text alignment */}
+          <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
+            <Select
+              className="outline-none text-[14px] w-[70px] h-[40px]"
+              value={alignment}
+              onChange={handleChangeAlignment}
+              defaultValue="left"
+              style={{ fontFamily: `${alignment}` }}
+            >
+              {arrTextAlign?.map((align, index) => (
+                <MenuItem value={align?.name} key={align?.name || index}>
+                  <ButtonEditor
+                    editor={editor}
+                    element="textAlign"
+                    extension="TextAlign"
+                    icon={align?.icon}
+                    param={align?.name}
+                    setFunc={true}
+                  />
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           {/* blockquote */}
           <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
             <Select
@@ -846,10 +975,55 @@ export default () => {
                 })}
             </Select>
           </FormControl>
+          {/* Widget */}
+          <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
+            <Select
+              className="outline-none form-fontFamily text-[14px] w-fit h-[40px]"
+              onChange={handleWidget}
+              defaultValue="Widget"
+            >
+              <MenuItem value="Widget" disabled>
+                Widget
+              </MenuItem>
+              {dataWidget?.map((item: any, index) => (
+                <MenuItem value={item?.name} key={item?.name || index}>
+                  <ButtonCustomCss>
+                    <span>{item?.name}</span>
+                  </ButtonCustomCss>
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <ButtonCustomCss
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => {
+              if (!editor.isFocused) {
+                editor.chain().focus().run();
+              }
+              editor.chain().focus().setHorizontalRule().run();
+            }}
+          >
+            <span>___</span>
+          </ButtonCustomCss>
         </div>
       </div>
 
-      <EditorContent className="min-h-[500px]" editor={editor} />
+      <EditorContent
+        id="source-output"
+        className="content__editor-tiptap min-h-[300px]"
+        editor={editor}
+      />
+      <pre
+        style={{
+          backgroundColor: '#f4f4f4',
+          padding: '10px',
+          border: '1px solid #ddd',
+          marginTop: '20px',
+          whiteSpace: 'pre-wrap',
+        }}
+      >
+        {sourceHTML}
+      </pre>
     </div>
   );
 };

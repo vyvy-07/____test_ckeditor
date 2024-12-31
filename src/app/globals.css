@@ -26,14 +26,14 @@ body {
   @apply overflow-hidden;
 }
 .custom-row > *:not(:first-child) {
-  border-left: 1px dashed #9fc9fc; /* Adjust the border style as needed */
+  border-left: 1px dashed #9fc9fc;
 }
 .custom-row > div {
   overflow: hidden;
   white-space: normal;
 }
 .custom-row > div a {
-  word-wrap: break-word; /* Đảm bảo rằng các link dài không tràn ra ngoài */
+  word-wrap: break-word;
 }
 .layout2x8x2 {
   grid-template-columns: 2fr 8fr 2fr;
