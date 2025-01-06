@@ -216,7 +216,10 @@ export const TiptapDefault = () => {
         </div>
       </div>
 
-      <EditorContent className="editor_tiptap min-h-[500px]" editor={editor} />
+      <EditorContent
+        className="editor_tiptap max-w-[1000px] min-h-[500px]"
+        editor={editor}
+      />
       <pre>{sourceHTML}</pre>
     </div>
   );
