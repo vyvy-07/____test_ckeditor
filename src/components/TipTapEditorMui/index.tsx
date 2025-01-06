@@ -77,16 +77,19 @@ import Typography from '@tiptap/extension-typography';
 import 'katex/dist/katex.min.css';
 
 import { SpecialCharacters } from '@/constant/specialCharacter';
+import HorizontalRule from '@tiptap/extension-horizontal-rule';
 import Underline from '@tiptap/extension-underline';
 import Youtube from '@tiptap/extension-youtube';
 import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
+import axios from 'axios';
 import css from 'highlight.js/lib/languages/css';
 import js from 'highlight.js/lib/languages/javascript';
 import ts from 'highlight.js/lib/languages/typescript';
 import html from 'highlight.js/lib/languages/xml';
 import { createLowlight } from 'lowlight';
-import React, { useCallback, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 import Latex from 'react-latex-next';
 import styled from 'styled-components';
 import ImageResize from 'tiptap-extension-resize-image';
@@ -102,6 +105,7 @@ import { ResizableImage } from './CustomTipTap/ResizeImageTool';
 import SpecialCharacter from './CustomTipTap/SpecialCharacter';
 import { CustomVideo } from './CustomTipTap/URLVideoCustom';
 import './editor.css';
+import PopupMedia from './Popup';
 import {
   BlockquoteBoxBlue,
   BlockquoteBoxGreen,
@@ -111,10 +115,7 @@ import {
   BlockquoteWithIcon,
 } from './QuotesLine';
 import './style.css';
-import HorizontalRule from '@tiptap/extension-horizontal-rule';
-import axios from 'axios';
-import { headers } from 'next/headers';
-import PopupMedia from './Popup';
+import { useSource } from '../SourceContext';
 const lowlight = createLowlight();
 lowlight.register('html', html);
 lowlight.register('css', css);
@@ -277,7 +278,7 @@ const tableActions = [
   },
 ];
 
-export default () => {
+const TiptapMUI = () => {
   const [heading, setHeading] = React.useState('Heading');
   const [iconQuotes, setIconQuotes] = React.useState('quotes');
   const [colorCurrent, setColorCurrent] = React.useState('black');
@@ -292,12 +293,15 @@ export default () => {
   const [sourceHTML, setSourceHTML] = React.useState('');
   const [token, setToken] = React.useState('');
   const [isOpenPopUp, setIsOpenPopUp] = React.useState(false);
+  const route = useRouter();
 
   const [openToolTable, setOpenToolTable] = React.useState(false);
 
   const editor: any = useEditor({
     extensions: [
       Underline,
+      // Caption,
+      // ImageWithCaption,
       SpecialCharacter,
       CustomTable,
       CustomRow,
@@ -542,7 +546,7 @@ export default () => {
     if (!editor) return;
     editor.chain().focus().setFontSize(size).run();
   };
-
+  // const { setDataHtml, dataHtml } = useSource() || {};
   const handleInsertVideo = () => {
     const url = prompt('Enter a video URL:');
     if (url) {
@@ -556,10 +560,14 @@ export default () => {
     const editorElement: any = document.querySelector('.tiptap__editor');
     editorElement.classList.toggle('active');
   };
-
   //handle get src image
-  const getSource = () => {
-    setSourceHTML(editor.getHTML());
+  const getSource = async () => {
+    const source = editor.getHTML();
+    if (source) {
+      // setDataHtml(source);
+      setSourceHTML(source);
+      // return route.push('/html');
+    }
   };
   const handleGetImage = (src: string) => {
     setIsOpenPopUp(false);
@@ -591,7 +599,7 @@ export default () => {
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => {
                 if (!editor.isFocused) {
-                  editor.chain().focus().run(); // Ensure focus
+                  editor.chain().focus().run();
                 }
                 removeFormat();
               }}
@@ -1074,6 +1082,9 @@ export default () => {
           {sourceHTML}
         </pre>
       </div>
+
+      {/* <div onClick={getSource}>Xem trên Web</div> */}
     </>
   );
 };
+export default TiptapMUI;

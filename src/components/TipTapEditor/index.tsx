@@ -23,24 +23,20 @@ import {
 } from '@/constant/icons';
 import Text from '@tiptap/extension-text';
 import { EditorContent, useEditor } from '@tiptap/react';
-import ButtonEditor from '../ButtonEditor';
-import {
-  BlockquoteBoxBlue,
-  BlockquoteBoxGreen,
-  BlockquoteBoxGrey,
-  BlockquoteLineX,
-  BlockquoteLineY,
-  BlockquoteWithIcon,
-} from './QuotesLine';
-import './style.css';
 import StarterKit from '@tiptap/starter-kit';
-// import { CustomTable } from './CustomTable';
-// import { CustomCell } from './CustomTable/CustomCell';
-// import { CustomRow } from './CustomTable/CustomRow';
+import ButtonEditor from '../ButtonEditor';
+import './style.css';
+
 import Image from '@tiptap/extension-image';
 import { CustomTable } from './CustomGridLayout';
-import { CustomRow } from './CustomGridLayout/CustomRow';
 import { CustomCell } from './CustomGridLayout/CustomCell';
+import { CustomRow } from './CustomGridLayout/CustomRow';
+import { FigureImage } from './customFigure';
+import { ImageResize } from './ResizeImage';
+import { Caption } from './ResizeImage/Caption';
+import { ResizablePlugin } from './ResizePlugin';
+import { ToggleCaption } from './CustomImage/ToggleCaption';
+import { useState } from 'react';
 const arrLayouts = [
   { name: 'layout2x8x2', icon: GridIcon2x8x2, collum: 3 },
   { name: 'layout3x9', icon: GridIcon3x9, collum: 2 },
@@ -51,41 +47,33 @@ const arrLayouts = [
   { name: 'layout4x8', icon: GridIcon4x8, collum: 2 },
   { name: 'layout9x3', icon: GridIcon9x3, collum: 2 },
 ];
+
 export const TiptapDefault = () => {
+  const [sourceHTML, setSourceHTML] = useState('');
   const editor: any = useEditor({
     extensions: [
       Document,
+      Image,
+      // ImageWithCaption,
+      Caption,
+      ImageResize,
       Paragraph,
       Text,
       Blockquote,
       CustomTable,
       CustomRow,
-      Image,
       CustomCell,
-      BlockquoteLineY.configure({
-        HTMLAttributes: { class: 'quote-lines' },
-      }),
-      BlockquoteLineX.configure({
-        HTMLAttributes: { class: 'custom-quote-button' },
-      }),
-      BlockquoteWithIcon.configure({
-        HTMLAttributes: { class: 'quotes-with-icon-button' },
-      }),
-      BlockquoteBoxBlue.configure({
-        HTMLAttributes: { class: 'box-quotes-blue' },
-      }),
-      BlockquoteBoxGreen.configure({
-        HTMLAttributes: { class: 'box-quotes-green' },
-      }),
-      BlockquoteBoxGrey.configure({
-        HTMLAttributes: { class: 'box-quotes-grey' },
-      }),
 
       Heading.configure({
         levels: [1, 2, 3],
       }),
+      Caption,
+      // ToggleCaption,
+      FigureImage,
+      ResizablePlugin,
+      // ImageWithCaption,
     ],
-
+    // plugins: [ResizablePlugin],
     content: `
       <blockquote>
         Nothing is impossible, the word itself says “I’m possible!”
@@ -98,11 +86,37 @@ export const TiptapDefault = () => {
     heading: { levels: [1, 2, 3] }, // Limit headings to h1, h2, and h3
     codeBlock: false, // Disable code blocks
   });
+  const getSource = async () => {
+    const source = editor.getHTML();
+    if (source) {
+      // setDataHtml(source);
+      setSourceHTML(source);
+      // return route.push('/html');
+    }
+  };
   const addImage = () => {
-    const url = window.prompt('URL');
+    const src = prompt(
+      'Enter image URL:',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtbAKcCLLFn6XZUsNl16-pGGH1Aj6Z01s9OQ&s'
+    );
 
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
+    if (!src || !editor) {
+      return;
+    }
+
+    // Chèn ảnh vào editor
+    editor.commands.setFigureImage({
+      src: src,
+      alt: 'dds',
+      caption: 'sds',
+    });
+
+    console.log('Image inserted with src: ', src);
+  };
+
+  const toggleCaption = () => {
+    if (editor) {
+      editor.commands.toggleCaption(); // Gọi command toggleCaption
     }
   };
 
@@ -112,8 +126,14 @@ export const TiptapDefault = () => {
 
   return (
     <div>
-      <div className="control-group">
+      <p>
+        https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTOIG17fqmqsBzuaowRCnhWNMnvJ6qV9vRWvw&s
+      </p>
+      <div className="control-group overflow-x-hidden">
         <div className="button-group flex gap-5  items-center min-h-[50px]">
+          <button type="button" onClick={getSource}>
+            get source
+          </button>
           <div
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
@@ -124,6 +144,9 @@ export const TiptapDefault = () => {
           >
             h1
           </div>
+          <button onClick={addImage} onMouseDown={(e) => e.preventDefault()}>
+            addImage
+          </button>
           <div
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
@@ -134,6 +157,7 @@ export const TiptapDefault = () => {
           >
             h2
           </div>
+          <button onClick={toggleCaption}>Toggle Caption</button>
           <div className="">
             {arrLayouts?.length > 0 &&
               arrLayouts?.map((item, index) => {
@@ -156,6 +180,7 @@ export const TiptapDefault = () => {
               })}
             sa||||||||||||||||||
             <button onClick={addImage}>ImageaddImage</button>
+            {/* <div ref={editor?.editorView.container}>ddds</div> */}
           </div>
           <ButtonEditor editor={editor} extension="Blockquote" icon={Quotes} />
           <ButtonEditor
@@ -191,7 +216,8 @@ export const TiptapDefault = () => {
         </div>
       </div>
 
-      <EditorContent className="min-h-[500px]" editor={editor} />
+      <EditorContent className="editor_tiptap min-h-[500px]" editor={editor} />
+      <pre>{sourceHTML}</pre>
     </div>
   );
 };
