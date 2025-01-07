@@ -116,6 +116,7 @@ import {
 } from './QuotesLine';
 import './style.css';
 import { useSource } from '../SourceContext';
+import { FigureImage } from './CustomTipTap/customFigure';
 const lowlight = createLowlight();
 lowlight.register('html', html);
 lowlight.register('css', css);
@@ -313,6 +314,7 @@ const TiptapMUI = () => {
       BackgroundColor,
       Subscript,
       FxNode,
+      FigureImage,
       StarterKit.configure({
         // heading: {
         //   levels: [1, 2, 3, 4],
@@ -573,10 +575,26 @@ const TiptapMUI = () => {
     setIsOpenPopUp(false);
     addImage(src);
   };
-  const addImage = (url: string) => {
-    if (url) {
-      editor.chain().focus().setImage({ src: url }).run();
+  // const addImage = (url: string) => {
+  //   if (url) {
+  //     editor.chain().focus().setImage({ src: url }).run();
+  //   }
+  // };
+  const addImage = (src: string) => {
+    // const src = prompt(
+    //   'Enter image URL:',
+    //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtbAKcCLLFn6XZUsNl16-pGGH1Aj6Z01s9OQ&s'
+    // );
+
+    if (!src || !editor) {
+      return;
     }
+    editor.commands.setFigureImage({
+      src: src, // URL hình ảnh
+      alt: 'Sample Image', // Mô tả thay thế
+    });
+
+    console.log('Image inserted with src: ', src);
   };
   return (
     <>

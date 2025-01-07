@@ -26,7 +26,10 @@ const RenderHTML = () => {
         </>
       )}
       {data && (
-        <div className="mt-9" dangerouslySetInnerHTML={{ __html: data }}></div>
+        <div
+          className="mt-9 p-5"
+          dangerouslySetInnerHTML={{ __html: data }}
+        ></div>
       )}
     </>
   );

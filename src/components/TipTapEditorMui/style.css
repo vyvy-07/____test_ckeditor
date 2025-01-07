@@ -366,3 +366,26 @@ table .column-resize-handle {
 .tiptap__editor.active {
   width: 100%;
 }
+/*  */
+[figure-wrapper] {
+  position: relative;
+  display: inline-block;
+  resize: horizontal; /* Chỉ cho phép thay đổi chiều ngang */
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid #ccc; /* Đường viền tùy chỉnh */
+}
+
+[figure-wrapper] img {
+  width: 100%;
+  height: auto;
+}
+
+figcaption {
+  text-align: center;
+  margin-top: 5px;
+  font-style: italic;
+  resize: both;
+}
+img {
+}

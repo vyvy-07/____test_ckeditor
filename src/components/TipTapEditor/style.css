@@ -209,34 +209,21 @@ img {
   transition: transform 0.2s;
 }
 /* ////////////// */
-.image-with-caption {
-  display: flex;
-  flex-direction: column; /* Đảm bảo ảnh ở trên và caption ở dưới */
-  align-items: center; /* Căn giữa ảnh và caption */
-  justify-content: center; /* Căn giữa nội dung */
-  position: relative;
-}
 
-.image-with-caption img {
-  max-width: 100%;
-  height: auto;
-  cursor: pointer; /* Giữ con trỏ khi di chuột qua ảnh */
-}
-
-.image-with-caption figcaption {
+figcaption {
   margin-top: 10px; /* Khoảng cách giữa ảnh và caption */
   text-align: center; /* Căn giữa caption */
-  white-space: wrap;
-  width: initial;
-  height: inherit;
+  width: 100%;
+  font-size: 14px;
   overflow: hidden;
-  word-break: keep-all;
+  white-space: break-spaces;
+  word-break: break-word;
 }
 figure {
   display: inline-block;
   position: relative;
   width: 100%;
-  height: 100%;
+  height: fit-content;
   resize: both;
   overflow: hidden;
 }

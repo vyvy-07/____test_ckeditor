@@ -259,36 +259,36 @@
 // });
 
 /////////////////////////////////
-import Image from '@tiptap/extension-image';
-export interface FigureImageAttributes {
-  src: string;
-  alt?: string;
-  caption?: string;
-}
+// import Image from '@tiptap/extension-image';
+// export interface FigureImageAttributes {
+//   src: string;
+//   alt?: string;
+//   caption?: string;
+// }
 
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
-    figureImage: {
-      setFigureImage: (attributes: FigureImageAttributes) => ReturnType;
-    };
-  }
-}
+// declare module '@tiptap/core' {
+//   interface Commands<ReturnType> {
+//     figureImage: {
+//       setFigureImage: (attributes: FigureImageAttributes) => ReturnType;
+//     };
+//   }
+// }
 
-import { Node, mergeAttributes } from '@tiptap/core';
+// import { Node, mergeAttributes } from '@tiptap/core';
 
-export interface FigureImageAttributes {
-  src: string;
-  alt?: string;
-  caption?: string;
-}
+// export interface FigureImageAttributes {
+//   src: string;
+//   alt?: string;
+//   caption?: string;
+// }
 
-declare module '@tiptap/core' {
-  interface Commands<ReturnType> {
-    figureImage: {
-      setFigureImage: (attributes: FigureImageAttributes) => ReturnType;
-    };
-  }
-}
+// declare module '@tiptap/core' {
+//   interface Commands<ReturnType> {
+//     figureImage: {
+//       setFigureImage: (attributes: FigureImageAttributes) => ReturnType;
+//     };
+//   }
+// }
 
 // export const FigureImage = Node.create({
 //   name: 'figureImage',
@@ -372,6 +372,7 @@ declare module '@tiptap/core' {
 //     };
 //   },
 // });
+import { Node, mergeAttributes } from '@tiptap/core';
 
 export const FigureImage = Node.create({
   name: 'figureImage',
@@ -440,100 +441,101 @@ export const FigureImage = Node.create({
       img.setAttribute('alt', alt);
       img.setAttribute('style', style);
 
-      const caption = document.createElement('figcaption');
-      caption.setAttribute('contenteditable', 'true');
-      caption.textContent =
-        node.content.size > 0 ? node.textContent : 'Enter caption here';
+      // const caption = document.createElement('figcaption');
+      // caption.setAttribute('contenteditable', 'true');
+      // caption.textContent =
+      //   node.content.size > 0 ? node.textContent : 'Enter caption here';
 
       figure.appendChild(img);
-      figure.appendChild(caption);
+      // figure.appendChild(caption);
 
-      // Add resize handle on the top-right corner
-      const resizeHandle = document.createElement('div');
-      resizeHandle.style.position = 'absolute';
-      resizeHandle.style.top = '0';
-      resizeHandle.style.right = '0';
-      resizeHandle.style.width = '10px';
-      resizeHandle.style.height = '10px';
-      resizeHandle.style.background = 'rgba(0,0,0,0.5)';
-      resizeHandle.style.cursor = 'ne-resize'; // Diagonal resize handle
-      resizeHandle.style.zIndex = '9999';
-
-      figure.appendChild(resizeHandle);
+      // Add resizing dot
+      const resizeDot = document.createElement('div');
+      resizeDot.style.position = 'absolute';
+      resizeDot.style.right = '0';
+      resizeDot.style.bottom = '0';
+      resizeDot.style.width = '10px';
+      resizeDot.style.height = '10px';
+      resizeDot.style.background = 'rgba(0,0,0,0.5)';
+      resizeDot.style.cursor = 'nwse-resize';
+      resizeDot.style.zIndex = '10';
+      figure.appendChild(resizeDot);
 
       let isResizing = false;
-      let lastX = 0;
-      let lastY = 0;
+      let startX = 0;
+      let startWidth = 0;
 
-      resizeHandle.addEventListener('mousedown', (e) => {
+      const onMouseMove = (e: MouseEvent) => {
+        if (!isResizing) return;
+        const deltaX = e.clientX - startX;
+        console.log('deltaX :>> ', deltaX);
+        const newWidth = Math.max(startWidth + deltaX, 50); // Ensure minimum width
+        img.style.width = `${newWidth}px`;
+        figure.style.width = `${newWidth}px`;
+
+        console.log(`Image width: ${newWidth}px`);
+      };
+
+      const onMouseUp = () => {
+        if (isResizing) {
+          isResizing = false;
+        }
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      };
+
+      resizeDot.addEventListener('mousedown', (e) => {
         e.preventDefault();
         isResizing = true;
-        lastX = e.clientX;
-        lastY = e.clientY;
+        startX = e.clientX;
+        startWidth = figure.offsetWidth;
 
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
       });
 
-      function onMouseMove(e: MouseEvent) {
-        if (isResizing) {
-          let dx = e.clientX - lastX;
-          let dy = e.clientY - lastY;
+      // Handle touch events
+      const onTouchMove = (e: TouchEvent) => {
+        if (!isResizing) return;
+        const deltaX = e.touches[0].clientX - startX;
 
-          // Resize the figure element
-          figure.style.width = `${figure.offsetWidth + dx}px`;
-          figure.style.height = `${figure.offsetHeight - dy}px`;
+        const newWidth = Math.max(startWidth + deltaX, 50); // Ensure minimum width
+        img.style.width = `${newWidth}px`;
+        figure.style.width = `${newWidth}px`;
 
-          // Resize the image element to match the figure size
-          img.style.width = `${figure.offsetWidth}px`; // Update the img width
-          img.style.height = `${figure.offsetHeight}px`; // Update the img height
-
-          lastX = e.clientX;
-          lastY = e.clientY;
-
-          // Wait until the DOM has been updated before calculating dimensions
-          requestAnimationFrame(() => {
-            const figureRect = figure.getBoundingClientRect();
-            console.log(
-              `Image width: ${figureRect.width}px, Image height: ${figureRect.height}px`
-            );
-
-            const editorContainer = document.querySelector(
-              '.editor_tiptap'
-            ) as HTMLElement;
-            const editorRect = editorContainer.getBoundingClientRect();
-
-            const imgRelativeWidth =
-              (figureRect.width / editorRect.width) * 100; // Percentage relative to editor
-            const imgRelativeHeight =
-              (figureRect.height / editorRect.height) * 100; // Percentage relative to editor
-
-            console.log(
-              `Relative to editor: Width: ${imgRelativeWidth}%, Height: ${imgRelativeHeight}%`
-            );
-          });
-        }
-      }
-
-      function onMouseUp() {
-        isResizing = false;
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
-
-      // Ensure that the image is fully loaded before calculating its size
-      img.onload = () => {
-        requestAnimationFrame(() => {
-          const figureRect = figure.getBoundingClientRect();
-          console.log(
-            `Image loaded: Width: ${figureRect.width}px, Height: ${figureRect.height}px`
-          );
-        });
+        console.log(`Image width (touch): ${newWidth}px`);
       };
+
+      const onTouchEnd = () => {
+        if (isResizing) {
+          isResizing = false;
+        }
+        document.removeEventListener('touchmove', onTouchMove);
+        document.removeEventListener('touchend', onTouchEnd);
+      };
+
+      resizeDot.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        isResizing = true;
+        startX = e.touches[0].clientX;
+        startWidth = figure.offsetWidth;
+
+        document.addEventListener('touchmove', onTouchMove, { passive: false });
+        document.addEventListener('touchend', onTouchEnd, { passive: false });
+      });
+
+      // Dismiss resizing handles if clicked outside
+      document.addEventListener('click', (e: any) => {
+        if (!figure.contains(e.target)) {
+          resizeDot.style.display = 'none';
+        } else {
+          resizeDot.style.display = 'block';
+        }
+      });
 
       return {
         dom: figure,
-        contentDOM: caption,
+        // contentDOM: caption,
       };
     };
   },

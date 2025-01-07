@@ -104,14 +104,11 @@ export const TiptapDefault = () => {
       return;
     }
 
-    // Chèn ảnh vào editor
     editor.commands.setFigureImage({
       src: src,
       alt: 'dds',
       caption: 'sds',
     });
-
-    console.log('Image inserted with src: ', src);
   };
 
   const toggleCaption = () => {
