@@ -197,7 +197,7 @@ export const FigureImage = Node.create({
 
         const deltaX = e.clientX - startX;
         const newWidth = Math.max(startWidth + deltaX, 50);
-
+        console.log('newWidth :>> ', newWidth);
         img.style.width = `${newWidth}px`;
         figure.style.width = `${newWidth}px`;
 
