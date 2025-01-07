@@ -439,7 +439,7 @@ img {
   height: auto;
 }
 figure {
-  @apply flex flex-col gap-1 justify-center items-start;
+  @apply flex flex-col gap-1 justify-center items-start resize;
   height: fit-content !important;
 }
 

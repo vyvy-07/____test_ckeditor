@@ -193,23 +193,18 @@ export const FigureImage = Node.create({
       let startWidth = 0;
 
       const onMouseMove = (e: MouseEvent) => {
-        if (!isResizing || !getPos || typeof getPos !== 'function') return;
+        if (!isResizing) return;
 
         const deltaX = e.clientX - startX;
         const newWidth = Math.max(startWidth + deltaX, 50);
-        console.log('newWidth :>> ', newWidth);
-        img.style.width = `${newWidth}px`;
+
+        // img.style.width = `${newWidth}px`;
         figure.style.width = `${newWidth}px`;
 
-        // Cập nhật thuộc tính node
-        const pos = getPos();
-        if (pos !== null && pos >= 0) {
-          const transaction = editor.state.tr.setNodeMarkup(pos, undefined, {
-            ...node.attrs,
-            style: `width: ${newWidth}px; height: auto;`,
-          });
-          editor.view.dispatch(transaction);
-        }
+        // Cập nhật style qua lệnh
+        editor.commands.updateAttributes('figureImage', {
+          style: `width: ${newWidth}px; height: auto;`,
+        });
       };
 
       const onMouseUp = () => {
