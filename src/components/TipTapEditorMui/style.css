@@ -367,18 +367,3 @@ table .column-resize-handle {
   width: 100%;
 }
 /*  */
-
-[figure-wrapper] img {
-  width: 100%;
-  height: auto;
-}
-
-figcaption {
-  text-align: center;
-  /* margin-bottom: 30px; */
-  padding: 8px;
-  font-style: italic;
-  resize: both;
-}
-img {
-}

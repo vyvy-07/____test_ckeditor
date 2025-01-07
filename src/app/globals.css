@@ -439,10 +439,10 @@ img {
   height: auto;
 }
 figure {
-  @apply flex flex-col gap-1 justify-center items-start resize;
+  @apply flex flex-col gap-1 justify-center items-start;
   height: fit-content !important;
 }
 
 figcaption {
-  @apply w-full block text-center p-1 italic resize;
+  @apply w-full block text-center p-1 italic;
 }

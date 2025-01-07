@@ -200,6 +200,7 @@ export const FigureImage = Node.create({
 
         // img.style.width = `${newWidth}px`;
         figure.style.width = `${newWidth}px`;
+        caption.style.width = `100%`;
 
         // Cập nhật style qua lệnh
         editor.commands.updateAttributes('figureImage', {
