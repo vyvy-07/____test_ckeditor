@@ -198,7 +198,7 @@ export const FigureImage = Node.create({
         const deltaX = e.clientX - startX;
         const newWidth = Math.max(startWidth + deltaX, 50);
 
-        // img.style.width = `${newWidth}px`;
+        img.style.width = `100%`;
         figure.style.width = `${newWidth}px`;
         caption.style.width = `100%`;
 
