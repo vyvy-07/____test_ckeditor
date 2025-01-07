@@ -154,7 +154,6 @@ export const FigureImage = Node.create({
         },
     };
   },
-
   addNodeView() {
     return ({ node, getPos, editor }) => {
       const { src, alt, style } = node.attrs;
@@ -162,113 +161,206 @@ export const FigureImage = Node.create({
       const figure = document.createElement('figure');
       figure.setAttribute(
         'style',
-        'position: relative; display: inline-block; margin: 0;'
+        `position: relative; display: inline-block; margin: 0; ${style || ''}`
       );
 
       const img = document.createElement('img');
       img.setAttribute('src', src);
       img.setAttribute('alt', alt);
-      img.setAttribute('style', style);
+      img.setAttribute('style', style || 'width: auto; max-width: 100%;');
 
       const caption = document.createElement('figcaption');
       caption.setAttribute('contenteditable', 'true');
       caption.textContent =
         node.content.size > 0 ? node.textContent : 'Enter caption here';
 
-      // Nút chỉnh kích thước
-      const dotStyle = `
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background: #000;
-        border-radius: 50%;
-        cursor: nwse-resize;
-      `;
-
-      const dots = [
-        { position: 'top: -5px; left: -5px;', cursor: 'nwse-resize' },
-        { position: 'top: -5px; right: -5px;', cursor: 'nesw-resize' },
-        { position: 'bottom: -5px; left: -5px;', cursor: 'nesw-resize' },
-        { position: 'bottom: -5px; right: -5px;', cursor: 'nwse-resize' },
-      ];
-
-      let isResizing = false;
-      let startX: number,
-        startY: number,
-        startWidth: number,
-        startHeight: number;
-
-      dots.forEach(({ position, cursor }, index) => {
-        const dot = document.createElement('div');
-        dot.setAttribute('style', `${dotStyle} ${position} cursor: ${cursor};`);
-
-        dot.addEventListener('mousedown', (e) => {
-          e.preventDefault();
-          isResizing = true;
-          startX = e.clientX;
-          startY = e.clientY;
-          startWidth = figure.offsetWidth;
-          startHeight = figure.offsetHeight;
-
-          const onMouseMove = (e: MouseEvent) => {
-            if (!isResizing) return;
-
-            const deltaX = e.clientX - startX;
-            const deltaY = e.clientY - startY;
-
-            let newWidth = startWidth;
-            let newHeight = startHeight;
-
-            if (index === 0 || index === 2) newWidth = startWidth - deltaX;
-            else newWidth = startWidth + deltaX;
-
-            if (index === 0 || index === 1) newHeight = startHeight - deltaY;
-            else newHeight = startHeight + deltaY;
-
-            newWidth = Math.max(50, newWidth);
-            newHeight = Math.max(50, newHeight);
-
-            figure.style.width = `${newWidth}px`;
-            figure.style.height = `${newHeight}px`;
-            img.style.width = `${newWidth}px`;
-            img.style.height = `${newHeight}px`;
-          };
-
-          const onMouseUp = () => {
-            isResizing = false;
-
-            if (typeof getPos === 'function') {
-              const newAttrs = {
-                ...node.attrs,
-                style: `width: ${figure.style.width}; height: ${figure.style.height};`,
-              };
-              editor.view.dispatch(
-                editor.view.state.tr.setNodeMarkup(
-                  getPos(),
-                  undefined,
-                  newAttrs
-                )
-              );
-            }
-
-            document.removeEventListener('mousemove', onMouseMove);
-            document.removeEventListener('mouseup', onMouseUp);
-          };
-
-          document.addEventListener('mousemove', onMouseMove);
-          document.addEventListener('mouseup', onMouseUp);
-        });
-
-        figure.appendChild(dot);
-      });
-
       figure.appendChild(img);
       figure.appendChild(caption);
 
+      const resizeDot = document.createElement('div');
+      resizeDot.style.position = 'absolute';
+      resizeDot.style.right = '0';
+      resizeDot.style.bottom = '0';
+      resizeDot.style.width = '10px';
+      resizeDot.style.height = '10px';
+      resizeDot.style.background = 'rgba(0,0,0,0.5)';
+      resizeDot.style.cursor = 'nwse-resize';
+      resizeDot.style.zIndex = '10';
+      figure.appendChild(resizeDot);
+
+      let isResizing = false;
+      let startX = 0;
+      let startWidth = 0;
+
+      const onMouseMove = (e: MouseEvent) => {
+        if (!isResizing || !getPos || typeof getPos !== 'function') return;
+
+        const deltaX = e.clientX - startX;
+        const newWidth = Math.max(startWidth + deltaX, 50);
+
+        img.style.width = `${newWidth}px`;
+        figure.style.width = `${newWidth}px`;
+
+        // Cập nhật thuộc tính node
+        const pos = getPos();
+        if (pos !== null && pos >= 0) {
+          const transaction = editor.state.tr.setNodeMarkup(pos, undefined, {
+            ...node.attrs,
+            style: `width: ${newWidth}px; height: auto;`,
+          });
+          editor.view.dispatch(transaction);
+        }
+      };
+
+      const onMouseUp = () => {
+        isResizing = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      };
+
+      resizeDot.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        isResizing = true;
+        startX = e.clientX;
+        startWidth = figure.offsetWidth;
+
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      });
+
       return {
         dom: figure,
-        // contentDOM: caption,
+        contentDOM: caption, // Vẫn chỉ định contentDOM để caption chỉnh sửa được
+        update: (updatedNode) => {
+          if (updatedNode.type !== node.type) return false;
+
+          const { src, alt, style } = updatedNode.attrs;
+
+          if (src !== node.attrs.src) img.setAttribute('src', src);
+          if (alt !== node.attrs.alt) img.setAttribute('alt', alt);
+          if (style !== node.attrs.style)
+            img.setAttribute('style', style || 'width: auto; max-width: 100%;');
+
+          return true;
+        },
       };
     };
   },
+
+  // addNodeView() {
+  //   return ({ node, getPos, editor }) => {
+  //     const { src, alt, style } = node.attrs;
+
+  //     const figure = document.createElement('figure');
+  //     figure.setAttribute(
+  //       'style',
+  //       'position: relative; display: inline-block; margin: 0;'
+  //     );
+
+  //     const img = document.createElement('img');
+  //     img.setAttribute('src', src);
+  //     img.setAttribute('alt', alt);
+  //     img.setAttribute('style', style);
+
+  //     const caption = document.createElement('figcaption');
+  //     caption.setAttribute('contenteditable', 'true');
+  //     caption.textContent =
+  //       node.content.size > 0 ? node.textContent : 'Enter caption here';
+
+  //     // Nút chỉnh kích thước
+  //     const dotStyle = `
+  //       position: absolute;
+  //       width: 10px;
+  //       height: 10px;
+  //       background: #000;
+  //       border-radius: 50%;
+  //       cursor: nwse-resize;
+  //     `;
+
+  //     const dots = [
+  //       { position: 'top: -5px; left: -5px;', cursor: 'nwse-resize' },
+  //       { position: 'top: -5px; right: -5px;', cursor: 'nesw-resize' },
+  //       { position: 'bottom: -5px; left: -5px;', cursor: 'nesw-resize' },
+  //       { position: 'bottom: -5px; right: -5px;', cursor: 'nwse-resize' },
+  //     ];
+
+  //     let isResizing = false;
+  //     let startX: number,
+  //       startY: number,
+  //       startWidth: number,
+  //       startHeight: number;
+
+  //     dots.forEach(({ position, cursor }, index) => {
+  //       const dot = document.createElement('div');
+  //       dot.setAttribute('style', `${dotStyle} ${position} cursor: ${cursor};`);
+
+  //       dot.addEventListener('mousedown', (e) => {
+  //         e.preventDefault();
+  //         isResizing = true;
+  //         startX = e.clientX;
+  //         startY = e.clientY;
+  //         startWidth = figure.offsetWidth;
+  //         startHeight = figure.offsetHeight;
+
+  //         const onMouseMove = (e: MouseEvent) => {
+  //           if (!isResizing) return;
+
+  //           const deltaX = e.clientX - startX;
+  //           const deltaY = e.clientY - startY;
+
+  //           let newWidth = startWidth;
+  //           let newHeight = startHeight;
+
+  //           if (index === 0 || index === 2) newWidth = startWidth - deltaX;
+  //           else newWidth = startWidth + deltaX;
+
+  //           if (index === 0 || index === 1) newHeight = startHeight - deltaY;
+  //           else newHeight = startHeight + deltaY;
+
+  //           newWidth = Math.max(50, newWidth);
+  //           newHeight = Math.max(50, newHeight);
+
+  //           figure.style.width = `${newWidth}px`;
+  //           figure.style.height = `${newHeight}px`;
+  //           img.style.width = `${newWidth}px`;
+  //           img.style.height = `${newHeight}px`;
+  //         };
+
+  //         const onMouseUp = () => {
+  //           isResizing = false;
+
+  //           if (typeof getPos === 'function') {
+  //             const newAttrs = {
+  //               ...node.attrs,
+  //               style: `width: ${figure.style.width}; height: ${figure.style.height};`,
+  //             };
+  //             editor.view.dispatch(
+  //               editor.view.state.tr.setNodeMarkup(
+  //                 getPos(),
+  //                 undefined,
+  //                 newAttrs
+  //               )
+  //             );
+  //           }
+
+  //           document.removeEventListener('mousemove', onMouseMove);
+  //           document.removeEventListener('mouseup', onMouseUp);
+  //         };
+
+  //         document.addEventListener('mousemove', onMouseMove);
+  //         document.addEventListener('mouseup', onMouseUp);
+  //       });
+
+  //       figure.appendChild(dot);
+  //     });
+
+  //     figure.appendChild(img);
+  //     figure.appendChild(caption);
+
+  //     return {
+  //       dom: figure,
+  //       contentDOM: caption,
+  //     };
+  //   };
+  // },
 });

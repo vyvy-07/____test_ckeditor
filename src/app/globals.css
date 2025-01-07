@@ -433,22 +433,16 @@ table .column-resize-handle {
   width: 100%;
 }
 /*  */
-[figure-wrapper] {
-  position: relative;
-  display: inline-block;
-  resize: horizontal; /* Chỉ cho phép thay đổi chiều ngang */
-  overflow: hidden;
-  width: 100%;
-  border: 1px solid #ccc; /* Đường viền tùy chỉnh */
-}
 
-[figure-wrapper] img {
+img {
   width: 100%;
   height: auto;
 }
+figure {
+  @apply flex flex-col gap-1 justify-center items-start;
+  height: fit-content !important;
+}
 
-[figure-wrapper] figcaption {
-  text-align: center;
-  margin-top: 5px;
-  font-style: italic;
+figcaption {
+  @apply w-full block text-center p-1 italic resize;
 }
