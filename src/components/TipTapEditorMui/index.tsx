@@ -117,6 +117,7 @@ import {
 import './style.css';
 import { useSource } from '../SourceContext';
 import { FigureImage } from './CustomTipTap/customFigure';
+import { Caption } from './CustomTipTap/Caption';
 const lowlight = createLowlight();
 lowlight.register('html', html);
 lowlight.register('css', css);
@@ -305,12 +306,13 @@ const TiptapMUI = () => {
       // ImageWithCaption,
       SpecialCharacter,
       CustomTable,
+      // Caption,
       CustomRow,
       CustomCell,
       TextStyle,
       Color,
       Typography,
-      ImageResize,
+      // ImageResize,
       BackgroundColor,
       Subscript,
       FxNode,
