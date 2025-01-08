@@ -20,8 +20,8 @@ declare module '@tiptap/core' {
 
 const getGridStyles = (type: string) => {
   switch (type) {
-    case 'layout1x2':
-      return 'display: grid; grid-template-columns: 1fr 2fr; gap: 1rem;';
+    case 'layout1x10x1':
+      return 'display: grid; grid-template-columns: 1fr 10fr 1fr; gap: 1rem;';
     case 'layout2x8x2':
       return 'display: grid; grid-template-columns: 2fr 8fr 2fr; gap: 1rem;';
     case 'layout3x9':

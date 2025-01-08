@@ -1,3 +1,13 @@
+.custom-row {
+  @apply grid w-full gap-1 border border-dashed
+  
+  border-[#9fc9fc] 
+  py-2 px-1;
+  @apply overflow-hidden;
+}
+.custom-row > *:not(:first-child) {
+  border-left: 1px dashed #9fc9fc;
+}
 /* .custom-row {
   @apply grid w-full gap-1 border border-dashed border-[#9fc9fc] py-2 px-2;
 }

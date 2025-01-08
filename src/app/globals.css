@@ -18,12 +18,16 @@ body {
 }
 
 .custom-row {
-  @apply grid w-full gap-1 border border-dashed border-[#9fc9fc] py-2 px-1;
+  @apply grid w-full gap-1 
+  /* border border-dashed */
+  
+  /* border-[#9fc9fc]  */
+  py-2 px-1;
   @apply overflow-hidden;
 }
-.custom-row > *:not(:first-child) {
+/* .custom-row > *:not(:first-child) {
   border-left: 1px dashed #9fc9fc;
-}
+} */
 .custom-row > div {
   overflow: hidden;
   white-space: normal;
@@ -33,6 +37,9 @@ body {
   word-wrap: break-word;
 }
 
+.layout1x10x1 {
+  grid-template-columns: 1fr 10fr 1fr;
+}
 .layout2x8x2 {
   grid-template-columns: 2fr 8fr 2fr;
 }

@@ -546,7 +546,6 @@ declare module '@tiptap/core' {
     };
   }
 }
-
 export const FigureImage = Node.create({
   name: 'figureImage',
 
@@ -658,6 +657,17 @@ export const FigureImage = Node.create({
         });
       });
 
+      // Add span to display the width of the figure
+      const widthDisplay = document.createElement('span');
+      widthDisplay.style.position = 'absolute';
+      widthDisplay.style.top = '0';
+      widthDisplay.style.right = '0';
+      widthDisplay.style.padding = '5px';
+      widthDisplay.style.backgroundColor = 'rgba(0,0,0,0.5)';
+      widthDisplay.style.color = 'white';
+      widthDisplay.textContent = `${figure.offsetWidth}px`;
+      figure.appendChild(widthDisplay);
+
       figure.appendChild(img);
       figure.appendChild(caption);
 
@@ -675,16 +685,22 @@ export const FigureImage = Node.create({
       let isResizing = false;
       let startX = 0;
       let startWidth = 0;
-
       const onMouseMove = (e: MouseEvent) => {
         if (!isResizing) return;
 
         const deltaX = e.clientX - startX;
-        const newWidth = Math.max(startWidth + deltaX, 50); // Giới hạn tối thiểu là 50px.
+        const newWidth = Math.max(startWidth + deltaX, 50); // Minimum width is 50px.
 
-        img.style.width = '100%';
+        // Update the width of the figure element
         figure.style.width = `${newWidth}px`;
 
+        // Update the img element's width to match the figure width
+        img.style.width = `${newWidth}px`;
+
+        // Update the displayed width
+        widthDisplay.textContent = `${newWidth}px`;
+
+        // Optional: Update attributes for the figure image
         editor.commands.updateAttributes('figureImage', {
           style: `width: ${newWidth}px; height: auto; transition: width 0.2s ease;`,
         });
@@ -694,14 +710,21 @@ export const FigureImage = Node.create({
         isResizing = false;
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
+        const finalWidth = figure.offsetWidth;
+        // widthDisplay.textContent = `${finalWidth}px`;
+
+        // After resizing ends, update the width display with the final value
+        widthDisplay.textContent = `${figure.offsetWidth}px`;
       };
+
+      // After resizing ends, update the width display with the final value
+      // widthDisplay.textContent = `${figure.offsetWidth}px`;
 
       resizeDot.addEventListener('mousedown', (e) => {
         e.preventDefault();
         isResizing = true;
         startX = e.clientX;
         startWidth = figure.offsetWidth;
-
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
       });
@@ -729,3 +752,190 @@ export const FigureImage = Node.create({
     };
   },
 });
+
+// export const FigureImage = Node.create({
+//   name: 'figureImage',
+
+//   group: 'block',
+//   content: 'inline*',
+//   draggable: true,
+
+//   addAttributes() {
+//     return {
+//       src: { default: null },
+//       alt: { default: '' },
+//       style: { default: 'width: 100%; height: auto;' },
+//     };
+//   },
+
+//   parseHTML() {
+//     return [
+//       {
+//         tag: 'figure',
+//       },
+//     ];
+//   },
+
+//   renderHTML({ HTMLAttributes, node }) {
+//     const { src, alt, style } = node.attrs;
+//     return [
+//       'figure',
+//       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+//       ['img', { src, alt, style }],
+//       ['figcaption', {}, 0],
+//     ];
+//   },
+
+//   addCommands() {
+//     return {
+//       setFigureImage:
+//         ({ src, alt = '' }: { src: string; alt?: string }) =>
+//         ({ commands }) => {
+//           return commands.insertContent({
+//             type: this.name,
+//             attrs: { src, alt },
+//             content: [
+//               {
+//                 type: 'text',
+//                 text: 'Enter caption here',
+//               },
+//             ],
+//           });
+//         },
+//     };
+//   },
+
+//   addProseMirrorPlugins() {
+//     return [
+//       new Plugin({
+//         props: {
+//           handlePaste: (view, event) => {
+//             const clipboardData = event.clipboardData;
+//             const items = clipboardData?.items || [];
+//             for (const item of items) {
+//               if (item.type.startsWith('image/')) {
+//                 const file: any = item.getAsFile();
+//                 const src = URL.createObjectURL(file);
+
+//                 view.dispatch(
+//                   view.state.tr.replaceSelectionWith(
+//                     this.type.create({
+//                       attrs: { src, alt: 'Pasted image' },
+//                       content: [{ type: 'text', text: 'Enter caption here' }],
+//                     })
+//                   )
+//                 );
+//                 return true;
+//               }
+//             }
+//             return false;
+//           },
+//         },
+//       }),
+//     ];
+//   },
+
+//   addNodeView() {
+//     return ({ node, getPos, editor }) => {
+//       const { src, alt, style } = node.attrs;
+
+//       const figure = document.createElement('figure');
+//       figure.setAttribute(
+//         'style',
+//         `position: relative; display: inline-block; margin: 0; ${style || ''}`
+//       );
+
+//       const img = document.createElement('img');
+//       img.setAttribute('src', src);
+//       img.setAttribute('alt', alt);
+//       img.setAttribute(
+//         'style',
+//         style || 'width: auto; max-width: 100%; transition: width 0.2s ease;'
+//       );
+
+//       const caption = document.createElement('figcaption');
+//       caption.setAttribute('contenteditable', 'true');
+//       caption.textContent = node.textContent || 'Enter caption here';
+
+//       caption.addEventListener('input', () => {
+//         const newCaption = caption.textContent || 'Enter caption here';
+//         editor.commands.updateAttributes('figureImage', {
+//           content: [{ type: 'text', text: newCaption }],
+//         });
+//       });
+
+//       figure.appendChild(img);
+//       figure.appendChild(caption);
+
+//       const resizeDot = document.createElement('div');
+//       resizeDot.style.position = 'absolute';
+//       resizeDot.style.right = '0';
+//       resizeDot.style.bottom = '0';
+//       resizeDot.style.width = '10px';
+//       resizeDot.style.height = '10px';
+//       resizeDot.style.background = 'rgba(0,0,0,0.5)';
+//       resizeDot.style.cursor = 'nwse-resize';
+//       resizeDot.style.zIndex = '10';
+//       figure.appendChild(resizeDot);
+
+//       let isResizing = false;
+//       let startX = 0;
+//       let startWidth = 0;
+
+//       const onMouseMove = (e: MouseEvent) => {
+//         if (!isResizing) return;
+
+//         const deltaX = e.clientX - startX;
+//         const newWidth = Math.max(startWidth + deltaX, 50); // Minimum width is 50px.
+
+//         // Update the width of the figure element
+//         figure.style.width = `${newWidth}px`;
+
+//         // Update the img element's width to match the figure width
+//         img.style.width = `${newWidth}px`;
+
+//         // Optional: Update attributes for the figure image
+//         editor.commands.updateAttributes('figureImage', {
+//           style: `width: ${newWidth}px; height: auto; transition: width 0.2s ease;`,
+//         });
+//       };
+
+//       const onMouseUp = () => {
+//         isResizing = false;
+//         document.removeEventListener('mousemove', onMouseMove);
+//         document.removeEventListener('mouseup', onMouseUp);
+//       };
+
+//       resizeDot.addEventListener('mousedown', (e) => {
+//         e.preventDefault();
+//         isResizing = true;
+//         startX = e.clientX;
+//         startWidth = figure.offsetWidth;
+
+//         document.addEventListener('mousemove', onMouseMove);
+//         document.addEventListener('mouseup', onMouseUp);
+//       });
+
+//       return {
+//         dom: figure,
+//         contentDOM: caption,
+//         update: (updatedNode) => {
+//           if (updatedNode.type !== node.type) return false;
+
+//           const { src, alt, style } = updatedNode.attrs;
+
+//           if (src !== node.attrs.src) img.setAttribute('src', src);
+//           if (alt !== node.attrs.alt) img.setAttribute('alt', alt);
+//           if (style !== node.attrs.style)
+//             img.setAttribute(
+//               'style',
+//               style ||
+//                 'width: auto; max-width: 100%; transition: width 0.2s ease;'
+//             );
+
+//           return true;
+//         },
+//       };
+//     };
+//   },
+// });

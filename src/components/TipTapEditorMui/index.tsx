@@ -19,6 +19,7 @@ import {
   FileVideoIcon,
   FullScreenIcon,
   GridIcon,
+  GridIcon1x10x1,
   GridIcon2x8x2,
   GridIcon3x6x3,
   GridIcon3x9,
@@ -165,6 +166,7 @@ const arrFontFamily = [
 ];
 const arrFontSize = ['12', '14', '16', '18', '20'];
 const arrLayouts = [
+  { name: 'layout1x10x1', icon: GridIcon1x10x1, collum: 3 },
   { name: 'layout2x8x2', icon: GridIcon2x8x2, collum: 3 },
   { name: 'layout3x9', icon: GridIcon3x9, collum: 2 },
   { name: 'layout4x4x4', icon: GridIcon4x4x4, collum: 3 },
@@ -312,7 +314,7 @@ const TiptapMUI = () => {
       TextStyle,
       Color,
       Typography,
-      // ImageResize,
+      ImageResize,
       BackgroundColor,
       Subscript,
       FxNode,

@@ -93,6 +93,24 @@ export const GridIcon3x6x3 = `<svg width="30" height="20" xmlns="http://www.w3.o
     <text x="25" y="13" font-size="8" text-anchor="middle" fill="black">3</text>
   </g>
 </svg>`;
+export const GridIcon1x10x1 = `<svg width="30" height="20" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nền trắng -->
+  <rect x="0" y="0" width="30" height="20" fill="white" />
+
+  <g>
+    <!-- Hình vuông đầu tiên (10x20) -->
+    <rect x="0" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="5" y="13" font-size="8" text-anchor="middle" fill="black">1</text>
+
+    <!-- Hình vuông thứ hai (10x20) -->
+    <rect x="10" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="15" y="13" font-size="8" text-anchor="middle" fill="black">10</text>
+
+    <!-- Hình vuông thứ ba (10x20) -->
+    <rect x="20" y="0" width="10" height="20" fill="white" stroke="black"/>
+    <text x="25" y="13" font-size="8" text-anchor="middle" fill="black">1</text>
+  </g>
+</svg>`;
 
 export const GridIcon3x9 = `<svg width="30" height="20" xmlns="http://www.w3.org/2000/svg">
   <!-- Nền trắng -->
