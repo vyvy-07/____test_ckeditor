@@ -1,77 +1,3 @@
-// import { Node, mergeAttributes, CommandProps } from '@tiptap/core';
-// export interface FigureImageAttributes {
-//   src: string;
-//   alt?: string;
-//   caption?: string;
-// }
-
-// declare module '@tiptap/core' {
-//   interface Commands<ReturnType> {
-//     figureImage: {
-//       setFigureImage: (attributes: FigureImageAttributes) => ReturnType;
-//     };
-//   }
-// }
-
-// export const FigureImage = Node.create({
-//   name: 'figureImage',
-
-//   group: 'block',
-
-//   content: 'block*', // Cho phép caption có thể chỉnh sửa
-//   draggable: true,
-
-//   addAttributes() {
-//     return {
-//       src: {
-//         default: null,
-//       },
-//       alt: {
-//         default: '',
-//       },
-//     };
-//   },
-
-//   parseHTML() {
-//     return [
-//       {
-//         tag: 'figure',
-//       },
-//     ];
-//   },
-
-//   renderHTML({ HTMLAttributes, node }) {
-//     const { src, alt } = node.attrs;
-
-//     return [
-//       'figure',
-//       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-//       ['img', { src, alt }],
-//       ['figcaption', {}, 0], // `0` đại diện cho nội dung có thể chỉnh sửa
-//     ];
-//   },
-
-//   addCommands() {
-//     return {
-//       setFigureImage:
-//         ({ src, alt = '' }: { src: string; alt?: string }) =>
-//         ({ commands }) => {
-//           return commands.insertContent({
-//             type: this.name,
-//             attrs: { src, alt },
-//             content: [
-//               {
-//                 type: 'paragraph', // Cho phép nội dung chỉnh sửa bên trong figcaption
-//                 content: [{ type: 'text', text: 'Enter caption here' }],
-//               },
-//             ],
-//           });
-//         },
-//     };
-//   },
-// });
-
-////////////////////////////////////
 import { Node, mergeAttributes } from '@tiptap/core';
 
 export interface FigureImageAttributes {
@@ -88,449 +14,6 @@ declare module '@tiptap/core' {
   }
 }
 
-// import { Node, mergeAttributes } from '@tiptap/core';
-/////////////////////////////////////////////////10:14
-// export interface FigureImageAttributes {
-//   src: string;
-//   alt?: string;
-//   // caption?: string;
-// }
-
-// declare module '@tiptap/core' {
-//   interface Commands<ReturnType> {
-//     figureImage: {
-//       setFigureImage: (attributes: FigureImageAttributes) => ReturnType;
-//     };
-//   }
-// }
-// export const FigureImage = Node.create({
-//   name: 'figureImage',
-
-//   group: 'block',
-//   content: 'inline*',
-//   draggable: true,
-
-//   addAttributes() {
-//     return {
-//       src: { default: null },
-//       alt: { default: '' },
-//       style: { default: 'width: 100%; height: auto;' },
-//     };
-//   },
-
-//   parseHTML() {
-//     return [
-//       {
-//         tag: 'figure',
-//       },
-//     ];
-//   },
-
-//   renderHTML({ HTMLAttributes, node }) {
-//     const { src, alt, style } = node.attrs;
-//     return [
-//       'figure',
-//       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-//       ['img', { src, alt, style }],
-//       ['figcaption', {}, 0],
-//     ];
-//   },
-
-//   addCommands() {
-//     return {
-//       setFigureImage:
-//         ({ src, alt = '' }: { src: string; alt?: string }) =>
-//         ({ commands }) => {
-//           return commands.insertContent({
-//             type: this.name,
-//             attrs: { src, alt },
-//             content: [
-//               {
-//                 type: 'text',
-//                 text: 'Enter caption here',
-//               },
-//             ],
-//           });
-//         },
-//     };
-//   },
-
-//   addNodeView() {
-//     return ({ node, getPos, editor }) => {
-//       const { src, alt, style } = node.attrs;
-
-//       const figure = document.createElement('figure');
-//       figure.setAttribute(
-//         'style',
-//         `position: relative; display: inline-block; margin: 0; ${style || ''}`
-//       );
-
-//       const img = document.createElement('img');
-//       img.setAttribute('src', src);
-//       img.setAttribute('alt', alt);
-//       img.setAttribute(
-//         'style',
-//         style || 'width: auto; max-width: 100%; transition: width 0.2s ease;'
-//       );
-
-//       const caption = document.createElement('figcaption');
-//       caption.setAttribute('contenteditable', 'true');
-//       caption.textContent =
-//         node.content.size > 0 ? node.textContent : 'Enter caption here';
-
-//       figure.appendChild(img);
-//       figure.appendChild(caption);
-
-//       const resizeDot = document.createElement('div');
-//       resizeDot.style.position = 'absolute';
-//       resizeDot.style.right = '0';
-//       resizeDot.style.bottom = '0';
-//       resizeDot.style.width = '10px';
-//       resizeDot.style.height = '10px';
-//       resizeDot.style.background = 'rgba(0,0,0,0.5)';
-//       resizeDot.style.cursor = 'nwse-resize';
-//       resizeDot.style.zIndex = '10';
-//       figure.appendChild(resizeDot);
-
-//       let isResizing = false;
-//       let startX = 0;
-//       let startWidth = 0;
-
-//       const onMouseMove = (e: any) => {
-//         if (!isResizing) return;
-
-//         const deltaX = e.clientX - startX;
-//         const newWidth = Math.max(startWidth + deltaX, 50);
-
-//         img.style.width = `100%`;
-//         figure.style.width = `${newWidth}px`;
-//         // caption.style.width = `100%`;
-
-//         // Cập nhật style qua lệnh
-//         editor.commands.updateAttributes('figureImage', {
-//           style: `width: ${newWidth}px; height: auto; transition: width 0.2s ease;`,
-//         });
-//       };
-
-//       const onMouseUp = () => {
-//         isResizing = false;
-//         document.removeEventListener('mousemove', onMouseMove);
-//         document.removeEventListener('mouseup', onMouseUp);
-//       };
-
-//       resizeDot.addEventListener('mousedown', (e) => {
-//         e.preventDefault();
-//         isResizing = true;
-//         startX = e.clientX;
-//         startWidth = figure.offsetWidth;
-
-//         document.addEventListener('mousemove', onMouseMove);
-//         document.addEventListener('mouseup', onMouseUp);
-//       });
-
-//       return {
-//         dom: figure,
-//         contentDOM: caption,
-//         update: (updatedNode) => {
-//           if (updatedNode.type !== node.type) return false;
-
-//           const { src, alt, style } = updatedNode.attrs;
-
-//           if (src !== node.attrs.src) img.setAttribute('src', src);
-//           if (alt !== node.attrs.alt) img.setAttribute('alt', alt);
-//           if (style !== node.attrs.style)
-//             img.setAttribute(
-//               'style',
-//               style ||
-//                 'width: auto; max-width: 100%; transition: width 0.2s ease;'
-//             );
-
-//           return true;
-//         },
-//       };
-//     };
-//   },
-// });
-//////////////////////////////////////4:03
-// export const FigureImage = Node.create({
-//   name: 'figureImage',
-
-//   group: 'block',
-//   content: 'caption?', // Chỉ chứa block nội dung
-//   draggable: true,
-
-//   addAttributes() {
-//     return {
-//       src: { default: null },
-//       alt: { default: '' },
-//       style: { default: 'width: 100%; height: auto;' },
-//     };
-//   },
-
-//   parseHTML() {
-//     return [
-//       {
-//         tag: 'figure',
-//         getAttrs: (node) =>
-//           (node as HTMLElement).querySelector('figcaption') ? {} : false,
-//       },
-//     ];
-//   },
-
-//   renderHTML({ HTMLAttributes, node }) {
-//     const { src, alt, style } = node.attrs;
-//     return [
-//       'figure',
-//       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-//       ['img', { src, alt, style }],
-//       ['figcaption', {}, 0], // Render figcaption nếu có nội dung
-//     ];
-//   },
-
-//   addCommands() {
-//     return {
-//       setFigureImage:
-//         ({ src, alt = '' }: { src: string; alt?: string }) =>
-//         ({ commands }) => {
-//           return commands.insertContent({
-//             type: this.name,
-//             attrs: { src, alt },
-//             content: [
-//               {
-//                 type: 'caption',
-//                 content: [
-//                   {
-//                     type: 'text',
-//                     text: 'Enter caption here',
-//                   },
-//                 ],
-//               },
-//             ],
-//           });
-//         },
-//     };
-//   },
-
-//   addNodeView() {
-//     return ({ node, getPos, editor }) => {
-//       const { src, alt, style } = node.attrs;
-
-//       const figure = document.createElement('figure');
-//       figure.style.cssText = `position: relative; display: inline-block; margin: 0; ${
-//         style || ''
-//       }`;
-
-//       const img = document.createElement('img');
-//       img.src = src;
-//       img.alt = alt;
-//       img.style.cssText =
-//         'width: auto; max-width: 100%; transition: width 0.2s ease;';
-//       figure.appendChild(img);
-
-//       const figcaption = document.createElement('figcaption');
-//       figcaption.contentEditable = 'true';
-//       figcaption.textContent =
-//         node.content.size > 0 ? node.textContent : 'Enter caption here';
-//       figure.appendChild(figcaption);
-
-//       figcaption.addEventListener('input', () => {
-//         const newCaption = figcaption.textContent || '';
-//         editor.commands.updateAttributes('caption', { text: newCaption });
-//       });
-
-//       return {
-//         dom: figure,
-//         contentDOM: figcaption, // Nội dung editable của figcaption
-//         update: (updatedNode) => {
-//           if (updatedNode.type !== node.type) return false;
-
-//           const { src, alt, style } = updatedNode.attrs;
-
-//           if (src !== node.attrs.src) img.setAttribute('src', src);
-//           if (alt !== node.attrs.alt) img.setAttribute('alt', alt);
-//           if (style !== node.attrs.style)
-//             figure.style.cssText = `position: relative; display: inline-block; margin: 0; ${
-//               style || ''
-//             }`;
-
-//           return true;
-//         },
-//       };
-//     };
-//   },
-// });
-////////////////
-
-// import { Node } from '@tiptap/core';
-
-// Caption Node
-// declare module '@tiptap/core' {
-//   interface Commands<ReturnType> {
-//     caption: {
-//       setCaption: (text: string) => ReturnType;
-//     };
-//   }
-// }
-
-// // FigureImage Node
-// export const FigureImage = Node.create({
-//   name: 'figureImage',
-
-//   group: 'block',
-//   content: 'caption?',
-//   draggable: true,
-
-//   addAttributes() {
-//     return {
-//       src: { default: null },
-//       alt: { default: '' },
-//       style: { default: 'width: 100%; height: auto;' },
-//     };
-//   },
-
-//   parseHTML() {
-//     return [
-//       {
-//         tag: 'figure',
-//       },
-//     ];
-//   },
-
-//   renderHTML({ HTMLAttributes, node }) {
-//     const { src, alt, style } = node.attrs;
-//     return [
-//       'figure',
-//       HTMLAttributes,
-//       ['img', { src, alt, style }],
-//       0, // Placeholder for caption
-//     ];
-//   },
-
-//   addCommands() {
-//     return {
-//       setFigureImage:
-//         ({ src, alt = '' }: { src: string; alt?: string }) =>
-//         ({ commands }) => {
-//           return commands.insertContent({
-//             type: this.name,
-//             attrs: { src, alt },
-//           });
-//         },
-
-//       toggleCaption:
-//         () =>
-//         ({ state, dispatch }: { state: any; dispatch: any }) => {
-//           const { $from } = state.selection;
-//           const node = $from.node($from.depth);
-
-//           if (node.type.name === 'figureImage') {
-//             const hasCaption = node.content.size > 0;
-//             if (hasCaption) {
-//               // Remove Caption
-//               const tr = state.tr;
-//               tr.delete($from.pos + 1, $from.pos + 1 + node.nodeSize);
-//               dispatch(tr);
-//             } else {
-//               // Add Caption
-//               const tr = state.tr;
-//               tr.insert(
-//                 $from.pos + node.nodeSize - 1,
-//                 state.schema.nodes.caption.create()
-//               );
-//               dispatch(tr);
-//             }
-//             return true;
-//           }
-
-//           return false;
-//         },
-//     };
-//   },
-
-//   addNodeView() {
-//     return ({ node, getPos, editor }) => {
-//       const { src, alt, style } = node.attrs;
-
-//       const figure = document.createElement('figure');
-//       figure.style.cssText = `position: relative; display: inline-block; margin: 0; ${
-//         style || ''
-//       }`;
-
-//       const img = document.createElement('img');
-//       img.src = src;
-//       img.alt = alt;
-//       img.style.cssText =
-//         'width: auto; max-width: 100%; transition: width 0.2s ease;';
-//       figure.appendChild(img);
-
-//       const resizeDot = document.createElement('div');
-//       resizeDot.style.position = 'absolute';
-//       resizeDot.style.right = '0';
-//       resizeDot.style.bottom = '0';
-//       resizeDot.style.width = '10px';
-//       resizeDot.style.height = '10px';
-//       resizeDot.style.background = 'rgba(0,0,0,0.5)';
-//       resizeDot.style.cursor = 'nwse-resize';
-//       resizeDot.style.zIndex = '10';
-//       figure.appendChild(resizeDot);
-
-//       let isResizing = false;
-//       let startX = 0;
-//       let startWidth = 0;
-
-//       const onMouseMove = (e: MouseEvent) => {
-//         if (!isResizing) return;
-
-//         const deltaX = e.clientX - startX;
-//         const newWidth = Math.max(startWidth + deltaX, 50);
-
-//         img.style.width = '100%';
-//         figure.style.width = `${newWidth}px`;
-
-//         editor.commands.updateAttributes('figureImage', {
-//           style: `width: ${newWidth}px; height: auto; transition: width 0.2s ease;`,
-//         });
-//       };
-
-//       const onMouseUp = () => {
-//         isResizing = false;
-//         document.removeEventListener('mousemove', onMouseMove);
-//         document.removeEventListener('mouseup', onMouseUp);
-//       };
-
-//       resizeDot.addEventListener('mousedown', (e) => {
-//         e.preventDefault();
-//         isResizing = true;
-//         startX = e.clientX;
-//         startWidth = figure.offsetWidth;
-
-//         document.addEventListener('mousemove', onMouseMove);
-//         document.addEventListener('mouseup', onMouseUp);
-//       });
-
-//       return {
-//         dom: figure,
-//         contentDOM: document.createElement('figcaption'), // Placeholder for caption
-//         update: (updatedNode) => {
-//           if (updatedNode.type !== node.type) return false;
-
-//           const { src, alt, style } = updatedNode.attrs;
-
-//           if (src !== node.attrs.src) img.setAttribute('src', src);
-//           if (alt !== node.attrs.alt) img.setAttribute('alt', alt);
-//           if (style !== node.attrs.style)
-//             figure.style.cssText = `position: relative; display: inline-block; margin: 0; ${
-//               style || ''
-//             }`;
-
-//           return true;
-//         },
-//       };
-//     };
-//   },
-// });
-
-// import { Node, mergeAttributes } from '@tiptap/core';
 import { Plugin } from 'prosemirror-state';
 
 export interface FigureImageAttributes {
@@ -546,6 +29,7 @@ declare module '@tiptap/core' {
     };
   }
 }
+
 export const FigureImage = Node.create({
   name: 'figureImage',
 
@@ -557,7 +41,7 @@ export const FigureImage = Node.create({
     return {
       src: { default: null },
       alt: { default: '' },
-      style: { default: 'width: 100%; height: auto;' },
+      style: { default: 'width: initial; height: auto;' },
     };
   },
 
@@ -633,76 +117,80 @@ export const FigureImage = Node.create({
       const { src, alt, style } = node.attrs;
 
       const figure = document.createElement('figure');
-      figure.setAttribute(
-        'style',
-        `position: relative; display: inline-block; margin: 0; ${style || ''}`
-      );
+      figure.setAttribute('style', style);
 
       const img = document.createElement('img');
-      img.setAttribute('src', src);
-      img.setAttribute('alt', alt);
-      img.setAttribute(
-        'style',
-        style || 'width: auto; max-width: 100%; transition: width 0.2s ease;'
-      );
+      img.src = src;
+      img.alt = alt;
+      img.style.width = '100%';
+      img.style.height = 'auto';
 
       const caption = document.createElement('figcaption');
-      caption.setAttribute('contenteditable', 'true');
+      caption.contentEditable = 'true';
       caption.textContent = node.textContent || 'Enter caption here';
 
       caption.addEventListener('input', () => {
-        const newCaption = caption.textContent || 'Enter caption here';
+        const newText = caption.textContent || 'Enter caption here';
         editor.commands.updateAttributes('figureImage', {
-          content: [{ type: 'text', text: newCaption }],
+          content: [{ type: 'text', text: newText }],
         });
       });
 
-      // Add span to display the width of the figure
+      const resizeHandle = document.createElement('div');
+      resizeHandle.style.position = 'absolute';
+      resizeHandle.style.right = '0';
+      resizeHandle.style.bottom = '0';
+      resizeHandle.style.width = '10px';
+      resizeHandle.style.height = '10px';
+      resizeHandle.style.background = 'rgba(0,0,0,0.5)';
+      resizeHandle.style.cursor = 'nwse-resize';
+
+      // Thêm phần tử hiển thị chiều rộng
       const widthDisplay = document.createElement('span');
       widthDisplay.style.position = 'absolute';
-      widthDisplay.style.top = '0';
+      widthDisplay.style.top = '-20px';
       widthDisplay.style.right = '0';
-      widthDisplay.style.padding = '5px';
-      widthDisplay.style.backgroundColor = 'rgba(0,0,0,0.5)';
+      widthDisplay.style.padding = '2px 5px';
+      widthDisplay.style.background = 'rgba(0, 0, 0, 0.7)';
       widthDisplay.style.color = 'white';
-      widthDisplay.textContent = `${figure.offsetWidth}px`;
-      figure.appendChild(widthDisplay);
+      widthDisplay.style.fontSize = '12px';
+      widthDisplay.style.borderRadius = '3px';
+      widthDisplay.textContent = '100%'; // Giá trị mặc định
 
       figure.appendChild(img);
       figure.appendChild(caption);
-
-      const resizeDot = document.createElement('div');
-      resizeDot.style.position = 'absolute';
-      resizeDot.style.right = '0';
-      resizeDot.style.bottom = '0';
-      resizeDot.style.width = '10px';
-      resizeDot.style.height = '10px';
-      resizeDot.style.background = 'rgba(0,0,0,0.5)';
-      resizeDot.style.cursor = 'nwse-resize';
-      resizeDot.style.zIndex = '10';
-      figure.appendChild(resizeDot);
+      figure.appendChild(resizeHandle);
+      figure.appendChild(widthDisplay);
 
       let isResizing = false;
       let startX = 0;
-      let startWidth = 0;
-      const onMouseMove = (e: MouseEvent) => {
+      let initialWidth = 0;
+
+      const parentWidth = () => figure.parentElement?.offsetWidth || 1;
+
+      const onMouseMove = (event: MouseEvent) => {
         if (!isResizing) return;
 
-        const deltaX = e.clientX - startX;
-        const newWidth = Math.max(startWidth + deltaX, 50); // Minimum width is 50px.
+        const deltaX = event.clientX - startX;
 
-        // Update the width of the figure element
-        figure.style.width = `${newWidth}px`;
+        // Tính chiều rộng mới
+        const newWidth = Math.max(
+          Math.min(initialWidth + deltaX, parentWidth()),
+          0.05 * parentWidth() // Đặt giới hạn tối thiểu 5%
+        );
 
-        // Update the img element's width to match the figure width
-        img.style.width = `${newWidth}px`;
+        // Tính tỷ lệ % mới
+        const newWidthPercent = (newWidth / parentWidth()) * 100;
 
-        // Update the displayed width
-        widthDisplay.textContent = `${newWidth}px`;
+        // Cập nhật chiều rộng của figure
+        figure.style.width = `${newWidthPercent}%`;
 
-        // Optional: Update attributes for the figure image
+        // Cập nhật hiển thị chiều rộng
+        widthDisplay.textContent = `${Math.round(newWidthPercent)}%`;
+
+        // Cập nhật `style` vào editor
         editor.commands.updateAttributes('figureImage', {
-          style: `width: ${newWidth}px; height: auto; transition: width 0.2s ease;`,
+          style: `width: ${newWidthPercent}%; height: auto;`,
         });
       };
 
@@ -710,21 +198,13 @@ export const FigureImage = Node.create({
         isResizing = false;
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
-        const finalWidth = figure.offsetWidth;
-        // widthDisplay.textContent = `${finalWidth}px`;
-
-        // After resizing ends, update the width display with the final value
-        widthDisplay.textContent = `${figure.offsetWidth}px`;
       };
 
-      // After resizing ends, update the width display with the final value
-      // widthDisplay.textContent = `${figure.offsetWidth}px`;
-
-      resizeDot.addEventListener('mousedown', (e) => {
-        e.preventDefault();
+      resizeHandle.addEventListener('mousedown', (event) => {
+        event.preventDefault();
         isResizing = true;
-        startX = e.clientX;
-        startWidth = figure.offsetWidth;
+        startX = event.clientX;
+        initialWidth = figure.offsetWidth; // Lấy chiều rộng ban đầu
         document.addEventListener('mousemove', onMouseMove);
         document.addEventListener('mouseup', onMouseUp);
       });
@@ -733,18 +213,25 @@ export const FigureImage = Node.create({
         dom: figure,
         contentDOM: caption,
         update: (updatedNode) => {
+          // Không cập nhật nếu đang resize
+          if (isResizing) return true;
+
           if (updatedNode.type !== node.type) return false;
 
           const { src, alt, style } = updatedNode.attrs;
 
-          if (src !== node.attrs.src) img.setAttribute('src', src);
-          if (alt !== node.attrs.alt) img.setAttribute('alt', alt);
-          if (style !== node.attrs.style)
-            img.setAttribute(
-              'style',
-              style ||
-                'width: auto; max-width: 100%; transition: width 0.2s ease;'
-            );
+          if (src !== node.attrs.src) img.src = src;
+          if (alt !== node.attrs.alt) img.alt = alt;
+          if (style !== node.attrs.style) {
+            const matchWidth = style.match(/width: ([^;]+)/);
+            if (matchWidth) {
+              const newWidth = matchWidth[1];
+              figure.style.width = newWidth;
+
+              // Cập nhật hiển thị chiều rộng
+              widthDisplay.textContent = newWidth;
+            }
+          }
 
           return true;
         },
@@ -752,190 +239,3 @@ export const FigureImage = Node.create({
     };
   },
 });
-
-// export const FigureImage = Node.create({
-//   name: 'figureImage',
-
-//   group: 'block',
-//   content: 'inline*',
-//   draggable: true,
-
-//   addAttributes() {
-//     return {
-//       src: { default: null },
-//       alt: { default: '' },
-//       style: { default: 'width: 100%; height: auto;' },
-//     };
-//   },
-
-//   parseHTML() {
-//     return [
-//       {
-//         tag: 'figure',
-//       },
-//     ];
-//   },
-
-//   renderHTML({ HTMLAttributes, node }) {
-//     const { src, alt, style } = node.attrs;
-//     return [
-//       'figure',
-//       mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-//       ['img', { src, alt, style }],
-//       ['figcaption', {}, 0],
-//     ];
-//   },
-
-//   addCommands() {
-//     return {
-//       setFigureImage:
-//         ({ src, alt = '' }: { src: string; alt?: string }) =>
-//         ({ commands }) => {
-//           return commands.insertContent({
-//             type: this.name,
-//             attrs: { src, alt },
-//             content: [
-//               {
-//                 type: 'text',
-//                 text: 'Enter caption here',
-//               },
-//             ],
-//           });
-//         },
-//     };
-//   },
-
-//   addProseMirrorPlugins() {
-//     return [
-//       new Plugin({
-//         props: {
-//           handlePaste: (view, event) => {
-//             const clipboardData = event.clipboardData;
-//             const items = clipboardData?.items || [];
-//             for (const item of items) {
-//               if (item.type.startsWith('image/')) {
-//                 const file: any = item.getAsFile();
-//                 const src = URL.createObjectURL(file);
-
-//                 view.dispatch(
-//                   view.state.tr.replaceSelectionWith(
-//                     this.type.create({
-//                       attrs: { src, alt: 'Pasted image' },
-//                       content: [{ type: 'text', text: 'Enter caption here' }],
-//                     })
-//                   )
-//                 );
-//                 return true;
-//               }
-//             }
-//             return false;
-//           },
-//         },
-//       }),
-//     ];
-//   },
-
-//   addNodeView() {
-//     return ({ node, getPos, editor }) => {
-//       const { src, alt, style } = node.attrs;
-
-//       const figure = document.createElement('figure');
-//       figure.setAttribute(
-//         'style',
-//         `position: relative; display: inline-block; margin: 0; ${style || ''}`
-//       );
-
-//       const img = document.createElement('img');
-//       img.setAttribute('src', src);
-//       img.setAttribute('alt', alt);
-//       img.setAttribute(
-//         'style',
-//         style || 'width: auto; max-width: 100%; transition: width 0.2s ease;'
-//       );
-
-//       const caption = document.createElement('figcaption');
-//       caption.setAttribute('contenteditable', 'true');
-//       caption.textContent = node.textContent || 'Enter caption here';
-
-//       caption.addEventListener('input', () => {
-//         const newCaption = caption.textContent || 'Enter caption here';
-//         editor.commands.updateAttributes('figureImage', {
-//           content: [{ type: 'text', text: newCaption }],
-//         });
-//       });
-
-//       figure.appendChild(img);
-//       figure.appendChild(caption);
-
-//       const resizeDot = document.createElement('div');
-//       resizeDot.style.position = 'absolute';
-//       resizeDot.style.right = '0';
-//       resizeDot.style.bottom = '0';
-//       resizeDot.style.width = '10px';
-//       resizeDot.style.height = '10px';
-//       resizeDot.style.background = 'rgba(0,0,0,0.5)';
-//       resizeDot.style.cursor = 'nwse-resize';
-//       resizeDot.style.zIndex = '10';
-//       figure.appendChild(resizeDot);
-
-//       let isResizing = false;
-//       let startX = 0;
-//       let startWidth = 0;
-
-//       const onMouseMove = (e: MouseEvent) => {
-//         if (!isResizing) return;
-
-//         const deltaX = e.clientX - startX;
-//         const newWidth = Math.max(startWidth + deltaX, 50); // Minimum width is 50px.
-
-//         // Update the width of the figure element
-//         figure.style.width = `${newWidth}px`;
-
-//         // Update the img element's width to match the figure width
-//         img.style.width = `${newWidth}px`;
-
-//         // Optional: Update attributes for the figure image
-//         editor.commands.updateAttributes('figureImage', {
-//           style: `width: ${newWidth}px; height: auto; transition: width 0.2s ease;`,
-//         });
-//       };
-
-//       const onMouseUp = () => {
-//         isResizing = false;
-//         document.removeEventListener('mousemove', onMouseMove);
-//         document.removeEventListener('mouseup', onMouseUp);
-//       };
-
-//       resizeDot.addEventListener('mousedown', (e) => {
-//         e.preventDefault();
-//         isResizing = true;
-//         startX = e.clientX;
-//         startWidth = figure.offsetWidth;
-
-//         document.addEventListener('mousemove', onMouseMove);
-//         document.addEventListener('mouseup', onMouseUp);
-//       });
-
-//       return {
-//         dom: figure,
-//         contentDOM: caption,
-//         update: (updatedNode) => {
-//           if (updatedNode.type !== node.type) return false;
-
-//           const { src, alt, style } = updatedNode.attrs;
-
-//           if (src !== node.attrs.src) img.setAttribute('src', src);
-//           if (alt !== node.attrs.alt) img.setAttribute('alt', alt);
-//           if (style !== node.attrs.style)
-//             img.setAttribute(
-//               'style',
-//               style ||
-//                 'width: auto; max-width: 100%; transition: width 0.2s ease;'
-//             );
-
-//           return true;
-//         },
-//       };
-//     };
-//   },
-// });

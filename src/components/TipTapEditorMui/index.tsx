@@ -1089,7 +1089,7 @@ const TiptapMUI = () => {
 
         <EditorContent
           id="source-output"
-          className="content__editor-tiptap min-h-[300px]"
+          className="content__editor-tiptap min-h-[300px] overflow-hidden"
           editor={editor}
         />
         <pre
