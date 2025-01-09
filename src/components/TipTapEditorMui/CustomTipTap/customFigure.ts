@@ -115,10 +115,8 @@ export const FigureImage = Node.create({
   addNodeView() {
     return ({ node, getPos, editor }) => {
       const { src, alt, style } = node.attrs;
-
       const figure = document.createElement('figure');
       figure.setAttribute('style', style);
-
       const img = document.createElement('img');
       img.src = src;
       img.alt = alt;
