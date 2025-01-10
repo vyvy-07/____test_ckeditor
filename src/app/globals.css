@@ -454,12 +454,13 @@ figure {
 figcaption {
   @apply w-full  block text-center p-1 italic;
 }
-
-/* figure img {
+figure img {
   display: block;
-  width: 100%;
+  width: 100% !important;
   height: auto;
 }
+/* 
+
 
 figure div {
   position: absolute;
