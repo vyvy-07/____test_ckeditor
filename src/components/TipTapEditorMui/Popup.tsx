@@ -4,10 +4,10 @@ const PopupMedia = ({ image }: { image: (src: string) => void }) => {
   const [sourceImage, setSourceImage] = useState('');
   console.log('sourceImage :>> ', sourceImage);
   return (
-    <div className="fixed w-full h-full bg-white z-[90]">
+    <div className="fixed w-full h-full bg-white z-[90] px-2">
       <p
         onClick={() => image(sourceImage)}
-        className="block w-full text-[24px] top-0 text-end P-3 "
+        className="block w-full cursor-pointer text-[24px] top-0 text-end P-3 "
       >
         X
       </p>
@@ -16,7 +16,7 @@ const PopupMedia = ({ image }: { image: (src: string) => void }) => {
           <div
             key={item?.src}
             onClick={() => setSourceImage(item?.src)}
-            className=" "
+            className=" cursor-pointer"
           >
             <img
               src={item?.src}

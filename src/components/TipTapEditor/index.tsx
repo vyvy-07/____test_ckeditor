@@ -26,17 +26,13 @@ import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import ButtonEditor from '../ButtonEditor';
 import './style.css';
-
 import Image from '@tiptap/extension-image';
+import { useState } from 'react';
 import { CustomTable } from './CustomGridLayout';
 import { CustomCell } from './CustomGridLayout/CustomCell';
 import { CustomRow } from './CustomGridLayout/CustomRow';
-import { FigureImage } from './customFigure';
-import { ImageResize } from './ResizeImage';
-import { Caption } from './ResizeImage/Caption';
-import { ResizablePlugin } from './ResizePlugin';
-import { ToggleCaption } from './CustomImage/ToggleCaption';
-import { useState } from 'react';
+import { ResizableFigure } from './ResizeImage/ResizeOption';
+
 const arrLayouts = [
   { name: 'layout2x8x2', icon: GridIcon2x8x2, collum: 3 },
   { name: 'layout3x9', icon: GridIcon3x9, collum: 2 },
@@ -55,23 +51,35 @@ export const TiptapDefault = () => {
       Document,
       Image,
       // ImageWithCaption,
-      Caption,
-      ImageResize,
       Paragraph,
       Text,
       Blockquote,
       CustomTable,
       CustomRow,
       CustomCell,
-
+      // ResizableFigure,
       Heading.configure({
         levels: [1, 2, 3],
       }),
-      Caption,
+      ResizableFigure,
       // ToggleCaption,
-      FigureImage,
-      ResizablePlugin,
+      // FigureImage,
+      // ResizablePlugin,
+      // ResizableFigureNode,
       // ImageWithCaption,
+      // ResizableFigureNode,
+      // HTMLSerializer.configure({
+      //   // Configure the serializer to ensure style is kept
+      //   transform: (content) => {
+      //     return content.replace(/(<div[^>]+)>/g, (match) => {
+      //       // Customize style transformation if necessary
+      //       return match.replace(
+      //         'style="',
+      //         'style="width: 100%; height: auto; '
+      //       );
+      //     });
+      //   },
+      // }),
     ],
     // plugins: [ResizablePlugin],
     content: `
@@ -82,6 +90,7 @@ export const TiptapDefault = () => {
     `,
     immediatelyRender: false,
   });
+
   StarterKit.configure({
     heading: { levels: [1, 2, 3] }, // Limit headings to h1, h2, and h3
     codeBlock: false, // Disable code blocks
@@ -89,9 +98,7 @@ export const TiptapDefault = () => {
   const getSource = async () => {
     const source = editor.getHTML();
     if (source) {
-      // setDataHtml(source);
       setSourceHTML(source);
-      // return route.push('/html');
     }
   };
   const addImage = () => {
@@ -103,11 +110,13 @@ export const TiptapDefault = () => {
     if (!src || !editor) {
       return;
     }
-
-    editor.commands.setFigureImage({
-      src: src,
-      alt: 'dds',
-      caption: 'sds',
+    editor.commands.insertContent({
+      type: 'resizableFigure',
+      attrs: {
+        src: src,
+        width: '100%',
+        height: 'auto',
+      },
     });
   };
 

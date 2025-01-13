@@ -102,7 +102,7 @@ import { BackgroundColor } from './CustomTipTap/BackgroundColor ';
 import { PageBreak } from './CustomTipTap/BreakPage';
 import { FontSize } from './CustomTipTap/FontSize';
 import { FxNode } from './CustomTipTap/FxMath';
-import { ResizableImage } from './CustomTipTap/ResizeImageTool';
+// import { ResizableImage } from './CustomTipTap/ResizeImageTool';
 import SpecialCharacter from './CustomTipTap/SpecialCharacter';
 import { CustomVideo } from './CustomTipTap/URLVideoCustom';
 import './editor.css';
@@ -119,6 +119,7 @@ import './style.css';
 import { useSource } from '../SourceContext';
 import { FigureImage } from './CustomTipTap/customFigure';
 import { Caption } from './CustomTipTap/Caption';
+import { ResizableFigure } from './CustomTipTap/ImageResize';
 const lowlight = createLowlight();
 lowlight.register('html', html);
 lowlight.register('css', css);
@@ -304,26 +305,18 @@ const TiptapMUI = () => {
   const editor: any = useEditor({
     extensions: [
       Underline,
-      // Caption,
-      // ImageWithCaption,
       SpecialCharacter,
       CustomTable,
-      // Caption,
       CustomRow,
       CustomCell,
       TextStyle,
       Color,
       Typography,
-      ImageResize,
       BackgroundColor,
       Subscript,
       FxNode,
       FigureImage,
-      StarterKit.configure({
-        // heading: {
-        //   levels: [1, 2, 3, 4],
-        // },
-      }),
+      StarterKit.configure({}),
       Link.configure({
         openOnClick: false,
         autolink: true,
@@ -429,7 +422,6 @@ const TiptapMUI = () => {
       Image,
       CustomVideo,
       Dropcursor,
-      ResizableImage,
       FontSize,
       Table.configure({
         resizable: true,
@@ -445,6 +437,7 @@ const TiptapMUI = () => {
 
       PageBreak,
       HorizontalRule,
+      ResizableFigure,
     ],
 
     content: `
@@ -593,9 +586,13 @@ const TiptapMUI = () => {
     if (!src || !editor) {
       return;
     }
-    editor.commands.setFigureImage({
-      src: src, // URL hình ảnh
-      alt: 'Sample Image', // Mô tả thay thế
+    editor.commands.insertContent({
+      type: 'resizableFigure',
+      attrs: {
+        src: src,
+        width: '100%',
+        height: 'auto',
+      },
     });
 
     console.log('Image inserted with src: ', src);

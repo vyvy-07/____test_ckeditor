@@ -191,7 +191,7 @@ blockquote {
 .toolbar button:hover {
   background-color: #eaeaea;
 } */
-figure {
+/* figure {
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -202,7 +202,7 @@ figcaption {
   font-size: 0.8em;
   text-align: center;
   color: gray;
-}
+} */
 
 img {
   cursor: pointer;
@@ -210,9 +210,9 @@ img {
 }
 /* ////////////// */
 
-figcaption {
-  margin-top: 10px; /* Khoảng cách giữa ảnh và caption */
-  text-align: center; /* Căn giữa caption */
+/* figcaption {
+  margin-top: 10px; 
+  text-align: 
   width: 100%;
   font-size: 14px;
   overflow: hidden;
@@ -222,9 +222,7 @@ figcaption {
 figure {
   display: inline-block;
   position: relative;
-  /* width: 100%; */
   height: fit-content;
-  /* resize: both; */
   overflow: hidden;
 }
 
@@ -236,4 +234,4 @@ figure {
   height: 10px;
   background-color: blue;
   cursor: nwse-resize;
-}
+} */
