@@ -28,10 +28,10 @@ export const ResizableFigure = Node.create<ResizableFigureOptions>({
         default: 'https://via.placeholder.com/300x150',
       },
       width: {
-        default: '100%',
+        default: '300px',
       },
       height: {
-        default: 'auto',
+        default: '200px',
       },
     };
   },
@@ -78,109 +78,87 @@ class ResizableFigureView implements NodeView {
     this.getPos = getPos;
     this.editor = editor;
 
-    // Tạo DOM chính cho Node
+    // Create the main DOM for the Node
     this.dom = document.createElement('div');
     this.dom.classList.add('resizable-figure');
     this.dom.setAttribute('data-type', 'resizable-figure');
     this.dom.style.position = 'relative';
-    this.dom.style.width = `${
-      (parseFloat(node.attrs.width) / this.getEditorWidth()) * 100
-    }%`;
+    this.dom.style.width = node.attrs.width; // Preserve width in node.attrs
     this.dom.style.height = node.attrs.height;
     this.dom.style.resize = 'both';
     this.dom.style.overflow = 'hidden';
     this.dom.style.border = '1px solid #ccc';
     this.dom.style.maxWidth = '100%';
 
-    // Tạo figure
+    // Create the figure
     const figure = document.createElement('figure');
     figure.style.margin = '0';
     figure.style.display = 'flex';
     figure.style.flexDirection = 'column';
     figure.style.alignItems = 'center';
 
-    // Tạo img
+    // Create img
     const img = document.createElement('img');
     img.src = node.attrs.src;
     img.style.width = '100%';
     img.style.height = 'auto';
 
-    // Tạo figcaption (editable content)
+    // Create figcaption (editable content)
     const figcaption = document.createElement('figcaption');
     figcaption.style.marginTop = '10px';
     figcaption.style.fontSize = '14px';
     figcaption.style.color = '#555';
     figcaption.style.textAlign = 'center';
-    figcaption.contentEditable = 'true'; // Cho phép chỉnh sửa nội dung
+    figcaption.contentEditable = 'true'; // Allow editing by default
     figcaption.setAttribute('data-placeholder', 'Enter caption...');
     if (!figcaption.innerHTML.trim()) {
       figcaption.innerHTML = 'typing caption';
     }
+    // Connect editable content area
     this.contentDOM = figcaption;
 
+    // Append elements
     figure.appendChild(img);
     figure.appendChild(figcaption);
     this.dom.appendChild(figure);
 
-    // Lắng nghe sự kiện thay đổi kích thước của phần tử
-    this.dom.addEventListener('resize', () => this.updateNodeAttributes());
-
-    // Lắng nghe sự kiện thay đổi kích thước của khung cha (editor)
-    window.addEventListener('resize', () => {
-      return this.updateWidthPercentage();
-    });
+    // Listen for resize changes
+    this.dom.addEventListener('mouseup', this.updateNodeAttributes.bind(this));
   }
 
-  // Lấy chiều rộng của editor hiện tại
-  getEditorWidth() {
-    const editorElement = document.querySelector(
-      '.tiptap__editor'
-    ) as HTMLElement;
-    return editorElement ? editorElement.getBoundingClientRect().width : 0;
+  // Toggle the visibility and editability of the caption
+  toggleCaption() {
+    const figcaption = this.contentDOM;
+    if (figcaption.contentEditable === 'true') {
+      // Make the figcaption non-editable and hide it
+      figcaption.contentEditable = 'false';
+    } else {
+      // Make the figcaption editable and show it
+      figcaption.contentEditable = 'true';
+    }
   }
 
-  // Cập nhật kích thước (phần trăm) khi thay đổi kích thước khung cha
-  updateWidthPercentage() {
-    const editorWidth = this.getEditorWidth();
-    const currentWidthPx = this.dom.offsetWidth;
-    const widthPercentage = (currentWidthPx / editorWidth) * 100;
-
-    // Cập nhật chiều rộng của phần tử
-    this.dom.style.width = `${Math.min(widthPercentage, 100)}%`;
-
-    // Đồng bộ lại node.attrs
-    this.editor.commands.command(({ tr }: any) => {
-      tr.setNodeMarkup(this.getPos(), undefined, {
-        ...this.node.attrs,
-        width: `${Math.min(widthPercentage, 100)}%`, // Đảm bảo chiều rộng không vượt quá 100%
-      });
-      return true;
-    });
-  }
-
-  // Cập nhật thuộc tính khi thay đổi kích thước
+  // Update node attributes when resizing
   updateNodeAttributes() {
-    const editorWidth = this.getEditorWidth();
-    const widthPx = this.dom.offsetWidth;
-    const heightPx = this.dom.offsetHeight;
-    const widthPercentage = (widthPx / editorWidth) * 100;
+    const width = `${this.dom.offsetWidth}px`;
+    const height = `${this.dom.offsetHeight}px`;
 
-    // Cập nhật DOM
-    this.dom.style.width = `${Math.min(widthPercentage, 100)}%`;
-    this.dom.style.height = `${heightPx}px`;
+    // Update the DOM style directly
+    this.dom.style.width = width;
+    this.dom.style.height = height;
 
-    // Cập nhật node.attrs trong ProseMirror
+    // Update the node.attrs in ProseMirror
     this.editor.commands.command(({ tr }: any) => {
       tr.setNodeMarkup(this.getPos(), undefined, {
         ...this.node.attrs,
-        width: `${Math.min(widthPercentage, 100)}%`, // Lưu chiều rộng dưới dạng %
-        height: `${heightPx}px`,
+        width,
+        height,
       });
       return true;
     });
   }
 
-  // Không bỏ qua nội dung con trong figcaption
+  // Prevent mutation handling for caption content
   ignoreMutation(mutation: any) {
     if (mutation.type === 'characterData' || mutation.type === 'childList') {
       return false;
