@@ -28,10 +28,10 @@ export const ResizableFigure = Node.create<ResizableFigureOptions>({
         default: 'https://via.placeholder.com/300x150',
       },
       width: {
-        default: '300px',
+        default: '100%',
       },
       height: {
-        default: '200px',
+        default: 'auto',
       },
     };
   },
@@ -83,11 +83,14 @@ class ResizableFigureView implements NodeView {
     this.dom.classList.add('resizable-figure');
     this.dom.setAttribute('data-type', 'resizable-figure');
     this.dom.style.position = 'relative';
-    this.dom.style.width = node.attrs.width; // Lưu width trong node.attrs
+    this.dom.style.width = `${
+      (parseFloat(node.attrs.width) / this.getEditorWidth()) * 100
+    }%`;
     this.dom.style.height = node.attrs.height;
     this.dom.style.resize = 'both';
     this.dom.style.overflow = 'hidden';
     this.dom.style.border = '1px solid #ccc';
+    this.dom.style.maxWidth = '100%';
 
     // Tạo figure
     const figure = document.createElement('figure');
@@ -113,35 +116,65 @@ class ResizableFigureView implements NodeView {
     if (!figcaption.innerHTML.trim()) {
       figcaption.innerHTML = 'typing caption';
     }
-    // Kết nối vùng nội dung editable
     this.contentDOM = figcaption;
 
-    // Gắn vào figure
     figure.appendChild(img);
     figure.appendChild(figcaption);
-
-    // Gắn vào DOM chính
     this.dom.appendChild(figure);
 
-    // Lắng nghe thay đổi kích thước
-    this.dom.addEventListener('mouseup', this.updateNodeAttributes.bind(this));
+    // Lắng nghe sự kiện thay đổi kích thước của phần tử
+    this.dom.addEventListener('resize', () => this.updateNodeAttributes());
+
+    // Lắng nghe sự kiện thay đổi kích thước của khung cha (editor)
+    window.addEventListener('resize', () => {
+      return this.updateWidthPercentage();
+    });
+  }
+
+  // Lấy chiều rộng của editor hiện tại
+  getEditorWidth() {
+    const editorElement = document.querySelector(
+      '.tiptap__editor'
+    ) as HTMLElement;
+    return editorElement ? editorElement.getBoundingClientRect().width : 0;
+  }
+
+  // Cập nhật kích thước (phần trăm) khi thay đổi kích thước khung cha
+  updateWidthPercentage() {
+    const editorWidth = this.getEditorWidth();
+    const currentWidthPx = this.dom.offsetWidth;
+    const widthPercentage = (currentWidthPx / editorWidth) * 100;
+
+    // Cập nhật chiều rộng của phần tử
+    this.dom.style.width = `${Math.min(widthPercentage, 100)}%`;
+
+    // Đồng bộ lại node.attrs
+    this.editor.commands.command(({ tr }: any) => {
+      tr.setNodeMarkup(this.getPos(), undefined, {
+        ...this.node.attrs,
+        width: `${Math.min(widthPercentage, 100)}%`, // Đảm bảo chiều rộng không vượt quá 100%
+      });
+      return true;
+    });
   }
 
   // Cập nhật thuộc tính khi thay đổi kích thước
   updateNodeAttributes() {
-    const width = `${this.dom.offsetWidth}px`;
-    const height = `${this.dom.offsetHeight}px`;
+    const editorWidth = this.getEditorWidth();
+    const widthPx = this.dom.offsetWidth;
+    const heightPx = this.dom.offsetHeight;
+    const widthPercentage = (widthPx / editorWidth) * 100;
 
-    // Cập nhật style DOM trực tiếp
-    this.dom.style.width = width;
-    this.dom.style.height = height;
+    // Cập nhật DOM
+    this.dom.style.width = `${Math.min(widthPercentage, 100)}%`;
+    this.dom.style.height = `${heightPx}px`;
 
     // Cập nhật node.attrs trong ProseMirror
     this.editor.commands.command(({ tr }: any) => {
       tr.setNodeMarkup(this.getPos(), undefined, {
         ...this.node.attrs,
-        width,
-        height,
+        width: `${Math.min(widthPercentage, 100)}%`, // Lưu chiều rộng dưới dạng %
+        height: `${heightPx}px`,
       });
       return true;
     });
