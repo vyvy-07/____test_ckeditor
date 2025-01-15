@@ -1,12 +1,16 @@
 import { DATA_IMAGE } from '@/constant/DataImg';
 import { useState } from 'react';
-const PopupMedia = ({ image }: { image: (src: string) => void }) => {
-  const [sourceImage, setSourceImage] = useState('');
-  console.log('sourceImage :>> ', sourceImage);
+export interface DataImage {
+  src: string;
+  alt: string;
+  fileName: string;
+}
+const PopupMedia = ({ image }: { image: any }) => {
+  const [dataImage, setDataImage] = useState<DataImage>();
   return (
     <div className="fixed w-full h-full bg-white z-[90] px-2">
       <p
-        onClick={() => image(sourceImage)}
+        onClick={() => image(dataImage)}
         className="block w-full cursor-pointer text-[24px] top-0 text-end P-3 "
       >
         X
@@ -15,7 +19,7 @@ const PopupMedia = ({ image }: { image: (src: string) => void }) => {
         {DATA_IMAGE?.map((item) => (
           <div
             key={item?.src}
-            onClick={() => setSourceImage(item?.src)}
+            onClick={() => setDataImage(item)}
             className=" cursor-pointer"
           >
             <img

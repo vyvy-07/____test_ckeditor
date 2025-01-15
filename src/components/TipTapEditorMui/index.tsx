@@ -106,7 +106,7 @@ import { FxNode } from './CustomTipTap/FxMath';
 import SpecialCharacter from './CustomTipTap/SpecialCharacter';
 import { CustomVideo } from './CustomTipTap/URLVideoCustom';
 import './editor.css';
-import PopupMedia from './Popup';
+import PopupMedia, { type DataImage } from './Popup';
 import {
   BlockquoteBoxBlue,
   BlockquoteBoxGreen,
@@ -165,7 +165,18 @@ const arrFontFamily = [
   '"Lucida Console", Monaco',
   '"Gill Sans", "Gill Sans MT"',
 ];
-const arrFontSize = ['12', '14', '16', '18', '20'];
+const arrFontSize = [
+  '12',
+  '14',
+  '16',
+  '18',
+  '20',
+  '28',
+  '30',
+  '32',
+  '36',
+  '38',
+];
 const arrLayouts = [
   { name: 'layout1x10x1', icon: GridIcon1x10x1, collum: 3 },
   { name: 'layout2x8x2', icon: GridIcon2x8x2, collum: 3 },
@@ -448,6 +459,7 @@ const TiptapMUI = () => {
     `,
     immediatelyRender: false,
   });
+
   // const token = `${process.env.NEXT_TOKEN}`;
 
   useEffect(() => {
@@ -568,34 +580,23 @@ const TiptapMUI = () => {
       // return route.push('/html');
     }
   };
-  const handleGetImage = (src: string) => {
+  const handleGetImage = (dataImage: DataImage) => {
     setIsOpenPopUp(false);
-    addImage(src);
+    addImage(dataImage);
   };
-  // const addImage = (url: string) => {
-  //   if (url) {
-  //     editor.chain().focus().setImage({ src: url }).run();
-  //   }
-  // };
-  const addImage = (src: string) => {
-    // const src = prompt(
-    //   'Enter image URL:',
-    //   'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtbAKcCLLFn6XZUsNl16-pGGH1Aj6Z01s9OQ&s'
-    // );
-
-    if (!src || !editor) {
+  const addImage = (dataImage: DataImage) => {
+    if (!dataImage || !editor) {
       return;
     }
     editor.commands.insertContent({
       type: 'resizableFigure',
       attrs: {
-        src: src,
+        src: dataImage?.src,
         width: '100%',
         height: 'auto',
+        alt: dataImage?.alt,
       },
     });
-
-    console.log('Image inserted with src: ', src);
   };
   return (
     <>
@@ -999,29 +1000,6 @@ const TiptapMUI = () => {
                   })}
               </Select>
             </FormControl>
-            |{/*text alignment */}
-            <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
-              <Select
-                className="outline-none text-[14px] w-[70px] h-[40px]"
-                value={alignment}
-                onChange={handleChangeAlignment}
-                defaultValue="left"
-                style={{ fontFamily: `${alignment}` }}
-              >
-                {arrTextAlign?.map((align, index) => (
-                  <MenuItem value={align?.name} key={align?.name || index}>
-                    <ButtonEditor
-                      editor={editor}
-                      element="textAlign"
-                      extension="TextAlign"
-                      icon={align?.icon}
-                      param={align?.name}
-                      setFunc={true}
-                    />
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
             {/* blockquote */}
             <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
               <Select
@@ -1101,8 +1079,6 @@ const TiptapMUI = () => {
           {sourceHTML}
         </pre>
       </div>
-
-      {/* <div onClick={getSource}>Xem trên Web</div> */}
     </>
   );
 };

@@ -33,6 +33,7 @@ export const ResizableFigure = Node.create<ResizableFigureOptions>({
       height: {
         default: '200px',
       },
+      alt: '',
     };
   },
 
@@ -54,7 +55,7 @@ export const ResizableFigure = Node.create<ResizableFigureOptions>({
       [
         'figure',
         {},
-        ['img', { src: HTMLAttributes.src }],
+        ['img', { src: HTMLAttributes.src, alt: HTMLAttributes.alt }],
         ['figcaption', {}, 0],
       ],
     ];
@@ -100,6 +101,7 @@ class ResizableFigureView implements NodeView {
     // Create img
     const img = document.createElement('img');
     img.src = node.attrs.src;
+    img.alt = node.attrs.alt;
     img.style.width = '100%';
     img.style.height = 'auto';
 
