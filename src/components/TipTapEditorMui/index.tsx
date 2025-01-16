@@ -762,7 +762,7 @@ const TiptapMUI = () => {
             |{/*  FontFamily */}
             <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
               <Select
-                className="outline-none form-fontFamily text-[14px] w-fit h-[40px]"
+                className="outline-none form-fontFamily text-[14px] w-fit px-1 h-[40px]"
                 value={fontFamily}
                 onChange={handleChangeFontFamily}
                 defaultValue="monica"
@@ -1003,7 +1003,7 @@ const TiptapMUI = () => {
             {/* blockquote */}
             <FormControl className="formControl" sx={{ m: 1, minWidth: 120 }}>
               <Select
-                className=" outline-none text-[14px] w-fit h-[40px]"
+                className=" outline-none text-[14px] w-fit px-1 h-[40px]"
                 value={iconQuotes}
                 onChange={handleChange}
               >
