@@ -32,6 +32,7 @@ import { CustomTable } from './CustomGridLayout';
 import { CustomCell } from './CustomGridLayout/CustomCell';
 import { CustomRow } from './CustomGridLayout/CustomRow';
 import { ResizableFigure } from './ResizeImage/ResizeOption';
+import Link from '@tiptap/extension-link';
 
 const arrLayouts = [
   { name: 'layout2x8x2', icon: GridIcon2x8x2, collum: 3 },
@@ -62,24 +63,7 @@ export const TiptapDefault = () => {
         levels: [1, 2, 3],
       }),
       ResizableFigure,
-      // ToggleCaption,
-      // FigureImage,
-      // ResizablePlugin,
-      // ResizableFigureNode,
-      // ImageWithCaption,
-      // ResizableFigureNode,
-      // HTMLSerializer.configure({
-      //   // Configure the serializer to ensure style is kept
-      //   transform: (content) => {
-      //     return content.replace(/(<div[^>]+)>/g, (match) => {
-      //       // Customize style transformation if necessary
-      //       return match.replace(
-      //         'style="',
-      //         'style="width: 100%; height: auto; '
-      //       );
-      //     });
-      //   },
-      // }),
+      Link,
     ],
     // plugins: [ResizablePlugin],
     content: `
@@ -221,7 +205,19 @@ export const TiptapDefault = () => {
           />
         </div>
       </div>
-
+      <button
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => editor.chain().focus().toggleCustomLink().run()}
+        className={editor.isActive('customLink') ? 'is-active' : ''}
+      >
+        Toggle Link
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleCustomLink().run()}
+        className={editor.isActive('customLink') ? 'is-active' : ''}
+      >
+        Set Link
+      </button>
       <EditorContent
         className="editor_tiptap max-w-[1000px] min-h-[500px]"
         editor={editor}

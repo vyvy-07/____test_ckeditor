@@ -50,6 +50,7 @@ import {
   TableRigthCol,
   TableTop,
   UnderlineIcon,
+  UnLink,
   VideoIcon,
 } from '@/constant/icons';
 import {
@@ -505,10 +506,42 @@ const TiptapMUI = () => {
     }
   };
 
+  if (!editor) {
+    return null;
+  }
+
   const insertFx = () => {
     const formula = prompt('');
     if (formula) {
       editor?.commands.insertFx(formula);
+    }
+  };
+  const setLink = () => {
+    const previousUrl = editor.getAttributes('link').href;
+    const url = window.prompt('URL', previousUrl);
+
+    // cancelled
+    if (url === null) {
+      return;
+    }
+
+    // empty
+    if (url === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+
+      return;
+    }
+
+    // update link
+    try {
+      editor
+        .chain()
+        .focus()
+        .extendMarkRange('link')
+        .setLink({ href: url })
+        .run();
+    } catch (e: any) {
+      alert(e.message);
     }
   };
   const removeFormat = () => {
@@ -750,14 +783,15 @@ const TiptapMUI = () => {
             ))}
             <ButtonCustomCss
               onMouseDown={(e) => e.preventDefault()}
-              onClick={() => {
-                if (!editor.isFocused) {
-                  editor.chain().focus().run(); // Ensure focus
-                }
-                editor.chain().focus().redo().run();
-              }}
+              onClick={setLink}
             >
               <span dangerouslySetInnerHTML={{ __html: LinkSVG }}></span>
+            </ButtonCustomCss>
+            <ButtonCustomCss
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => editor.chain().focus().unsetLink().run()}
+            >
+              <span dangerouslySetInnerHTML={{ __html: UnLink }}></span>
             </ButtonCustomCss>
             |{/*  FontFamily */}
             <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
