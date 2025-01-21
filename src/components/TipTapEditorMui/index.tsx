@@ -657,10 +657,12 @@ const TiptapMUI = () => {
                 removeFormat();
               }}
               disabled={!editor?.isEditable}
-              className={`${
+              className={`button_toolbar ${
                 !editor?.isEditable && 'disabled:opacity-50'
               } cursor-pointer`}
             >
+              <span className="button_toolbar_hover">removeFormat</span>
+
               <span
                 dangerouslySetInnerHTML={{ __html: ClearFormatIcon }}
               ></span>
@@ -675,7 +677,10 @@ const TiptapMUI = () => {
                 editor.chain().focus().undo().run();
               }}
               disabled={!editor.can().undo()}
+              className="button_toolbar"
             >
+              <span className="button_toolbar_hover">undo</span>
+
               <span dangerouslySetInnerHTML={{ __html: BackLeftIcon }}></span>
             </ButtonCustomCss>
             {/* undo / redo */}
@@ -688,7 +693,10 @@ const TiptapMUI = () => {
                 editor.chain().focus().redo().run();
               }}
               disabled={!editor.can().redo()}
+              className="button_toolbar"
             >
+              <span className="button_toolbar_hover">redo</span>
+
               <span dangerouslySetInnerHTML={{ __html: BackRigthIcon }}></span>
             </ButtonCustomCss>
             |{/* Heading */}
@@ -784,13 +792,19 @@ const TiptapMUI = () => {
             <ButtonCustomCss
               onMouseDown={(e) => e.preventDefault()}
               onClick={setLink}
+              className="button_toolbar "
             >
+              <span className="button_toolbar_hover">Link</span>
+
               <span dangerouslySetInnerHTML={{ __html: LinkSVG }}></span>
             </ButtonCustomCss>
             <ButtonCustomCss
+              className="button_toolbar "
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().unsetLink().run()}
             >
+              <span className="button_toolbar_hover">unLink</span>
+
               <span dangerouslySetInnerHTML={{ __html: UnLink }}></span>
             </ButtonCustomCss>
             |{/*  FontFamily */}
@@ -821,7 +835,9 @@ const TiptapMUI = () => {
               </Select>
             </FormControl>
             {/* text color */}
-            <div className="relative ">
+            <div className="relative button_toolbar ">
+              <span className="button_toolbar_hover">Text color</span>
+
               <span className="block  relative z-10 pointer-events-none">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -850,7 +866,8 @@ const TiptapMUI = () => {
               />
             </div>
             {/* background color */}
-            <div className="relative ">
+            <div className="relative button_toolbar ">
+              <span className="button_toolbar_hover">Background-color</span>
               <span className="block  relative z-10 pointer-events-none">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -891,21 +908,26 @@ const TiptapMUI = () => {
             <button
               onClick={() => setIsOpenPopUp(true)}
               onMouseDown={(e) => e.preventDefault()}
+              className="button_toolbar "
             >
+              <span className="button_toolbar_hover">Insert image </span>
               <span dangerouslySetInnerHTML={{ __html: IMGIcon }}></span>
             </button>
             <button
               onClick={handleInsertVideo}
               onMouseDown={(e) => e.preventDefault()}
+              className="button_toolbar "
             >
+              <span className="button_toolbar_hover">Link Youtube</span>
               <span dangerouslySetInnerHTML={{ __html: VideoIcon }}></span>
             </button>
             {/* add Link Youtube Video */}
             <ButtonCustomCss
               onMouseDown={(e) => e.preventDefault()}
               onClick={addYoutubeVideo}
-              className={editor.isActive('link') ? 'is-active' : ''}
+              className={` button_toolbar  `}
             >
+              <span className="button_toolbar_hover">insert File Video</span>
               <span dangerouslySetInnerHTML={{ __html: FileVideoIcon }}></span>
             </ButtonCustomCss>{' '}
             |
@@ -930,15 +952,18 @@ const TiptapMUI = () => {
             ))}
             <button
               onClick={insertFx}
-              className=""
               onMouseDown={(e) => e.preventDefault()}
+              className="button_toolbar "
             >
+              <span className="button_toolbar_hover">Math Fx</span>
               <Latex>$f x$</Latex>
             </button>
             <button
               onMouseDown={(e) => e.preventDefault()}
               onClick={() => editor.chain().focus().setPageBreak().run()}
+              className="button_toolbar "
             >
+              <span className="button_toolbar_hover">PageBreak</span>
               <span dangerouslySetInnerHTML={{ __html: BreakPage }}></span>
             </button>
             <div className="tiptap__table relative">
@@ -947,7 +972,9 @@ const TiptapMUI = () => {
                 onClick={() => {
                   setOpenToolTable(!openToolTable);
                 }}
+                className="button_toolbar "
               >
+                <span className="button_toolbar_hover">Table</span>
                 <span dangerouslySetInnerHTML={{ __html: TableIcon }}></span>
               </button>
               {openToolTable && (
@@ -976,14 +1003,18 @@ const TiptapMUI = () => {
             <button
               onClick={toggleFullscreen}
               onMouseDown={(e) => e.preventDefault()}
+              className="button_toolbar "
             >
+              <span className="button_toolbar_hover">Fullscreen</span>
               <span dangerouslySetInnerHTML={{ __html: FullScreenIcon }}></span>
             </button>
             <div className="relative">
               <button
                 onMouseDown={(e) => e.preventDefault()}
                 onClick={() => setOpenSpecialChar(!openSpecialChar)}
+                className="button_toolbar "
               >
+                <span className="button_toolbar_hover">Characters special</span>
                 ∑
               </button>
               {openSpecialChar && (
@@ -1016,7 +1047,7 @@ const TiptapMUI = () => {
                     return (
                       <MenuItem key={item?.name || index} value={item?.icon}>
                         <ButtonCustomCss
-                          className="w-full"
+                          className="w-full button_toolbar "
                           onMouseDown={(e) => e.preventDefault()}
                           onClick={() =>
                             editor.commands.insertCustomTable(
@@ -1025,6 +1056,9 @@ const TiptapMUI = () => {
                             )
                           }
                         >
+                          <span className="button_toolbar_hover">
+                            {item?.name}
+                          </span>
                           <span
                             dangerouslySetInnerHTML={{ __html: item?.icon }}
                           ></span>
@@ -1061,7 +1095,13 @@ const TiptapMUI = () => {
               </Select>
             </FormControl>
             {/* Widget */}
-            <button onClick={getSource} onMouseDown={(e) => e.preventDefault()}>
+            <button
+              onClick={getSource}
+              onMouseDown={(e) => e.preventDefault()}
+              className="button_toolbar"
+            >
+              <span className="button_toolbar_hover">SourceHtml</span>
+
               <span dangerouslySetInnerHTML={{ __html: SourceHtml }}></span>
             </button>
             <FormControl className="formControl " sx={{ m: 1, minWidth: 120 }}>
@@ -1075,7 +1115,10 @@ const TiptapMUI = () => {
                 </MenuItem>
                 {dataWidget?.map((item: any, index) => (
                   <MenuItem value={item?.name} key={item?.name || index}>
-                    <ButtonCustomCss onMouseDown={(e) => e.preventDefault()}>
+                    <ButtonCustomCss
+                      className=""
+                      onMouseDown={(e) => e.preventDefault()}
+                    >
                       <span>{item?.name}</span>
                     </ButtonCustomCss>
                   </MenuItem>
@@ -1084,6 +1127,7 @@ const TiptapMUI = () => {
             </FormControl>
             <ButtonCustomCss
               onMouseDown={(e) => e.preventDefault()}
+              className={` button_toolbar  `}
               onClick={() => {
                 if (!editor.isFocused) {
                   editor.chain().focus().run();
@@ -1091,6 +1135,8 @@ const TiptapMUI = () => {
                 editor.chain().focus().setHorizontalRule().run();
               }}
             >
+              <span className="button_toolbar_hover">head line</span>
+
               <span>___</span>
             </ButtonCustomCss>
           </div>

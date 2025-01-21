@@ -478,3 +478,6 @@ figure img {
 .width-display {
   @apply right-0 top-0 w-[100px] h-fit min-h-[30px];
 }
+.MuiPaper-root .button_toolbar_hover {
+  display: none;
+}
