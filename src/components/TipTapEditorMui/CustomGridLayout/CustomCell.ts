@@ -66,11 +66,11 @@ export const CustomCell = Node.create({
   addKeyboardShortcuts() {
     return {
       Backspace: ({ editor }) => {
-        const { state, view } = editor;
+        const { state, dispatch } = editor.view;
         const { selection } = state;
         const { $from } = selection;
 
-        // Kiểm tra nếu đang ở đầu node và node hiện tại là customCell
+        // Kiểm tra nếu đang ở đầu node và node hiện tại là customCell và rỗng
         if (
           $from.parent.type.name === 'customCell' &&
           $from.parent.textContent.length === 0
@@ -79,7 +79,17 @@ export const CustomCell = Node.create({
           return true;
         }
 
-        return false;
+        // Kiểm tra nếu node hiện tại là ảnh
+        if ($from.nodeAfter?.type.name === 'image') {
+          // Xóa node ảnh
+          const imagePos = $from.pos + 1; // Vị trí node ảnh
+          dispatch(
+            state.tr.delete(imagePos, imagePos + $from.nodeAfter.nodeSize)
+          );
+          return true; // Ngăn hành vi mặc định
+        }
+
+        return false; // Cho phép hành vi mặc định nếu không phải trường hợp đặc biệt
       },
     };
   },
