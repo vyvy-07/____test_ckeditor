@@ -147,6 +147,72 @@ const arrTextAlign = [
   { name: 'right', icon: AlignRigthIcon },
   { name: 'justify', icon: AlignJustyIcon },
 ];
+const bgColorDefault = [
+  '#000000',
+  '#4D4D4D',
+  '#808080',
+  '#B3B3B3',
+  '#D9D9D9',
+  '#E6E6E6',
+  '#F2F2F2',
+  '#FFFFFF',
+  '#FF0000',
+  '#FF6600',
+  '#FFCC00',
+  '#33FF00',
+  '#00FFFF',
+  '#0000FF',
+  '#9900FF',
+  '#FF00FF',
+  '#FFCCCC',
+  '#FF9966',
+  '#FFFF99',
+  '#CCFFCC',
+  '#CCFFFF',
+  '#99CCFF',
+  '#CC99FF',
+  '#FFCCFF',
+  '#FF9999',
+  '#FFCC66',
+  '#FFFF66',
+  '#99FF99',
+  '#99FFFF',
+  '#6699FF',
+  '#9966FF',
+  '#FF99CC',
+  '#CC6666',
+  '#CC9933',
+  '#CCCC33',
+  '#66CC66',
+  '#66CCCC',
+  '#3366CC',
+  '#6633CC',
+  '#CC6699',
+  '#993333',
+  '#996600',
+  '#999933',
+  '#339933',
+  '#339999',
+  '#003399',
+  '#330099',
+  '#993366',
+  '#660000',
+  '#663300',
+  '#666600',
+  '#006600',
+  '#006666',
+  '#003366',
+  '#330066',
+  '#660033',
+  '#330000',
+  '#331A00',
+  '#333300',
+  '#003300',
+  '#003333',
+  '#001933',
+  '#190033',
+  '#330019',
+];
 const arrFontFamily = [
   'Inter',
   'Comic Sans MS, Comic Sans',
@@ -299,7 +365,9 @@ const TiptapMUI = () => {
   const [heading, setHeading] = React.useState('Heading');
   const [iconQuotes, setIconQuotes] = React.useState('quotes');
   const [colorCurrent, setColorCurrent] = React.useState('black');
-  const [bgColorCurrent, setBgColorCurrent] = React.useState();
+  const [bgColorCurrent, setBgColorCurrent] =
+    React.useState('Background-Color');
+  const [textColor, setTextColor] = React.useState('Text-Color');
   const [alignment, setAlignment] = React.useState('left');
   const [fontFamily, setFontFamily] = React.useState('monica');
   const [gridlayout, setGridLayout] = React.useState('Grid Layout');
@@ -311,7 +379,7 @@ const TiptapMUI = () => {
   const [token, setToken] = React.useState('');
   const [isOpenPopUp, setIsOpenPopUp] = React.useState(false);
   const route = useRouter();
-
+  console.log('textColor :>> ', textColor);
   const [openToolTable, setOpenToolTable] = React.useState(false);
 
   const editor: any = useEditor({
@@ -564,6 +632,25 @@ const TiptapMUI = () => {
       setFontFamily(e.target.value);
     }
   };
+  const handleChangeBg = (e: any) => {
+    if (!editor.chain().focus()) {
+      return null;
+    }
+    if (e.target.value) {
+      setBgColorCurrent(e.target.value);
+      editor.chain().focus().setColor(e.target.value).run();
+    }
+  };
+  const handleChangeTextColor = (e: any) => {
+    if (!editor.chain().focus()) {
+      return null;
+    }
+    if (e.target.value) {
+      setTextColor(e.target.value);
+      editor.chain().focus().setColor(e.target.value).run();
+    }
+  };
+  console.log(bgColorCurrent);
   const handleWidget = (e: SelectChangeEvent) => {
     if (e.target.value) {
       setWidget(e.target.value);
@@ -606,7 +693,10 @@ const TiptapMUI = () => {
   };
   //handle get src image
   const getSource = async () => {
+    // const source = editor.innerHTML;
     const source = editor.getHTML();
+
+    console.log('source :>> ', source);
     if (source) {
       // setDataHtml(source);
       setSourceHTML(source);
@@ -835,7 +925,7 @@ const TiptapMUI = () => {
               </Select>
             </FormControl>
             {/* text color */}
-            <div className="relative button_toolbar ">
+            {/* <div className="relative button_toolbar ">
               <span className="button_toolbar_hover">Text color</span>
 
               <span className="block  relative z-10 pointer-events-none">
@@ -864,46 +954,113 @@ const TiptapMUI = () => {
                 value={editor.getAttributes('textStyle').color || colorCurrent}
                 className="w-6 h-6 pt-6 absolute bottom-0 pointer-events-auto"
               />
-            </div>
-            {/* background color */}
-            <div className="relative button_toolbar ">
-              <span className="button_toolbar_hover">Background-color</span>
-              <span className="block  relative z-10 pointer-events-none">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                  fill="currentColor"
-                >
-                  <path d="M19.2277 18.7323L20.9955 16.9645L22.7632 18.7323C23.7395 19.7086 23.7395 21.2915 22.7632 22.2678C21.7869 23.2441 20.204 23.2441 19.2277 22.2678C18.2514 21.2915 18.2514 19.7086 19.2277 18.7323ZM8.87861 1.07971L20.1923 12.3934C20.5828 12.7839 20.5828 13.4171 20.1923 13.8076L11.707 22.2929C11.3165 22.6834 10.6833 22.6834 10.2928 22.2929L1.80754 13.8076C1.41702 13.4171 1.41702 12.7839 1.80754 12.3934L9.58572 4.61525L7.4644 2.49393L8.87861 1.07971ZM10.9999 6.02946L3.92886 13.1005H18.071L10.9999 6.02946Z"></path>
-                </svg>
-              </span>
-              <input
-                type="color"
-                onMouseDown={(e) => e.preventDefault()}
-                onInput={(event: any) => {
-                  if (!editor.chain().focus()) {
-                    return null;
-                  }
-                  if (event.target.value) {
-                    setBgColorCurrent(event.target.value);
-                    editor
-                      .chain()
-                      .focus()
-                      .setBackgroundColor(event.target.value)
-                      .run();
-                  }
-                }}
-                value={
-                  editor.getAttributes('textStyle').backgroundColor ||
-                  bgColorCurrent ||
-                  'white'
-                }
-                className={`w-6 h-6 pt-6 absolute bottom-0 pointer-events-auto 
+            </div> */}
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                className="outline-none flex form-fontFamily text-[14px] w-fit px-1 h-[40px]"
+                value={textColor || 'Text-Color'}
+                onChange={handleChangeTextColor}
+              >
+                <MenuItem value={textColor} disabled>
+                  <div className=" flex gap-1">
+                    <p
+                      className={`block w-5 ml-2 h-5 rounded-sm shadow-slate-400 shadow-sm `}
+                      style={{
+                        backgroundColor: `${textColor || '#FFFFFF'}`,
+                      }}
+                    ></p>
+                  </div>
+                </MenuItem>
+                {bgColorDefault?.map((item, index) => (
+                  <MenuItem value={item} key={item || index}>
+                    <div className=" flex gap-1">
+                      <p
+                        className={`block w-5 ml-2 h-5 rounded-sm shadow-slate-400 shadow-sm `}
+                        style={{ backgroundColor: `${item}` }}
+                      ></p>
+                    </div>
+                  </MenuItem>
+                ))}
+              </Select>
+              <div className="absolute  w-fit top-[7px] left-[23px] ">
+                <span className="block  relative z-10 pointer-events-none rounded-sm">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    fill={textColor}
+                  >
+                    <path d="M15.2459 14H8.75407L7.15407 18H5L11 3H13L19 18H16.8459L15.2459 14ZM14.4459 12L12 5.88516L9.55407 12H14.4459ZM3 20H21V22H3V20Z"></path>
+                  </svg>
+                </span>
+                <input
+                  type="color"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onInput={handleChangeTextColor}
+                  value={editor.getAttributes('textStyle').color || textColor}
+                  className={`w-6 h-6 pt-6 absolute bottom-0 pointer-events-auto 
               `}
-              />
-            </div>
+                />
+              </div>
+            </FormControl>
+            {/* background-color */}
+            <FormControl sx={{ m: 1, minWidth: 120 }}>
+              <Select
+                className="outline-none flex form-fontFamily text-[14px] w-fit px-1 h-[40px]"
+                value={bgColorCurrent || 'bgColorCurrent'}
+                onChange={handleChangeBg}
+              >
+                <MenuItem value={bgColorCurrent} disabled>
+                  <div className=" flex gap-1">
+                    <p
+                      className={`block w-5 ml-2 h-5 rounded-sm shadow-slate-400 shadow-sm `}
+                      style={{
+                        backgroundColor: `${bgColorCurrent || '#FFFFFF'}`,
+                      }}
+                    ></p>
+                  </div>
+                </MenuItem>
+                {/* <div className="flex max-w-[480px] flex-wrap"> */}
+                {bgColorDefault?.map((item, index) => (
+                  <MenuItem value={item} key={item || index}>
+                    <div className=" flex gap-1">
+                      <p
+                        className={`block w-5 ml-2 h-5 rounded-sm shadow-slate-400 shadow-sm `}
+                        style={{ backgroundColor: `${item}` }}
+                      ></p>
+                      {/* <p>{item}</p> */}
+                    </div>
+                  </MenuItem>
+                ))}
+                {/* </div> */}
+              </Select>
+              <div className="absolute  w-fit top-[7px] left-[23px] ">
+                <span className="block  relative z-10 pointer-events-none rounded-sm">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                    fill={bgColorCurrent}
+                  >
+                    <path d="M19.2277 18.7323L20.9955 16.9645L22.7632 18.7323C23.7395 19.7086 23.7395 21.2915 22.7632 22.2678C21.7869 23.2441 20.204 23.2441 19.2277 22.2678C18.2514 21.2915 18.2514 19.7086 19.2277 18.7323ZM8.87861 1.07971L20.1923 12.3934C20.5828 12.7839 20.5828 13.4171 20.1923 13.8076L11.707 22.2929C11.3165 22.6834 10.6833 22.6834 10.2928 22.2929L1.80754 13.8076C1.41702 13.4171 1.41702 12.7839 1.80754 12.3934L9.58572 4.61525L7.4644 2.49393L8.87861 1.07971ZM10.9999 6.02946L3.92886 13.1005H18.071L10.9999 6.02946Z"></path>
+                  </svg>
+                </span>
+                <input
+                  type="color"
+                  onMouseDown={(e) => e.preventDefault()}
+                  onInput={handleChangeBg}
+                  value={
+                    editor.getAttributes('textStyle').backgroundColor ||
+                    bgColorCurrent ||
+                    'white'
+                  }
+                  className={`w-6 h-6 pt-6 absolute bottom-0 pointer-events-auto 
+              `}
+                />
+              </div>
+            </FormControl>
             |
             <button
               onClick={() => setIsOpenPopUp(true)}
@@ -918,7 +1075,7 @@ const TiptapMUI = () => {
               onMouseDown={(e) => e.preventDefault()}
               className="button_toolbar "
             >
-              <span className="button_toolbar_hover">Link Youtube</span>
+              <span className="button_toolbar_hover"> Insert File Video</span>
               <span dangerouslySetInnerHTML={{ __html: VideoIcon }}></span>
             </button>
             {/* add Link Youtube Video */}
@@ -927,7 +1084,7 @@ const TiptapMUI = () => {
               onClick={addYoutubeVideo}
               className={` button_toolbar  `}
             >
-              <span className="button_toolbar_hover">insert File Video</span>
+              <span className="button_toolbar_hover">Link Youtube</span>
               <span dangerouslySetInnerHTML={{ __html: FileVideoIcon }}></span>
             </ButtonCustomCss>{' '}
             |
