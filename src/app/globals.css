@@ -9,6 +9,10 @@
 body {
   box-sizing: border-box;
 }
+p {
+  min-height: 12px;
+  height: auto;
+}
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -18,7 +22,7 @@ body {
 }
 
 .custom-row {
-  @apply grid w-full gap-1;
+  @apply grid w-full gap-1 max-md:block;
   @apply overflow-hidden;
 }
 
@@ -32,37 +36,48 @@ body {
 }
 
 .layout1x10x1 {
+  gap: 20px;
   grid-template-columns: 1fr 10fr 1fr;
+  @apply max-md:grid-cols-1;
 }
 .layout2x8x2 {
+  gap: 20px;
   grid-template-columns: 2fr 8fr 2fr;
+  @apply max-md:grid-cols-1;
 }
 
 .layout3x9 {
+  gap: 20px;
   grid-template-columns: 3fr 9fr;
 }
 
 .layout4x4x4 {
+  gap: 20px;
   grid-template-columns: 4fr 4fr 4fr;
 }
 
 .layout6x6 {
+  gap: 20px;
   grid-template-columns: 6fr 6fr;
 }
 
 .layout3x6x3 {
+  gap: 20px;
   grid-template-columns: 3fr 6fr 3fr;
 }
 
 .layout8x4 {
+  gap: 20px;
   grid-template-columns: 8fr 4fr;
 }
 
 .layout4x8 {
+  gap: 20px;
   grid-template-columns: 4fr 8fr;
 }
 
 .layout9x3 {
+  gap: 20px;
   grid-template-columns: 9fr 3fr;
 }
 

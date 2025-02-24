@@ -214,20 +214,21 @@ export const QuotesWithIconSVG = `
 
 export const BoxQuotesGreySVG = `<svg width="30" height="25" xmlns="http://www.w3.org/2000/svg">
   <!-- Hình vuông -->
-  <rect x="0" y="0" width="30" height="25" fill="#eeeeee" stroke-width="1"/>
+  <rect x="0" y="0" width="30" height="25" fill="#f2f1ed" stroke-width="1"/>
   <!-- Số "1" -->
   <text x="50%" y="50%" font-size="12" font-family="Arial" fill="#000" dominant-baseline="middle" text-anchor="middle">3</text>
 </svg>
 `;
 export const BlockBoxBlueSVG = `<svg width="30" height="25" xmlns="http://www.w3.org/2000/svg">
   <!-- Hình vuông -->
-  <rect x="0" y="0" width="30" height="25" fill="#add8e6"  stroke-width="1"/>
+  <rect x="0" y="0" width="30" height="25" fill="#f1f9ff"  stroke-width="1"/>
   <!-- Số "1" -->
   <text x="50%" y="50%" font-size="10" font-family="Arial" fill="#000" dominant-baseline="middle" text-anchor="middle">2</text>
 </svg>`;
+
 export const BoxQuotesGreenSVG = `<svg width="30" height="25" xmlns="http://www.w3.org/2000/svg">
   <!-- Hình vuông -->
-  <rect x="0" y="0" width="30" height="25" fill="#33FF99"  stroke-width="1"/>
+  <rect x="0" y="0" width="30" height="25" fill="#e5f5ed"  stroke-width="1"/>
   <!-- Số "1" -->
   <text x="50%" y="50%" font-size="10" font-family="Arial" fill="#000" dominant-baseline="middle" text-anchor="middle">1</text>
 </svg>`;
