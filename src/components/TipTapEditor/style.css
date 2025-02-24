@@ -1,0 +1,237 @@
+body {
+}
+p {
+  @apply font-normal text-[16px];
+}
+h1 {
+  @apply font-bold text-[24px];
+}
+h2 {
+  @apply font-semibold text-[22px];
+}
+h3 {
+  @apply font-medium text-[20px];
+}
+h4 {
+  @apply font-light text-[18px];
+}
+
+.tiptap {
+  padding: 10px;
+  outline: none;
+  border: 1px solid #eee;
+}
+.hljs-comment,
+.hljs-quote {
+  @apply text-gray-500;
+}
+
+/* Variable, attribute, and tag styling */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attribute,
+.hljs-tag,
+.hljs-regexp,
+.hljs-link,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class {
+  @apply text-red-400;
+}
+
+/* Number, meta, and type styling */
+.hljs-number,
+.hljs-meta,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params {
+  @apply text-yellow-400;
+}
+
+/* String and symbol styling */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet {
+  @apply text-green-400;
+}
+
+/* Title and section styling */
+.hljs-title,
+.hljs-section {
+  @apply text-yellow-300;
+}
+
+/* Keyword and selector tag styling */
+.hljs-keyword,
+.hljs-selector-tag {
+  @apply text-blue-400;
+}
+
+/* Emphasis and strong styling */
+.hljs-emphasis {
+  @apply italic;
+}
+
+.hljs-strong {
+  @apply font-bold;
+}
+blockquote {
+  border-left: 3px solid grey;
+  padding-left: 5px;
+}
+
+.QuotesFitContent,
+.box-quotes-blue,
+.box-quotes-green,
+.box-quotes-grey {
+  @apply py-5;
+  position: relative;
+  border-left: none !important;
+  font-style: initial !important;
+}
+.custom-quote-button,
+.quotes-with-icon-button,
+.quote-lines {
+  position: relative;
+  margin: 20px 0;
+  border-left: none !important;
+  font-style: initial !important;
+
+  text-align: center;
+}
+.quote-lines p {
+  @apply py-2;
+}
+.quotes-with-icon-button {
+  display: block;
+  min-height: 60px;
+  position: relative;
+  width: 100%;
+  padding-top: 20px !important;
+  padding-left: 75px !important;
+  text-align: start;
+}
+.custom-quote-button::before,
+.custom-quote-button::after,
+.quote-lines::before,
+.quote-lines::after {
+  content: '';
+  width: 33%;
+  height: 2px;
+  background-color: #000;
+}
+
+.quotes-with-icon-button::before {
+  content: '“';
+  font-family: serif;
+  font-size: 130px;
+  position: absolute;
+  line-height: 0;
+  left: 0;
+  top: 50px;
+}
+.quote-lines::before,
+.quote-lines::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.custom-quote-button::before .quote-lines::before {
+  top: 0; /* Dòng trên */
+}
+
+.quote-lines::after,
+.custom-quote-button::after {
+  bottom: 0; /* Dòng dưới */
+}
+
+.custom-quote-button {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+}
+.quotes-with-icon-button p {
+  width: 100%;
+}
+.box-quotes-blue {
+  @apply bg-blue-200;
+}
+.box-quotes-green {
+  @apply bg-green-200;
+}
+.box-quotes-grey {
+  @apply bg-slate-300;
+}
+.QuotesFitContent p {
+  width: fit-content;
+  padding: 5px 10px;
+  @apply bg-slate-300;
+}
+/* .toolbar {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #ddd;
+}
+
+.toolbar button {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.toolbar button:hover {
+  background-color: #eaeaea;
+} */
+/* figure {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+figcaption {
+  font-size: 0.8em;
+  text-align: center;
+  color: gray;
+} */
+
+img {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+/* ////////////// */
+
+/* figcaption {
+  margin-top: 10px; 
+  text-align: 
+  width: 100%;
+  font-size: 14px;
+  overflow: hidden;
+  white-space: break-spaces;
+  word-break: break-word;
+}
+figure {
+  display: inline-block;
+  position: relative;
+  height: fit-content;
+  overflow: hidden;
+}
+
+.resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background-color: blue;
+  cursor: nwse-resize;
+} */

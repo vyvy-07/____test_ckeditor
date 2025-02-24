@@ -1,0 +1,12 @@
+.button_toolbar {
+  @apply relative;
+}
+.button_toolbar_hover {
+  @apply block text-[13px] transition-[0.03s] w-fit p-1 bg-slate-100 rounded-sm absolute  top-8 opacity-0 pointer-events-none;
+}
+.button_toolbar:hover .button_toolbar_hover {
+  @apply opacity-100 pointer-events-auto transition-[0.03s];
+}
+.formControl .button_toolbar_hover {
+  display: none;
+}

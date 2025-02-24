@@ -1,0 +1,46 @@
+.custom-row {
+  @apply grid w-full gap-1 border border-dashed 
+  
+  border-[#9fc9fc];
+  @apply overflow-hidden;
+}
+.custom-row > *:not(:first-child) {
+  border-left: 1px dashed #9fc9fc;
+}
+/* .custom-row {
+  @apply grid w-full gap-1 border border-dashed border-[#9fc9fc] py-2 px-2;
+}
+.custom-row > *:not(:first-child) {
+  border-left: 1px dashed #9fc9fc; 
+}
+.layout2x8x2 {
+  grid-template-columns: 2fr 8fr 2fr;
+}
+
+.layout3x9 {
+  grid-template-columns: 3fr 9fr;
+}
+
+.layout4x4x4 {
+  grid-template-columns: 4fr 4fr 4fr;
+}
+
+.layout6x6 {
+  grid-template-columns: 6fr 6fr;
+}
+
+.layout3x6x3 {
+  grid-template-columns: 3fr 6fr 3fr;
+}
+
+.layout8x4 {
+  grid-template-columns: 8fr 4fr;
+}
+
+.layout4x8 {
+  grid-template-columns: 4fr 8fr;
+}
+
+.layout9x3 {
+  grid-template-columns: 9fr 3fr;
+} */

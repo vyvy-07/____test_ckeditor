@@ -1,32 +1,39 @@
-export const DATA = [
+export const DATA_IMAGE = [
   {
-    alt: 'dfsdf',
-    src: 'https://i.pinimg.com/736x/99/65/99/9965990d3dcd12e3a5c7f2986c3191e3.jpg',
+    alt: 'Nguyễn',
+    src: `https://media.istockphoto.com/id/1954540895/fr/photo/drone-view-fisherman-in-tuyen-lam-lake.webp?a=1&b=1&s=612x612&w=0&k=20&c=CnBM3wHsV3S0BL4HN2MFQDDLUvZKDrMadX9gl4m8550=`,
     fileName: 'cá',
   },
   {
-    alt: 'dfsdf',
-    src: 'https://marketplacecdn.yoyogames.com/images/assets/1372/screenshots/3722_original.jpg',
-    fileName: 'heo',
+    alt: 'Pahn',
+    src: `https://images.unsplash.com/photo-1710306622520-05e9818e7b27?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGxhbSUyMGRvbmd8ZW58MHx8MHx8fDA%3D`,
+    fileName: 'cá21321',
   },
+
   {
-    alt: 'dfsdf',
-    src: 'https://i.etsystatic.com/43797977/r/il/75836c/5018018503/il_570xN.5018018503_dqd9.jpg',
+    alt: 'SoHaRam',
+    src: `https://images.unsplash.com/photo-1582639230945-bd2926ad7862?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNoaW0lMjBoJUUxJUJCJTkzbmclMjBoJUUxJUJBJUExY3xlbnwwfHwwfHx8MA%3D%3D`,
     fileName: 'hồng',
   },
   {
-    alt: 'dfsdf',
-    src: 'https://png.pngtree.com/thumb_back/fh260/background/20210409/pngtree-clean-white-mangila-biology-cat-image_600707.jpg',
+    alt: 'Xanh da trời',
+    src: `https://images.unsplash.com/photo-1615136611620-607c9711c19c?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGNoaW0lMjBoJUUxJUJCJTkzbmclMjBoJUUxJUJBJUExY3xlbnwwfHwwfHx8MA%3D%3D`,
     fileName: 'xanh',
   },
   {
-    alt: 'dfsdf',
-    src: 'https://i.pinimg.com/736x/39/e7/ca/39e7ca07f5f433544b5e141cf7b0b19b.jpg',
+    alt: 'Đỏ chói',
+    src: 'https://images.unsplash.com/reserve/bOvf94dPRxWu0u3QsPjF_tree.jpg?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dHJlZXxlbnwwfHwwfHx8MA%3D%3D',
     fileName: 'đỏ',
   },
   {
-    alt: 'dfsdf',
-    src: 'https://png.pngtree.com/thumb_back/fh260/background/20240801/pngtree-pink-and-purple-clouds-in-a-blue-sky-background-image_16122877.jpg',
+    alt: 'Cái hình',
+    src: `https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGZvb2R8ZW58MHx8MHx8fDA%3D`,
     fileName: 'cá',
+  },
+
+  {
+    alt: 'TRẦn',
+    src: 'https://images.unsplash.com/photo-1485963631004-f2f00b1d6606?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGZvb2R8ZW58MHx8MHx8fDA%3D',
+    fileName: 'csdfdsá',
   },
 ];
