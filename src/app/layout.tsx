@@ -1,4 +1,3 @@
-import SourceProvider from '@/components/SourceContext';
 import type { Metadata } from 'next';
 import './globals.css';
 
@@ -18,7 +17,7 @@ export default function RootLayout({
         cz-shortcut-listen="true"
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <SourceProvider>{children}</SourceProvider>
+        <>{children}</>
       </body>
     </html>
   );
