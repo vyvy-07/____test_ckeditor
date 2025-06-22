@@ -13,7 +13,6 @@ const darkTheme = createTheme({
 
 const TipTapEditor = () => {
   const { setDataHtml, dataHtml } = useSource() || {};
-  console.log('dataHtml :>> ', dataHtml);
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
